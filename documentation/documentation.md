@@ -27,7 +27,7 @@ Our project is called Digital Journal. The goal of this project is to create a m
 
 Functionality: You will be able to create journal entries with pictures and videos which are connected to an account. As a journal is a very private thing security and privacy is a topic we will focus on. However you will be able to share certain journal entries with friends and send them messages if you choose to. To add gamification you will be rewarded with achievements if you reach certain criteria like uploaded 10 images or 20 entries in a row, that also can be shared. You will also be able to create your own goals and start documenting how you reach them.
 
-####The following picture shows the overall use case diagram of our software: 
+#### The following picture shows the overall use case diagram of our software: 
 
 
 ![SRS documentation](./SRS.png)
@@ -58,6 +58,18 @@ The friend list gives you the opportunity to send messages to your friends and t
 #### 3.1.8 Site description
 This page will display some basic information to the project an the website.
 
+### 3.2 Usability
+In order to avoid the user having to download an additional app to use our website, the website adapts to all devices.
+
+#### 3.2.1 Using a web browser
+In order to use our website the user has to know how to use a modern web browser like [Google Chrome](https://www.google.de/chrome/browser/desktop/index.html), [Mozilla Firefox](https://www.mozilla.org/de/firefox/desktop/) or [Opera](http://www.opera.com/de/download). 
+
+#### 3.2.2 Using a smartphone
+As the use of our website should not be restricted to stationary computers, the user should know how to work with common smartphone operating systems like [iOS](https://www.apple.com/de/ios/) or [Android](https://www.android.com/). 
+
+#### 3.2.3 Basic social network knowledge
+Users of our website should understand the basic principles of a social network to ensure that a smooth use is possible. Popular social networks are, for instance, [Facebook](https://facebook.com), [Twitter](https://www.twitter.com) or [YouTube](www.youtube.com).
+
 ### 3.3 Reliability
 #### 3.3.1 Server availability
 The host we are using is guaranteeing a server uptime of >99%. Do to the fact we are writing an servlet for it the uptime of this webservice might be slightly lower but still above 95%.
@@ -78,7 +90,7 @@ We will use the following languages, which will also be well supported in the fu
 * W3C internet Standards HTML5, CSS3 
 * JavaScript
 
-#### 3.4.5 Libary support
+#### 3.5.5 Libary support
 To build an app according to the MVC architecture, we use _SpringMVC_, which is a common Java Framework.
 
 Our UI Framework is _Bootstrap 4_, which is also very known and will be supported in the future.
@@ -87,8 +99,8 @@ Our UI Framework is _Bootstrap 4_, which is also very known and will be supporte
 #### 3.6.1 Java Backend
 Our Backend should be written in Java 8.
 
-#### 3.7.2 MVC architecture
+#### 3.6.2 MVC architecture
 The whole project should follow the MVC pattern. Therefore, we use Spring as Java Framework.
 
-#### 3.7.3 MySQL database
+#### 3.6.3 MySQL database
 Generale user information should be saved in a MySQL database, hosted on our own dedicated server.
