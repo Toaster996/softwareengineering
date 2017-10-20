@@ -13,7 +13,7 @@ The DigitalJournal Project consist of two main parts. The Frontend development, 
 * **SRS** Software Requirements Specification
 ###1.4 References
 | Title        | Date           |
-| ------------- |:-------------:|
+| ------------- |-------------|
 | [Unveiled Blog](https://theexcitingcompany.wordpress.com/)   | 04.10.2017 | 
 _more coming soon..._
 
@@ -25,11 +25,9 @@ Our project is called Digital Journal. The goal of this project is to create a m
 Functionality: You will be able to create journal entries with pictures and videos which are connected to an account. As a journal is a very private thing security and privacy is a topic we will focus on. However you will be able to share certain journal entries with friends and send them messages if you choose to. To add gamification you will be rewarded with achievements if you reach certain criteria like uploaded 10 images or 20 entries in a row, that also can be shared. You will also be able to create your own goals and start documenting how you reach them.
 
 The following picture shows the overall use case diagram of our software: 
-
-<img src="./SRS.svg">
 =======
 
 
 ![Alt text](./SRS.png)
-<img src="./SRS.svg">
+
 
