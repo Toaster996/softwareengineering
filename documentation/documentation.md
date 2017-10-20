@@ -20,7 +20,6 @@ The DigitalJournal Project consist of two main parts. The Frontend development, 
 | [Blog](https://theexcitingcompany.wordpress.com/) | 04.10.2017 | 
 
 
-
 ## 2. Definition
 ### 2.1 Vision
 Our project is called Digital Journal. The goal of this project is to create a multimedial web based journal that can be accessed from everywhere with internet access. You don’t have to worry about losing your journal ever again.
@@ -104,3 +103,26 @@ The whole project should follow the MVC pattern. Therefore, we use Spring as Jav
 
 #### 3.6.3 MySQL database
 Generale user information should be saved in a MySQL database, hosted on our own dedicated server.
+
+## 3.7 3.7 On-line User Documentation and Help System Requirements
+Our Website should be intuitive to use. Nevertheless, we offer a tuturial on our Webpage inculding a Youtube Video.
+
+## 3.8 Purchase Components
+n/a
+
+## 3.9 Interfaces
+### 3.9.1 User Interfaces
+tbd
+
+## 3.10 Licensing Requirements
+The whole project is licenced under Apache 2.0.
+
+## 3.11 Legal, Copyright, and Other Notices
+n/a
+
+## 3.12	Applicable Standards
+n/a
+
+# 4. Supporting Information
+## 4.1 Appendices
+You can find any internal linked sources in the chapter References (go to the top of this document). If you would like to know what the current status of this project is please visit our Blog.
