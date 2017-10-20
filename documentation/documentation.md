@@ -30,7 +30,38 @@ Functionality: You will be able to create journal entries with pictures and vide
 The following picture shows the overall use case diagram of our software: 
 =======
 
+![SRS documentation](./SRS.png)
 
-![Alt text](./SRS.png)
+## 3. Specific Requirements
+### 3.1 Functionality
+#### 3.1.1 Register Account
+The website will provide the possibility to create a new account with which you can access the service. In order to create an account you need a valid email address. 
 
+#### 3.1.2 Login-Page
+A page where you can enter your credentials in order to log in.
+
+#### 3.1.3 Start-Page
+The start page will give you an overview of you journals entries, as well as your goals. Furthermore it will show you're friend list.
+
+#### 3.1.4 Journal-Entry-Page
+This page will give you the opportunity to create a new journal entry for today or edit them. You will be able to write text, include video, audio and pictures as well as some basic formatting. If you are finished you can save and optionally share it with your friends.
+
+#### 3.1.5 Profile-Page
+The profile page gives you the opportunity to change your password and maintain your personal information. You can also delete your account.
+
+#### 3.1.6 Goal-Page
+This page will give you the opportunity to create a new goal for a certain date and to edit existing goals. If you achieved your goal, you can mark it as complete.
+
+#### 3.1.7 Friend-List
+The friend list gives you the opportunity to send messages to your friends and to add/remove friends.
+
+#### 3.1.8 Site description
+This page will display some basic information to the project an the website.
+
+### 3.3 Reliability
+#### 3.3.1 Server availability
+The host we are using is guaranteeing a server uptime of >99%. Do to the fact we are writing an servlet for it the uptime of this webservice might be slightly lower but still above 95%.
+
+#### 3.3.2 MTTR 
+Due to this being a student project the time from failure to fix might strongly vary. Downtimes of more than 1 day are possible.
 
