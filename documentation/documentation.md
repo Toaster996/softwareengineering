@@ -29,16 +29,7 @@ The following picture shows the overall use case diagram of our software:
 <img src="./SRS.svg">
 =======
 
-##1. Introduction
-###1.1. Purpose
 
-
-
-
-
-
-![Alt text](./SRS.svg)
+![Alt text](./SRS.png)
 <img src="./SRS.svg">
 
-
->>>>>>> Stashed changes
