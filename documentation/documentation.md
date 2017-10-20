@@ -27,8 +27,8 @@ Our project is called Digital Journal. The goal of this project is to create a m
 
 Functionality: You will be able to create journal entries with pictures and videos which are connected to an account. As a journal is a very private thing security and privacy is a topic we will focus on. However you will be able to share certain journal entries with friends and send them messages if you choose to. To add gamification you will be rewarded with achievements if you reach certain criteria like uploaded 10 images or 20 entries in a row, that also can be shared. You will also be able to create your own goals and start documenting how you reach them.
 
-The following picture shows the overall use case diagram of our software: 
-=======
+####The following picture shows the overall use case diagram of our software: 
+
 
 ![SRS documentation](./SRS.png)
 
@@ -65,3 +65,30 @@ The host we are using is guaranteeing a server uptime of >99%. Do to the fact we
 #### 3.3.2 MTTR 
 Due to this being a student project the time from failure to fix might strongly vary. Downtimes of more than 1 day are possible.
 
+### 3.4 Performance
+#### 3.4.1 Responsive Website
+Our Website must react responsive to every user input. 
+#### 3.4.1 File upload and download
+It is also important that file upload (pictures, large text) and download are possible in a short period of time, although we wont be able to guarantee a realtime-communiaction. 
+
+### 3.5 Supportability
+#### 3.5.1 Language support
+We will use the following languages, which will also be well supported in the future:
+* Java SE 8
+* W3C internet Standards HTML5, CSS3 
+* JavaScript
+
+####3.4.5 Libary support
+To build an app according to the MVC architecture, we use _SpringMVC_, which is a common Java Framework.
+
+Our UI Framework is _Bootstrap 4_, which is also very known and will be supported in the future.
+
+### 3.6 Design Constrains
+#### 3.6.1 Java Backend
+Our Backend should be written in Java 8.
+
+#### 3.7.2 MVC architecture
+The whole project should follow the MVC pattern. Therefore, we use Spring as Java Framework.
+
+#### 3.7.3 MySQL database
+Generale user information should be saved in a MySQL database, hosted on our own dedicated server.
