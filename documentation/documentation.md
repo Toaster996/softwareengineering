@@ -78,7 +78,7 @@ We will use the following languages, which will also be well supported in the fu
 * W3C internet Standards HTML5, CSS3 
 * JavaScript
 
-####3.4.5 Libary support
+#### 3.4.5 Libary support
 To build an app according to the MVC architecture, we use _SpringMVC_, which is a common Java Framework.
 
 Our UI Framework is _Bootstrap 4_, which is also very known and will be supported in the future.
