@@ -104,13 +104,13 @@ The whole project should follow the MVC pattern. Therefore, we use Spring as Jav
 #### 3.6.3 MySQL database
 Generale user information should be saved in a MySQL database, hosted on our own dedicated server.
 
-## 3.7 3.7 On-line User Documentation and Help System Requirements
+## 3.7 On-line User Documentation and Help System Requirements
 Our Website should be intuitive to use. Nevertheless, we offer a tuturial on our Webpage inculding a Youtube Video.
 
 ### 3.8 Purchase Components
 n/a
 
-###3.9 Interfaces
+### 3.9 Interfaces
 #### 3.9.1 User Interfaces
 tbd
 
