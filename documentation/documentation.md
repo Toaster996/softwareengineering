@@ -19,6 +19,7 @@ The DigitalJournal Project consist of two main parts. The Frontend development, 
 | Title        | Date           |
 | ------------- | ------------- |
 | [Blog](https://theexcitingcompany.wordpress.com/) | 04.10.2017 | 
+| [GitHub](https://github.com/Toaster996/softwareengineering/) | 04.10.2017 | 
 
 ### 1.5 Vision
 Our project is called Digital Journal. The goal of this project is to create a multimedial web based journal that can be accessed from everywhere with internet access. You don’t have to worry about losing your journal ever again.
