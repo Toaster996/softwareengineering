@@ -13,23 +13,23 @@ The DigitalJournal Project consist of two main parts. The Frontend development, 
 * **UC** Use Case
 * **UCD** Use Case Diagram
 * **SRS** Software Requirements Specification
+* **MTTR** Mean Time To Repair
 
 ### 1.4 References
 | Title        | Date           |
 | ------------- | ------------- |
 | [Blog](https://theexcitingcompany.wordpress.com/) | 04.10.2017 | 
 
+### 1.5 Overview
+#### The following picture shows the overall use case diagram of our software: 
+
+![SRS documentation](UCD.png)
 
 ## 2. Definition
 ### 2.1 Vision
 Our project is called Digital Journal. The goal of this project is to create a multimedial web based journal that can be accessed from everywhere with internet access. You don’t have to worry about losing your journal ever again.
 
 Functionality: You will be able to create journal entries with pictures and videos which are connected to an account. As a journal is a very private thing security and privacy is a topic we will focus on. However you will be able to share certain journal entries with friends and send them messages if you choose to. To add gamification you will be rewarded with achievements if you reach certain criteria like uploaded 10 images or 20 entries in a row, that also can be shared. You will also be able to create your own goals and start documenting how you reach them.
-
-#### The following picture shows the overall use case diagram of our software: 
-
-
-![SRS documentation](UCD.png)
 
 ## 3. Specific Requirements
 ### 3.1 Functionality
@@ -80,7 +80,7 @@ Due to this being a student project the time from failure to fix might strongly 
 #### 3.4.1 Responsive Website
 Our Website must react responsive to every user input. 
 #### 3.4.1 File upload and download
-It is also important that file upload (pictures, large text) and download are possible in a short period of time, although we wont be able to guarantee a realtime-communiaction. 
+It is also important that file upload (pictures, large text) and download are possible in a short period of time, although we wont be able to guarantee a realtime-communication. 
 
 ### 3.5 Supportability
 #### 3.5.1 Language support
