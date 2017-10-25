@@ -19,7 +19,7 @@ Will be added later...
 
 ### 4.1 <Precondition One>
 
-## 5. Postcondition
+## 5. Postconditions
 
 ### 5.1 <Postcondition One>
 
