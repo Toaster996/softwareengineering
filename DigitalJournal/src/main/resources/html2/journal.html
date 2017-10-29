@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+<head>
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="res/css/journal.css">
+    <title>DigitalJournal</title>
+</head>
+
+<body id="home" class="">
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
+        <div class="container">
+            <a href="index.html" class="navbar-brand">DigitalJournal</a>
+            <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a href="#home" class="nav-link">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#explore-head-section" class="nav-link">Explore</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#create-head-section" class="nav-link">Create</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#share-head-section" class="nav-link">Share</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main role="main">
+        <div class="container journal_conatainer">
+
+            <h2>Your Journals</h2>
+            <div class="row text-dark">
+                <div class="col-md-9">
+                    <!-- Card Examples -->
+                    <div class="card journal_entry">
+                        <div class="card-header">
+                            Journalname
+                        </div>
+                        <div class="card-block p-3">
+                            <h4 class="card-title">A day in a german Train Station</h4>
+                            <p class="card-text">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Deserunt vero temporibus numquam laudantium
+                                possimus enim unde! Eius vero reiciendis labore, debitis necessitatibus saepe, fugit aliquid
+                                a ad repudiandae natus. Rem.</p>
+                            <div class="entry_btn">
+                                <a href="#" class="btn btn-secondary">Edit</a>
+                                <a href="#" class="btn btn-outline-secondary">Share</a>
+                            </div>
+                        </div>
+                        <div class="card-footer text-muted">
+                            2 days ago
+                        </div>
+                    </div>
+                    <div class="card journal_entry">
+                        <div class="card-header">
+                            Journalname
+                        </div>
+                        <div class="card-block p-3">
+                            <h4 class="card-title">How I won agains the eye of the Tiger.</h4>
+                            <p class="card-text">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Deserunt vero temporibus numquam laudantium
+                                possimus enim unde! Eius vero reiciendis labore, debitis necessitatibus saepe, fugit aliquid
+                                a ad repudiandae natus. Rem.</p>
+                            <a href="#" class="btn btn-secondary">Edit</a>
+                            <a href="#" class="btn btn-outline-secondary">Share</a>
+                        </div>
+                        <div class="card-footer text-muted">
+                            3 days ago
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-md-3">
+                    <button class="btn btn-primary journal_entry" data-toggle="modal" data-target=".bd-example-modal-lg">Create new Journal</button>
+
+
+                    <div class="card" style="width: 20rem;">
+                        <!-- <img class="card-img-top" src="res/img/generic_friends.jpg" alt="Card image cap"> -->
+                        <div class="card-block p-3">
+                            <h4 class="card-title">Your Friends</h4>
+                            <p class="card-text">Quick access to your best friends.</div>
+                        <ul class="list-group list-group-flush text-muted">
+                            <li class="list-group-item">Kurt Cobain</li>
+                            <li class="list-group-item">Dave Grohl</li>
+                            <li class="list-group-item">Krist Novoselic</li>
+                        </ul>
+                        <!-- <div class="card-block">
+                        <a href="#" class="card-link">Card link</a>
+                        <a href="#" class="card-link">Another link</a>
+                    </div> -->
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+
+        </div>
+        <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content text-dark">
+                    <div class="modal-header">
+                        <h5 class="modal-title btn-block" id="exampleModalLabel">Create your new Journal.</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <label for="inputEmail3" class="control-label">Name</label>
+                                <input type="email" class="form-control" id="inputEmail3" placeholder="Name">
+                            </div>
+                            <div class="form-group">
+                                <label for="inputPassword3" class="control-label">Description</label>
+                                <textarea class="form-control" rows="3" placeholder="description"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <div class="text-right">
+                                    <button type="submit" class="btn btn-primary">Save</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- MAIN FOOTER -->
+    <footer id="main-footer" class="bg-dark">
+        <div class="container">
+            <div class="row">
+                <div class="col text-center">
+                    <div class="py-4">
+                        <h1 class="h3">DigitalJournal</h1>
+                        <p>Copyright &copy; 2017</p>
+                        <button class="btn btn-primary" data-toggle="modal" data-target="#contactModal">Contact Us</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- CONTACT MODAL -->
+    <div class="modal fade text-dark" id="contactModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="contactModalTitle">
+                        Contact Us
+                    </h5>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea class="form-control"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary btn-block">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+</body>
+
+</html>
