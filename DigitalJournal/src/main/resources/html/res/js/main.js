@@ -13,6 +13,10 @@ $(function(){
         $('#div_btns').hide();
     });
 
+    $('.journal.entry').hover(function(){
+        
+    })
+
     function animate (element, animation){
         $(element).addClass('animated ' + animation);
     }
