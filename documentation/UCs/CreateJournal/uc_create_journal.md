@@ -17,11 +17,11 @@ Will be added later...
 
 The basic flow of this usecase is that a user enters a journal name and a journal description and does neither leave the name nor the description empty. Afterwards he will be redirected to his newly created journal.
 
-#### Creation dialog 
+#### Creation Dialog 
 
 ![create_journal](create_journal.png)
 
-#### Redirection to journals
+#### Redirection to Your Journals
 
 ![journals](journals.png)
 
