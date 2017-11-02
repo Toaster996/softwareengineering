@@ -3695,6 +3695,8 @@ button.close {
 .align-text-top {
   vertical-align: text-top !important; }
 
+.bg-primary {
+  background-color: #007bff !important; }
 
 a.bg-primary:focus, a.bg-primary:hover {
   background-color: #0062cc !important; }

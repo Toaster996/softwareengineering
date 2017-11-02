@@ -9,6 +9,9 @@ body{
   color: $font-color;
 }
 
+.bg-primary {
+  background-color: #e8491d !important; }
+  
 .navbar{
   border-bottom:$primary-color 3px solid;
   opacity:0.8;
@@ -35,6 +38,10 @@ body{
   
   .card-form{
     opacity:1.0;
+    
+    #btn_log-in{
+      background-color: $primary-color;
+    }
   }
 
   .fa{

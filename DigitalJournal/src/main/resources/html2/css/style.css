@@ -2,6 +2,9 @@ body {
   background: #35424a;
   color: #fff; }
 
+.bg-primary {
+  background-color: #e8491d !important; }
+
 .navbar {
   border-bottom: #e8491d 3px solid;
   opacity: 0.8; }
@@ -22,6 +25,8 @@ body {
     padding-top: 150px; }
   #home-section .card-form {
     opacity: 1.0; }
+    #home-section .card-form #btn_log-in {
+      background-color: #e8491d; }
   #home-section .fa {
     color: #e8491d;
     background: #fff;
