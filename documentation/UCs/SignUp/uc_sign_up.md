@@ -33,6 +33,8 @@ If an account already exists with the given email address a message wil be displ
 
 If the entered passwords do not match the user has to reenter them.
 
+![passwords_do_not_match](password_do_not_match.jpg)
+
 ### 2.5 The user does not click on the link
 
 The user entered everything correctly but does not click on the link in the email sent to him. After 24 hours the system will delete the data, invalidate the link and act like the user never has entered anything. No account will be created 
