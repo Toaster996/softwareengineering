@@ -5,6 +5,16 @@ body {
 .bg-primary {
   background-color: #e8491d !important; }
 
+.btn-primary {
+  background-color: #35424a !important;
+  border-color: #e8491d; }
+
+.btn-primary:hover {
+  border-color: #fff; }
+
+.img-circles {
+  border-radius: 50%; }
+
 .navbar {
   border-bottom: #e8491d 3px solid;
   opacity: 0.8; }

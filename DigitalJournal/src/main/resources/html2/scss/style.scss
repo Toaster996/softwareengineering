@@ -10,7 +10,20 @@ body{
 }
 
 .bg-primary {
-  background-color: #e8491d !important; }
+  background-color: #e8491d !important; 
+}
+.btn-primary{
+  background-color: $bg-color !important;
+  border-color: $primary-color;
+}
+
+.btn-primary:hover{
+  border-color: #fff;
+}
+
+.img-circles{
+    border-radius: 50%;
+}
   
 .navbar{
   border-bottom:$primary-color 3px solid;
