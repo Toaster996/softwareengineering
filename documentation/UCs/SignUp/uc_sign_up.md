@@ -7,7 +7,7 @@
 
 ### 1.1 Brief Description
 
-Will be added later...
+The use case describes the procedure when someone wants to create a new account in order to gain access to DigitalJournal.
 
 ## 2. Flow of Events
 

@@ -7,7 +7,7 @@
 
 ### 1.1 Brief Description
 
-Will be added later...
+This use case describes the creation of a new journal entry.
 
 ## 2. Flow of Events
 
