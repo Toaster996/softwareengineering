@@ -1,8 +1,27 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: D067858
-  Date: 18.10.2017
-  Time: 08:05
-  To change this template use File | Settings | File Templates.
---%>
-${someAttribute}
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<html>
+    <head>
+        </head>
+    <body>
+        <h3>Welcome, Enter The Employee Details</h3>
+        <form:form method="POST" action="/../../../de.dhbw.softwareengineering.model/Greeting.java" modelAttribute="employee">
+                 <table>
+                    <tr>
+                        <td><form:label path="name">Name</form:label></td>
+                        <td><form:input path="name"/></td>
+                    </tr>
+                    <tr>
+                        <td><form:label path="id">Id</form:label></td>
+                        <td><form:input path="id"/></td>
+                    </tr>
+                    <tr>
+                        <td><form:label path="contactNumber">Contact Number</form:label></td>
+                        <td><form:input path="contactNumber"/></td>
+                    </tr>
+                    <tr>
+                        <td><input type="submit" value="Submit"/></td>
+                    </tr>
+                </table>
+            </form:form>
+    </body>
+</html>
