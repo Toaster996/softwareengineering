@@ -25,7 +25,7 @@ public class Employee {
         return contractNumber;
     }
 
-    public void setContontactNumber(String contontactNumber) {
-        this.contractNumber = contontactNumber;
+    public void setContactNumber(String contactNumber) {
+        this.contractNumber = contactNumber;
     }
 }
