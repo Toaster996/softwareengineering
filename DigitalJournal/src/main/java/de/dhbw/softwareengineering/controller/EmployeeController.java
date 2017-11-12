@@ -19,7 +19,7 @@ import java.util.Map;
 
 public class EmployeeController {
 
-    Map<Long, Employee> employeeMap = new HashMap<>();
+    Map<Long, Employee> employeeMap = new HashMap<Long, Employee>();
 
     @RequestMapping(value = "/employee", method = RequestMethod.GET)
     public ModelAndView showForm() {
