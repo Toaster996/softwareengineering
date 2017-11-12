@@ -1,7 +1,6 @@
 package de.dhbw.softwareengineering.controller;
 
 import de.dhbw.softwareengineering.model.Employee;
-import de.dhbw.softwareengineering.model.Greeting;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -33,7 +32,7 @@ public class EmployeeController {
         }
 
         model.addAttribute("name", employee.getName());
-        model.addAttribute("contactNumber", employee.getContactNumber());
+        model.addAttribute("contractNumber", employee.getContractNumber());
         model.addAttribute("id", employee.getId());
         employeeMap.put(employee.getId(), employee);
         return "index";

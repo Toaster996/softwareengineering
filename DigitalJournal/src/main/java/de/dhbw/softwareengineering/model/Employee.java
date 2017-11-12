@@ -21,11 +21,11 @@ public class Employee {
         this.id = id;
     }
 
-    public String getContactNumber() {
+    public String getContractNumber() {
         return contractNumber;
     }
 
-    public void setContactNumber(String contactNumber) {
+    public void setContractNumber(String contactNumber) {
         this.contractNumber = contactNumber;
     }
 }

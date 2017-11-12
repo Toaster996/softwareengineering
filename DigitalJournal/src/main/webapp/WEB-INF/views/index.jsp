@@ -3,20 +3,20 @@
     <head>
         </head>
     <body>
-        <h3>Welcome, Enter The Employee Details</h3>
-                 <table>
-                    <tr>
-                        <td>Name</td>
-                        <td>${name}</td>
-                    </tr>
-                    <tr>
-                        <td>id</td>
-                        <td>${id}</td>
-                    </tr>
-                    <tr>
-                        <td>Contact Number</td>
-                        <td>${contactNumber}</td>
-                    </tr>
-                </table>
-    </body>
+    <h2>Submitted Employee Information</h2>
+    <table>
+            <tr>
+                <td>Name :</td>
+                <td>${name}</td>
+            </tr>
+            <tr>
+                <td>ID :</td>
+                <td>${id}</td>
+            </tr>
+            <tr>
+                <td>Contact Number :</td>
+                <td>${contractNumber}</td>
+            </tr>
+        </table>
+</body>
 </html>

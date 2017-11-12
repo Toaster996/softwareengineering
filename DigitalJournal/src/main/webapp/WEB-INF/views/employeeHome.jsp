@@ -30,8 +30,8 @@
             <td><form:input path="id"/></td>
         </tr>
         <tr>
-            <td><form:label path="contactNumber">Contact Number</form:label></td>
-            <td><form:input path="contactNumber"/></td>
+            <td><form:label path="contractNumber">Contact Number</form:label></td>
+            <td><form:input path="contractNumber"/></td>
         </tr>
         <tr>
             <td><input type="submit" value="Submit"/></td>
