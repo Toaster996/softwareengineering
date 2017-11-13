@@ -1,0 +1,65 @@
+body {
+  background: #35424a;
+  color: #fff; }
+
+.bg-primary {
+  background-color: #e8491d !important; }
+
+.btn-primary {
+  background-color: #35424a !important;
+  border-color: #e8491d; }
+
+.btn-primary:hover {
+  border-color: #fff; }
+
+.img-circles {
+  border-radius: 50%; }
+
+.navbar {
+  border-bottom: #e8491d 3px solid;
+  opacity: 0.8; }
+
+#home-section {
+  background: url("../res/img/slide2.jpg") no-repeat;
+  min-height: 700px;
+  background-size: cover;
+  background-attachment: fixed; }
+  #home-section .dark-overlay {
+    background-color: rgba(0, 0, 0, 0.5);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-height: 700px; }
+  #home-section .home-inner {
+    padding-top: 150px; }
+  #home-section .card-form {
+    opacity: 1.0; }
+    #home-section .card-form #btn_log-in {
+      background-color: #e8491d; }
+  #home-section .fa {
+    color: #e8491d;
+    background: #fff;
+    padding: 4px;
+    border-radius: 5px;
+    font-size: 30px; }
+
+#explore-section .fa, #share-section .fa {
+  color: #fff;
+  background: #35424a;
+  padding: 4px;
+  border-radius: 5px;
+  font-size: 30px; }
+
+#create-section .fa {
+  color: #e8491d;
+  background: #fff;
+  padding: 4px;
+  border-radius: 5px;
+  font-size: 30px; }
+
+.bg-primary {
+  background-color: #e8491d; }
+
+.text-black {
+  color: black; }
