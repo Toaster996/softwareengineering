@@ -13,6 +13,11 @@ The use case describes the procedure when someone wants to create a new account 
 
 ![AD_SignUp](Activity_Diagram_SignUp.png)
 
+You can see the .feature file that describes this Use-Case [here](https://github.com/Toaster996/softwareengineering/blob/master/DigitalJournal/src/test/resources/features/SignUp.feature) or on the screenshot below:
+
+![feature file Create Journal](https://github.com/Toaster996/softwareengineering/blob/master/DigitalJournal/src/test/resources/features/SignUp.png?raw=true)
+
+
 ### 2.1 Basic flow
 
 The basic flow of this usecase is that the user enters his credentials, the email address is valid and not already in use and the passwords match. He will then receive an email with a link he needs to click withing 24h. If he does this the account is successfully created.
