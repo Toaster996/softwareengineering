@@ -4,10 +4,10 @@
 <head>
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="css/font-awesome.min.css">
-    <link rel="stylesheet" href="css/bootstrap.css">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="res/css/journal.css">
+    <link rel="stylesheet" href="../../webapp/resources/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../../webapp/resources/css/bootstrap.css">
+    <link rel="stylesheet" href="../../webapp/resources/css/style.css">
+    <link rel="stylesheet" href="../../webapp/resources/res/css/journal.css">
     <title>DigitalJournal</title>
 </head>
 
@@ -81,10 +81,14 @@
 
                 </div>
 
+                <!--
+
+                -->
+
                 <div class="col-md-3">
-                    <img src="res/img/profile.jpg" alt="generic profile" class="img-thumbnail img-circles">
+                    <img src="../../webapp/resources/res/img/profile.jpg" alt="generic profile" class="img-thumbnail img-circles">
                     <hr>
-                    <button class="btn btn-primary btn-block journal_entry" data-toggle="modal" data-target=".bd-example-modal-lg">Create new Journal</button>
+                    <button class="btn btn-primary btn-block journal_entry" id="btn_newjournal" data-toggle="modal" data-target=".bd-example-modal-lg">Create new Journal</button>
 
 
                     <div class="card" style="width: 20rem;">
@@ -123,16 +127,16 @@
                     <div class="modal-body">
                         <form class="form-horizontal">
                             <div class="form-group">
-                                <label for="inputEmail3" class="control-label">Name</label>
+                                <label for="inputEmail3" id="txt_journalname" class="control-label">Name</label>
                                 <input type="email" class="form-control" id="inputEmail3" placeholder="Name">
                             </div>
                             <div class="form-group">
-                                <label for="inputPassword3" class="control-label">Description</label>
+                                <label for="inputPassword3" id="txt_journaldesc" class="control-label">Description</label>
                                 <textarea class="form-control" rows="3" placeholder="description"></textarea>
                             </div>
                             <div class="form-group">
                                 <div class="text-right">
-                                    <button type="submit" class="btn btn-primary">Save</button>
+                                    <button type="submit" id="btn_submitjournal" class="btn btn-primary">Save</button>
                                 </div>
                             </div>
                         </form>
@@ -189,9 +193,9 @@
         </div>
     </div>
 
-    <script src="js/jquery.min.js"></script>
-    <script src="js/popper.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
+    <script src="../../webapp/resources/js/jquery.min.js"></script>
+    <script src="../../webapp/resources/js/popper.min.js"></script>
+    <script src="../../webapp/resources/js/bootstrap.min.js"></script>
 </body>
 
 </html>

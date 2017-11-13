@@ -17,6 +17,7 @@
           <element id="library" level="project" name="Maven: org.springframework:spring-web:4.3.12.RELEASE" />
           <element id="library" level="project" name="Maven: javax.validation:validation-api:1.0.0.GA" />
           <element id="library" level="project" name="Maven: commons-io:commons-io:2.5" />
+          <element id="library" level="project" name="Maven: com.github.selenium-cucumber:selenium-cucumber-java:1.0.0" />
         </element>
       </element>
       <element id="directory" name="META-INF">

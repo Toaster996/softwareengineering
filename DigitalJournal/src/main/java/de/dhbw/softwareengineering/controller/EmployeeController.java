@@ -8,9 +8,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-
-
-
 import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
@@ -27,9 +24,9 @@ public class EmployeeController {
 
     @RequestMapping(value = "/addEmployee", method = RequestMethod.POST)
     public String submit(@Valid @ModelAttribute("employee") final Employee employee, final BindingResult result, final ModelMap model) {
-        if (result.hasErrors()) {
+        if (result.hasErrors())
             return "error";
-        }
+
 
         model.addAttribute("name", employee.getName());
         model.addAttribute("contractNumber", employee.getContractNumber());
