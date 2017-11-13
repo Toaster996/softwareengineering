@@ -13,6 +13,10 @@ This use case describes the creation of a new journal entry.
 
 ![AD_Create Journal](Activity_Diagram_Create_Journal.png)
 
+You can see the .feature file that describes this Use-Case [here](https://github.com/Toaster996/softwareengineering/blob/master/DigitalJournal/src/test/resources/features/CreateJournal.feature) or on the screenshot below:
+
+![feature file Create Journal](https://github.com/Toaster996/softwareengineering/blob/master/DigitalJournal/src/test/resources/features/CreateJournal.png?raw=true)
+
 ### 2.1 Basic flow
 
 The basic flow of this usecase is that a user enters a journal name and a journal description and does neither leave the name nor the description empty. Afterwards he will be redirected to his newly created journal.
