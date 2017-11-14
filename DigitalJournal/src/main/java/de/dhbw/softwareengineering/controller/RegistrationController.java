@@ -33,7 +33,7 @@ public class RegistrationController {
         model.addAttribute("password", user.getPassword());
         UserMap.put(user.getName(), user);
         System.out.println(user);
-        return "info"; //TODO info screen telling the user, that an email has been sended
+        return "info"; //TODO info screen telling the user, that an email has been sended.
 
     }
 }
