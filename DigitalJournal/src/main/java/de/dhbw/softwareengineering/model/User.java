@@ -5,8 +5,17 @@ public class User {
     private String email; //TODO to long
     private long regist_date;
     private String password;
+    private String passwordConfirm;
     //TODO: Pic, friends, ....
 
+
+    public String getPasswordConfirm() {
+        return passwordConfirm;
+    }
+
+    public void setPasswordConfirm(String passwordConfirm) {
+        this.passwordConfirm = passwordConfirm;
+    }
 
     public String getName() {
         return name;

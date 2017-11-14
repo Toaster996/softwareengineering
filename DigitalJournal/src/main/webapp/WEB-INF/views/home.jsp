@@ -21,14 +21,7 @@
     <link href="${fontCSS}" rel="stylesheet" />
 
 
-    <spring:url value="/resources/js/jquery.js" var="jQuery" />
-    <spring:url value="/resources/js/popper.min.js" var="popper" />
-    <spring:url value="/resources/js/bootstrap.min.js" var="bootstrap" />
-    <spring:url value="/resources/res/js/main.js" var="main" />
-    <script src="${jQuery}"></script>
-    <script src="${popper}"></script>
-    <script src="${bootstrap}"></script>
-    <script src="${main}"></script>
+
     <title>DigitalJournal</title>
 </head>
 
@@ -124,12 +117,14 @@
                                     <form:form method="POST" action="${pageContext.request.contextPath}/addUser"
                                                modelAttribute="user">
                                         <form>
-                                            <div class="form-group"><input class="form-control form-control-lg" type="text" placeholder="name" <form:input
+                                            <div class="form-group"><input class="form-control form-control-lg" type="text" placeholder="Name" <form:input
                                                     path="name"/></div>
-                                            <div class="form-group"><input class="form-control form-control-lg" type="email" placeholder="email" <form:input
+                                            <div class="form-group"><input class="form-control form-control-lg" type="email" placeholder="Email" <form:input
                                                     path="email"/></div>
-                                            <div class="form-group"><input class="form-control form-control-lg" type="text" placeholder="contractNumber"
+                                            <div class="form-group"><input class="form-control form-control-lg" type="password" placeholder="Password"
                                                 <form:input path="password"/></div>
+                                            <div class="form-group"><input class="form-control form-control-lg" type="password" placeholder="Password Confirm"
+                                                <form:input path="passwordConfirm"/></div>
                                             <input type="submit" value="Submit" class="btn btn-outline-light btn-block"/>
                                         </form>
 
@@ -382,6 +377,15 @@
 <script src="../../resources/js/popper.min.js"></script>
 <script src="../../resources/js/bootstrap.min.js"></script>
 <script src="../../resources/res/js/main.js"></script>  -->
+
+<spring:url value="/resources/js/jquery.js" var="jQuery" />
+<spring:url value="/resources/js/popper.min.js" var="popper" />
+<spring:url value="/resources/js/bootstrap.min.js" var="bootstrap" />
+<spring:url value="/resources/res/js/main.js" var="main" />
+<script src="${jQuery}"></script>
+<script src="${popper}"></script>
+<script src="${bootstrap}"></script>
+<script src="${main}"></script>
 
 </body>
 

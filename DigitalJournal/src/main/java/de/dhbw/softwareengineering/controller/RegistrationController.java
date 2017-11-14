@@ -18,7 +18,7 @@ import java.util.Map;
 public class RegistrationController {
     Map<String, User> UserMap = new HashMap<>();
 
-    @RequestMapping(value = "/index.html", method = RequestMethod.GET)
+    @RequestMapping(value = "/", method = RequestMethod.GET)
     public ModelAndView showForm() {
         return new ModelAndView("home", "user", new User());
     }
@@ -28,12 +28,13 @@ public class RegistrationController {
         if (result.hasErrors())
             return "error";
 
+        //TODO check the content of user, check if password equals passwordConfirm
         model.addAttribute("name", user.getName());
         model.addAttribute("email", user.getEmail());
         model.addAttribute("password", user.getPassword());
         UserMap.put(user.getName(), user);
         System.out.println(user);
-        return "info"; //TODO info screen telling the user, that an email has been sended.
+        return "info";
 
     }
 }
