@@ -14,5 +14,5 @@
     </bean>
 
     <mvc:resources mapping="/resources/**" location="resources/"
-                   cache-period="31556926"/>
+                   cache-period="3600"/>
 </beans>
