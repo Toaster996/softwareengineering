@@ -1,6 +1,7 @@
 package de.dhbw.softwareengineering.utilities;
 
 import java.io.File;
+import java.io.IOException;
 import java.sql.*;
 
 public class MySQL {
@@ -19,9 +20,9 @@ public class MySQL {
 
         FileConfiguration mysqlConfiguration = new FileConfiguration(new File("./confs/mysql.conf"));
 
-        mysqlConfiguration.setDefaultValue("user", "user");
-        mysqlConfiguration.setDefaultValue("database", "database");
-        mysqlConfiguration.setDefaultValue("password", "password");
+        mysqlConfiguration.setDefaultValue("user", "root");
+        mysqlConfiguration.setDefaultValue("database", "digital_journal");
+        mysqlConfiguration.setDefaultValue("password", "asdf");
         mysqlConfiguration.setDefaultValue("port", "3306");
         mysqlConfiguration.setDefaultValue("hostname", "localhost");
 
@@ -31,6 +32,11 @@ public class MySQL {
         this.port = mysqlConfiguration.getString("port");
         this.hostname = mysqlConfiguration.getString("hostname");
 
+        try {
+            mysqlConfiguration.save();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static MySQL getInstance(){

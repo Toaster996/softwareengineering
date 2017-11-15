@@ -47,11 +47,12 @@ public class RegistrationController {
 
         PreparedStatement preparedStatement;
         try {
-            preparedStatement = connection.prepareStatement("INSERT INTO 'users' ('username', 'email', 'password','registrationDate') VALUES(?,?,?,?);");
+            preparedStatement = connection.prepareStatement("INSERT INTO `users` (`username`, `email`, `password`, `registrationDate`, `verified`) VALUES(?,?,?,?,?);");
             preparedStatement.setString(1, user.getName());
             preparedStatement.setString(2, user.getEmail());
             preparedStatement.setString(3, bCryptPasswordEncoder.encode(user.getPassword()));
             preparedStatement.setLong(4, System.currentTimeMillis());
+            preparedStatement.setBoolean(5, false);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
