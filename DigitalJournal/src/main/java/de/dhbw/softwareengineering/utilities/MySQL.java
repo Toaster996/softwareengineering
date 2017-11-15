@@ -18,7 +18,7 @@ public class MySQL {
 
     private MySQL(){
 
-        FileConfiguration mysqlConfiguration = new FileConfiguration(new File("./confs/mysql.conf"));
+        FileConfiguration mysqlConfiguration = new FileConfiguration(new File("." + File.separator + "mysql.conf"));
 
         mysqlConfiguration.setDefaultValue("user", "root");
         mysqlConfiguration.setDefaultValue("database", "digital_journal");
