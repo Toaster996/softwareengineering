@@ -90,7 +90,7 @@
                         <div class="card bg-primary text-center card-form pb-4">
                             <div class="card-body">
                                 <h3>Welcome, ${name}! </h3>
-                                <p>We have sended you an email to your address ${email}. Please click on the link you can find there within 24 hours.</p>
+                                <p>We sent you an email to your address ${email}. Please click on the link you can find there within 24 hours.</p>
                                 </div>
                                 <input type="submit" value="Create your Journal!" href="#" class="btn btn-outline-light mr-3 ml-3">
                             </div>
