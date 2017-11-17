@@ -24,6 +24,7 @@ public class RegistrationController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ModelAndView showForm() {
+
         return new ModelAndView("home", "user", new User());
     }
 
@@ -31,6 +32,11 @@ public class RegistrationController {
     public String submit(@Valid @ModelAttribute("user") final User user, final BindingResult result, final ModelMap model) {
         if (result.hasErrors())
             return "error";
+
+        if(user.getName() == "" || user.getEmail() == "" || user.getPassword() == "")
+            model.addAttribute("status", "emptyform");
+        else
+            model.addAttribute("status", "sucreg");
 
         //TODO check the content of user, check if password equals passwordConfirm
         model.addAttribute("name", user.getName());
@@ -58,7 +64,7 @@ public class RegistrationController {
             e.printStackTrace();
         }
 
-        return "info";
+        return "home";
 
     }
 }
