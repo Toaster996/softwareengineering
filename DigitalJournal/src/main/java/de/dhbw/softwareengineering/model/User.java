@@ -2,7 +2,7 @@ package de.dhbw.softwareengineering.model;
 
 public class User {
     private String name;
-    private String email; //TODO to long
+    private String email;
     private long regist_date;
     private String password;
     private String passwordConfirm;

@@ -36,30 +36,7 @@
 </head>
 
 <body id="home">
-<nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
-    <div class="container">
-        <a href="../../resources/html2/index.html" class="navbar-brand">DigitalJournal</a>
-        <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a href="#home" class="nav-link">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#explore-head-section" class="nav-link">Explore</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#create-head-section" class="nav-link">Create</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#share-head-section" class="nav-link">Share</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
+<jsp:include page="navbar.jsp"/>
 
 <!-- HOME SECTION -->
 <header id="home-section">
@@ -164,22 +141,6 @@
                                 </form>
                             </div> -->
 
-
-                            <!-- <form>
-                               <div class="form-group">
-                                 <input type="text" id="txt_user" class="form-control form-control-lg" placeholder="Username">
-                               </div>
-                               <div class="form-group">
-                                 <input type="email" id="txt_email" class="form-control form-control-lg" placeholder="Email">
-                               </div>
-                               <div class="form-group">
-                                 <input type="password" id="txt_password" class="form-control form-control-lg" placeholder="Password">
-                               </div>
-                               <div class="form-group">
-                                 <input type="password" id="txt_pw_confirm" class="form-control form-control-lg" placeholder="Confirm Password">
-                               </div>
-                               <input type="submit" id="btn_register" value="Submit" class="btn btn-outline-light btn-block">
-                             </form> -->
                         </div>
                     </div>
                 </div>
@@ -189,92 +150,9 @@
     </div>
 </header>
 
-<c:choose>
-    <c:when test="${status =='useduser'}">
-        <!-- Modal -->
-        <div class="modal fade" id="useduser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-             aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content text-black">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Username has already been taken!</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        The username ${name} has already been taken. Please choose another one.
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <script>
-            $('#useduser').modal('show');
-        </script>
-    </c:when>
-    <c:when test="${status =='usedmail'}">
-        <!-- Modal -->
-        <div class="modal fade" id="usedmail" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-             aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content text-black">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Email Address has already been taken!</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        This Email Address ${email} has already been taken. Please choose another one or delete your old
-                        acount.
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <script>
-            $('#usedmail').modal('show');
-        </script>
-    </c:when>
-    <c:when test="${status =='emptyform'}">
-        <!-- Modal -->
-        <div class="modal fade" id="emptyform" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-             aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content text-black">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Empty Form</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        To register, you have to fill out this form entirely.
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <script>
-            $('#emptyform').modal('show');
-        </script>
-    </c:when>
-</c:choose>
 
-<!--Modal names
-  - mdl_sucreg
-  - mdl_useduser
-  - mdl_usedemail
+<jsp:include page="modals.jsp"/>
 
-  - alt_email
-  - alt_pw-->
 
 <!-- EXPLORE HEAD -->
 <section id="explore-head-section">
@@ -439,53 +317,9 @@
 </section>
 
 <!-- MAIN FOOTER -->
-<footer id="main-footer" class="bg-dark">
-    <div class="container">
-        <div class="row">
-            <div class="col text-center">
-                <div class="py-4">
-                    <h1 class="h3">DigitalJournal</h1>
-                    <p>Copyright &copy; 2017</p>
-                    <button class="btn btn-primary" data-toggle="modal" data-target="#contactModal">Contact Us</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</footer>
+<jsp:include page="footer.jsp"/>
 
-<!-- CONTACT MODAL -->
-<!--
-<div class="modal fade text-dark" id="contactModal">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="contactModalTitle">
-                    Contact Us
-                </h5>
-            </div>
-            <div class="modal-body">
-               <!-- <form>
-                    <div class="form-group">
-                        <label for="name">Name</label>
-                        <input type="text" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="message">Message</label>
-                        <textarea class="form-control"></textarea>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-primary btn-block">Submit</button>
-            </div>
-        </div>
-    </div>
-</div>
--->
+
 <!--
 <script src="../../resources/js/jquery.min.js"></script>
 <script src="../../resources/js/popper.min.js"></script>
