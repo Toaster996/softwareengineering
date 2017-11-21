@@ -16,22 +16,25 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.regex.Pattern;
 
 
 @Controller
 public class RegistrationController {
 
-    private final static String STATUS_ATTRIBUTE_NAME = "status";
-    private final static String STATUSCODE_PWMISSMATCH = "pwmissmatch";
-    private final static String STATUSCODE_USERNAMETOOLONG = "nametoolong";
-    private final static String STATUSCODE_EMAILTOOLONG = "emailtoolong";
-    private final static String STATUSCODE_EMPTYFORM = "emptyform";
-    private final static String STATUSCODE_SUCREG = "sucreg";
-    private final static String STATUSCODE_PWTOOSHORT = "pwtooshort";
-    private final static String STATUSCODE_PWTOOLONG = "pwtoolong";
-    private final static String STATUSCODE_EMAILINVALID = "emailinvalid";
-    private final static String STATUSCODE_EMAILALREADYINUSE = "usedemail";
+    private final static String STATUS_ATTRIBUTE_NAME           = "status";
+    private final static String STATUSCODE_PWMISSMATCH          = "pwmissmatch";
+    private final static String STATUSCODE_USERNAMETOOLONG      = "nametoolong";
+    private final static String STATUSCODE_EMAILTOOLONG         = "emailtoolong";
+    private final static String STATUSCODE_EMPTYFORM            = "emptyform";
+    private final static String STATUSCODE_SUCREG               = "sucreg";
+    private final static String STATUSCODE_PWTOOSHORT           = "pwtooshort";
+    private final static String STATUSCODE_PWTOOLONG            = "pwtoolong";
+    private final static String STATUSCODE_EMAILINVALID         = "emailinvalid";
+    private final static String STATUSCODE_EMAILALREADYINUSE    = "usedemail";
     private final static String STATUSCODE_USERNAMEALREADYINUSE = "useduser";
+
+    private final static Pattern emailPattern = Pattern.compile("(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])");
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ModelAndView showForm() {
@@ -52,15 +55,14 @@ public class RegistrationController {
             model.addAttribute(STATUS_ATTRIBUTE_NAME, STATUSCODE_USERNAMETOOLONG);
         } else if (user.getEmail().length() > 100) {
             model.addAttribute(STATUS_ATTRIBUTE_NAME, STATUSCODE_EMAILTOOLONG);
-        } else if (user.getEmail().matches("(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])")) {
-            model.addAttribute(STATUS_ATTRIBUTE_NAME, STATUSCODE_EMAILINVALID);
         } else if (user.getEmail().length() > 100) {
             model.addAttribute(STATUS_ATTRIBUTE_NAME, STATUSCODE_EMAILTOOLONG);
         } else if (user.getPassword().length() < 6) {
-
             model.addAttribute(STATUS_ATTRIBUTE_NAME, STATUSCODE_PWTOOSHORT);
         } else if (user.getPassword().length() > 42) {
             model.addAttribute(STATUS_ATTRIBUTE_NAME, STATUSCODE_PWTOOLONG);
+        } else if (emailPattern.matcher(user.getEmail()).matches()) {
+            model.addAttribute(STATUS_ATTRIBUTE_NAME, STATUSCODE_EMAILINVALID);
         } else {
 
             MySQL mySQL = MySQL.getInstance();
