@@ -31,14 +31,19 @@ public class RegistrationController {
     public String submit(@Valid @ModelAttribute("user") final User user, final BindingResult result, final ModelMap model) {
         if (result.hasErrors())
             return "error";
+        System.out.println("[RegistrationController]" + user);
+
+        if(user.getName() == "" || user.getEmail() == "" || user.getPassword() == "")
+            model.addAttribute("status", "emptyform");
+        else
+            model.addAttribute("status", "sucreg");
 
         //TODO check the content of user, check if password equals passwordConfirm
         model.addAttribute("name", user.getName());
         model.addAttribute("email", user.getEmail());
         model.addAttribute("password", user.getPassword());
         UserMap.put(user.getName(), user);
-        System.out.println(user);
-
+/*
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
         MySQL mySQL = MySQL.getInstance();
@@ -57,8 +62,8 @@ public class RegistrationController {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-        return "info";
+*/
+        return "home";
 
     }
 }

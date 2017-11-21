@@ -1,55 +1,42 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <html lang="en">
 
 <head>
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-   <!-- <link rel="stylesheet" href="../../resources/css/font-awesome.min.css">
-    <link rel="stylesheet" href="../../resources/css/style.css">
+    <!-- <link rel="stylesheet" href="../../resources/css/font-awesome.min.css">
+     <link rel="stylesheet" href="../../resources/css/style.css">
 
-    <link rel="stylesheet" href="../../resources/css/bootstrap.css">
-    <link rel="stylesheet" href="../../resources/css/style.css"> -->
-    <spring:url value="/resources/css/bootstrap.css" var="bootCSS" />
-    <spring:url value="/resources/css/style.css" var="styleCSS" />
-    <spring:url value="/resources/css/font-awesome.min.css" var="fontCSS" />
-    <link href="${styleCSS}" rel="stylesheet" />
-    <link href="${bootCSS}" rel="stylesheet" />
-    <link href="${styleCSS}" rel="stylesheet" />
-    <link href="${fontCSS}" rel="stylesheet" />
+     <link rel="stylesheet" href="../../resources/css/bootstrap.css">
+     <link rel="stylesheet" href="../../resources/css/style.css"> -->
+    <spring:url value="/resources/css/bootstrap.css" var="bootCSS"/>
+    <spring:url value="/resources/css/style.css" var="styleCSS"/>
+    <spring:url value="/resources/css/font-awesome.min.css" var="fontCSS"/>
+    <link href="${styleCSS}" rel="stylesheet"/>
+    <link href="${bootCSS}" rel="stylesheet"/>
+    <link href="${styleCSS}" rel="stylesheet"/>
+    <link href="${fontCSS}" rel="stylesheet"/>
 
+
+    <spring:url value="/resources/js/jquery.min.js" var="jQuery"/>
+    <spring:url value="/resources/js/popper.min.js" var="popper"/>
+    <spring:url value="/resources/js/bootstrap.min.js" var="bootstrap"/>
+    <spring:url value="/resources/res/js/main.js" var="main"/>
+    <script src="${jQuery}"></script>
+    <script src="${popper}"></script>
+    <script src="${bootstrap}"></script>
+    <script src="${main}"></script>
 
 
     <title>DigitalJournal</title>
 </head>
 
 <body id="home">
-<nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
-    <div class="container">
-        <a href="../../resources/html2/index.html" class="navbar-brand">DigitalJournal</a>
-        <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a href="#home" class="nav-link">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#explore-head-section" class="nav-link">Explore</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#create-head-section" class="nav-link">Create</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#share-head-section" class="nav-link">Share</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
+<jsp:include page="navbar.jsp"/>
 
 <!-- HOME SECTION -->
 <header id="home-section">
@@ -91,77 +78,81 @@
                     <div class="col-lg-4">
                         <div class="card bg-primary text-center card-form">
                             <div class="card-body">
-                                <!-- Login in
-                                <div id="login">
-                                    <h3>Log in</h3>
-                                    <p>Please fill out this form to start again.</p>
-                                    <form>
-                                        <div class="form-group">
-                                            <input type="text" class="form-control form-control-lg"
-                                                   placeholder="Username">
+                                <!--In here, we need to show different things, depending on the model -->
+                                <c:choose>
+                                    <c:when test="${status =='sucreg'}">
+                                        <h3>Welcome, ${name}! </h3>
+                                        <p>We send you an email to your address ${email}. Please click on the link you
+                                            can find there within 24 hours.</p>
+                                        <input type="submit" value="Create your Journal!" href="#"
+                                               class="btn btn-outline-light mr-3 ml-3">
+                                    </c:when>
+
+                                    <c:otherwise>
+                                        <!-- Register from -->
+                                        <div id="register">
+                                            <h3>Sign Up Today</h3>
+                                            <p>Please fill out this form to register</p>
+                                            <form:form method="POST" action="${pageContext.request.contextPath}/addUser"
+                                                       modelAttribute="user">
+                                                <form>
+                                                    <div class="form-group"><input class="form-control form-control-lg"
+                                                                                   type="text" placeholder="Name"
+                                                        <form:input
+                                                                path="name"/></div>
+                                                    <div class="form-group"><input class="form-control form-control-lg"
+                                                                                   type="email" placeholder="Email"
+                                                        <form:input
+                                                                path="email"/></div>
+                                                    <div class="form-group"><input class="form-control form-control-lg"
+                                                                                   type="password"
+                                                                                   placeholder="Password"
+                                                        <form:input path="password"/></div>
+                                                    <div class="form-group"><input class="form-control form-control-lg"
+                                                                                   type="password"
+                                                                                   placeholder="Password Confirm"
+                                                        <form:input path="passwordConfirm"/></div>
+                                                    <input type="submit" value="Submit"
+                                                           class="btn btn-outline-light btn-block"/>
+                                                </form>
+                                            </form:form>
                                         </div>
-                                        <div class="form-group">
-                                            <input type="password" class="form-control form-control-lg"
-                                                   placeholder="Password">
-                                        </div>
-                                        <input type="button" value="Sign Up" id="btn_log-in"
-                                               class="btn btn-outline-light btn-block">
-                                        <input type="submit" value="Submit" class="btn btn-outline-light btn-block">
-                                    </form>
-                                </div> -->
-
-                                <!-- Register from -->
-                                <div id="register">
-                                    <h3>Sign Up Today</h3>
-                                    <p>Please fill out this form to register</p>
-                                    <form:form method="POST" action="${pageContext.request.contextPath}/addUser"
-                                               modelAttribute="user">
-                                        <form>
-                                            <div class="form-group"><input class="form-control form-control-lg" type="text" placeholder="Name" <form:input
-                                                    path="name"/></div>
-                                            <div class="form-group"><input class="form-control form-control-lg" type="email" placeholder="Email" <form:input
-                                                    path="email"/></div>
-                                            <div class="form-group"><input class="form-control form-control-lg" type="password" placeholder="Password"
-                                                <form:input path="password"/></div>
-                                            <div class="form-group"><input class="form-control form-control-lg" type="password" placeholder="Password Confirm"
-                                                <form:input path="passwordConfirm"/></div>
-                                            <input type="submit" value="Submit" class="btn btn-outline-light btn-block"/>
-                                        </form>
-
-                                    </form:form>
-
-                                    <!-- <form>
-                                       <div class="form-group">
-                                         <input type="text" id="txt_user" class="form-control form-control-lg" placeholder="Username">
-                                       </div>
-                                       <div class="form-group">
-                                         <input type="email" id="txt_email" class="form-control form-control-lg" placeholder="Email">
-                                       </div>
-                                       <div class="form-group">
-                                         <input type="password" id="txt_password" class="form-control form-control-lg" placeholder="Password">
-                                       </div>
-                                       <div class="form-group">
-                                         <input type="password" id="txt_pw_confirm" class="form-control form-control-lg" placeholder="Confirm Password">
-                                       </div>
-                                       <input type="submit" id="btn_register" value="Submit" class="btn btn-outline-light btn-block">
-                                     </form> -->
-                                </div>
+                                    </c:otherwise>
+                                </c:choose>
                             </div>
+
+
+                            <!-- Login in
+                            <div id="login">
+                                <h3>Log in</h3>
+                                <p>Please fill out this form to start again.</p>
+                                <form>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control form-control-lg"
+                                               placeholder="Username">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="password" class="form-control form-control-lg"
+                                               placeholder="Password">
+                                    </div>
+                                    <input type="button" value="Sign Up" id="btn_log-in"
+                                           class="btn btn-outline-light btn-block">
+                                    <input type="submit" value="Submit" class="btn btn-outline-light btn-block">
+                                </form>
+                            </div> -->
+
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    </div>
 </header>
 
-<!--Modal names
-  - mdl_sucreg
-  - mdl_useduser
-  - mdl_usedemail
 
-  - alt_email
-  - alt_pw-->
+<jsp:include page="modals.jsp"/>
+
 
 <!-- EXPLORE HEAD -->
 <section id="explore-head-section">
@@ -326,51 +317,8 @@
 </section>
 
 <!-- MAIN FOOTER -->
-<footer id="main-footer" class="bg-dark">
-    <div class="container">
-        <div class="row">
-            <div class="col text-center">
-                <div class="py-4">
-                    <h1 class="h3">DigitalJournal</h1>
-                    <p>Copyright &copy; 2017</p>
-                    <button class="btn btn-primary" data-toggle="modal" data-target="#contactModal">Contact Us</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</footer>
+<jsp:include page="footer.jsp"/>
 
-<!-- CONTACT MODAL -->
-<div class="modal fade text-dark" id="contactModal">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="contactModalTitle">
-                    Contact Us
-                </h5>
-            </div>
-            <div class="modal-body">
-               <!-- <form>
-                    <div class="form-group">
-                        <label for="name">Name</label>
-                        <input type="text" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="message">Message</label>
-                        <textarea class="form-control"></textarea>
-                    </div>
-                </form> -->
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-primary btn-block">Submit</button>
-            </div>
-        </div>
-    </div>
-</div>
 
 <!--
 <script src="../../resources/js/jquery.min.js"></script>
@@ -378,14 +326,6 @@
 <script src="../../resources/js/bootstrap.min.js"></script>
 <script src="../../resources/res/js/main.js"></script>  -->
 
-<spring:url value="/resources/js/jquery.js" var="jQuery" />
-<spring:url value="/resources/js/popper.min.js" var="popper" />
-<spring:url value="/resources/js/bootstrap.min.js" var="bootstrap" />
-<spring:url value="/resources/res/js/main.js" var="main" />
-<script src="${jQuery}"></script>
-<script src="${popper}"></script>
-<script src="${bootstrap}"></script>
-<script src="${main}"></script>
 
 </body>
 
