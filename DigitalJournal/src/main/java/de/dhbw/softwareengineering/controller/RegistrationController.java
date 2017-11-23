@@ -63,9 +63,10 @@ public class RegistrationController {
             model.addAttribute(STATUS_ATTRIBUTE_NAME, STATUSCODE_PWTOOSHORT);
         } else if (user.getPassword().length() > 42) {
             model.addAttribute(STATUS_ATTRIBUTE_NAME, STATUSCODE_PWTOOLONG);
-        } else if (emailPattern.matcher(user.getEmail()).matches()) {
+        } else if (!emailPattern.matcher(user.getEmail()).matches()) {
             model.addAttribute(STATUS_ATTRIBUTE_NAME, STATUSCODE_EMAILINVALID);
-        } else {/*
+        } else {
+            //model.addAttribute(STATUS_ATTRIBUTE_NAME, STATUSCODE_SUCREG);
 
             MySQL mySQL = MySQL.getInstance();
 
@@ -132,9 +133,9 @@ public class RegistrationController {
                 preparedStatement.executeUpdate();
             } catch (SQLException e) {
                 e.printStackTrace();
-            } */
+            }
         }
-
+        System.out.println(model.get("[RegistrationController] " + STATUS_ATTRIBUTE_NAME));
         return "home";
 
     }

@@ -114,7 +114,6 @@
                                                 </script>
                                             </c:when>
                                         </c:choose>
-
                                         <!-- Register from -->
                                         <div id="register">
                                             <h3>Sign Up Today</h3>
@@ -140,8 +139,8 @@
                                                         <form:input path="passwordConfirm"/></div>
                                                     <input type="submit" value="Submit"
                                                            class="btn btn-outline-light btn-block"/>
+                                                    <!--Alerts -->
                                                     <jsp:include page="Forms/alerts.jsp"/>
-
                                                 </form>
                                             </form:form>
                                         </div>
