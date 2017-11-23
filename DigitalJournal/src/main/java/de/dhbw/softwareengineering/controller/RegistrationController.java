@@ -4,6 +4,7 @@ import de.dhbw.softwareengineering.model.User;
 import de.dhbw.softwareengineering.utilities.MySQL;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -37,8 +38,11 @@ public class RegistrationController {
     private final static Pattern emailPattern = Pattern.compile("(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])");
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public ModelAndView showForm() {
-        return new ModelAndView("home", "user", new User());
+    public String showForm(Model m) {
+        m.addAttribute(STATUS_ATTRIBUTE_NAME, "new");
+        m.addAttribute(new User());
+        return "home";
+     //   return new ModelAndView("home", "user", new User());
     }
 
     @RequestMapping(value = "/addUser", method = RequestMethod.POST)
@@ -49,12 +53,10 @@ public class RegistrationController {
 
         if (user.getName().equals("") || user.getEmail().equals("") || user.getPassword().equals("") || user.getPasswordConfirm().equals("")) {
             model.addAttribute(STATUS_ATTRIBUTE_NAME, STATUSCODE_EMPTYFORM);
-        } else if (user.getPassword().equals(user.getPasswordConfirm())) {
+        } else if (!user.getPassword().equals(user.getPasswordConfirm())) {
             model.addAttribute(STATUS_ATTRIBUTE_NAME, STATUSCODE_PWMISSMATCH);
         } else if (user.getName().length() > 20) {
             model.addAttribute(STATUS_ATTRIBUTE_NAME, STATUSCODE_USERNAMETOOLONG);
-        } else if (user.getEmail().length() > 100) {
-            model.addAttribute(STATUS_ATTRIBUTE_NAME, STATUSCODE_EMAILTOOLONG);
         } else if (user.getEmail().length() > 100) {
             model.addAttribute(STATUS_ATTRIBUTE_NAME, STATUSCODE_EMAILTOOLONG);
         } else if (user.getPassword().length() < 6) {
@@ -63,7 +65,7 @@ public class RegistrationController {
             model.addAttribute(STATUS_ATTRIBUTE_NAME, STATUSCODE_PWTOOLONG);
         } else if (emailPattern.matcher(user.getEmail()).matches()) {
             model.addAttribute(STATUS_ATTRIBUTE_NAME, STATUSCODE_EMAILINVALID);
-        } else {
+        } else {/*
 
             MySQL mySQL = MySQL.getInstance();
 
@@ -130,7 +132,7 @@ public class RegistrationController {
                 preparedStatement.executeUpdate();
             } catch (SQLException e) {
                 e.printStackTrace();
-            }
+            } */
         }
 
         return "home";

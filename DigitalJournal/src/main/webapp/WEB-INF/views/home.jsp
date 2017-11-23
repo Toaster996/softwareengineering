@@ -52,8 +52,7 @@
                                 <i class="fa fa-check"></i>
                             </div>
                             <div class="p-4 align-self-end">
-                                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Incidunt, quaerat cupiditate
-                                quia voluptate voluptatum repellendus?
+                                Create your own journal to keep memories forever. E
                             </div>
                         </div>
                         <div class="d-flex flex-row">
@@ -61,8 +60,7 @@
                                 <i class="fa fa-check"></i>
                             </div>
                             <div class="p-4 align-self-end">
-                                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Incidunt, quaerat cupiditate
-                                quia voluptate voluptatum repellendus?
+                                Share your
                             </div>
                         </div>
                         <div class="d-flex flex-row">
@@ -77,6 +75,7 @@
                     </div>
                     <div class="col-lg-4">
                         <div class="card bg-primary text-center card-form">
+                            <!-- !!!! Card inner !!! -->
                             <div class="card-body">
                                 <!--In here, we need to show different things, depending on the model -->
                                 <c:choose>
@@ -87,8 +86,35 @@
                                         <input type="submit" value="Create your Journal!" href="#"
                                                class="btn btn-outline-light mr-3 ml-3">
                                     </c:when>
+                                    <c:otherwise> <!--In the otherwise case, we have to show forms-->
+                                        <c:choose>
+                                            <c:when test="${status == 'new'}">
+                                                <div id="login">
+                                                    <h3>Log in</h3>
+                                                    <p>Please fill out this form to start again.</p>
+                                                    <form>
+                                                        <div class="form-group">
+                                                            <input type="text" class="form-control form-control-lg"
+                                                                   placeholder="Username">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <input type="password" class="form-control form-control-lg"
+                                                                   placeholder="Password">
+                                                        </div>
+                                                        <input type="button" value="Sign Up" id="btn_log-in"
+                                                               class="btn btn-outline-light btn-block">
+                                                        <input type="submit" value="Submit"
+                                                               class="btn btn-outline-light btn-block">
+                                                    </form>
+                                                </div>
+                                                <script>
+                                                    $(function () {
+                                                        $('#register').hide();
+                                                    });
+                                                </script>
+                                            </c:when>
+                                        </c:choose>
 
-                                    <c:otherwise>
                                         <!-- Register from -->
                                         <div id="register">
                                             <h3>Sign Up Today</h3>
@@ -114,33 +140,17 @@
                                                         <form:input path="passwordConfirm"/></div>
                                                     <input type="submit" value="Submit"
                                                            class="btn btn-outline-light btn-block"/>
+                                                    <jsp:include page="Forms/alerts.jsp"/>
+
                                                 </form>
                                             </form:form>
                                         </div>
+
                                     </c:otherwise>
                                 </c:choose>
+
+
                             </div>
-
-
-                            <!-- Login in
-                            <div id="login">
-                                <h3>Log in</h3>
-                                <p>Please fill out this form to start again.</p>
-                                <form>
-                                    <div class="form-group">
-                                        <input type="text" class="form-control form-control-lg"
-                                               placeholder="Username">
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="password" class="form-control form-control-lg"
-                                               placeholder="Password">
-                                    </div>
-                                    <input type="button" value="Sign Up" id="btn_log-in"
-                                           class="btn btn-outline-light btn-block">
-                                    <input type="submit" value="Submit" class="btn btn-outline-light btn-block">
-                                </form>
-                            </div> -->
-
                         </div>
                     </div>
                 </div>
@@ -151,7 +161,7 @@
 </header>
 
 
-<jsp:include page="modals.jsp"/>
+<jsp:include page="Forms/modals.jsp"/>
 
 
 <!-- EXPLORE HEAD -->
