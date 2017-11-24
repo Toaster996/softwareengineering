@@ -52,7 +52,7 @@
                                 <i class="fa fa-check"></i>
                             </div>
                             <div class="p-4 align-self-end">
-                                Create your own journal to keep memories forever. E
+                                Create your own journal to keep memories forever for yourself. You can trust our encryption.
                             </div>
                         </div>
                         <div class="d-flex flex-row">
@@ -60,7 +60,7 @@
                                 <i class="fa fa-check"></i>
                             </div>
                             <div class="p-4 align-self-end">
-                                Share your
+                                Share your memories not with everyone, but with your best friends.
                             </div>
                         </div>
                         <div class="d-flex flex-row">
@@ -81,7 +81,7 @@
                                 <c:choose>
                                     <c:when test="${status =='sucreg'}">
                                         <h3>Welcome, ${name}! </h3>
-                                        <p>We send you an email to your address ${email}. Please click on the link you
+                                        <p>We sent you an email to your address ${email}. Please click on the link you
                                             can find there within 24 hours.</p>
                                         <input type="submit" value="Create your Journal!" href="#"
                                                class="btn btn-outline-light mr-3 ml-3">

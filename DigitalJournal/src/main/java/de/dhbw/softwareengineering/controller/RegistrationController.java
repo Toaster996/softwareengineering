@@ -66,8 +66,8 @@ public class RegistrationController {
         } else if (!emailPattern.matcher(user.getEmail()).matches()) {
             model.addAttribute(STATUS_ATTRIBUTE_NAME, STATUSCODE_EMAILINVALID);
         } else {
-            //model.addAttribute(STATUS_ATTRIBUTE_NAME, STATUSCODE_SUCREG);
-
+            model.addAttribute(STATUS_ATTRIBUTE_NAME, STATUSCODE_SUCREG);
+    /*
             MySQL mySQL = MySQL.getInstance();
 
             Connection connection = mySQL.getConnection();
@@ -133,9 +133,9 @@ public class RegistrationController {
                 preparedStatement.executeUpdate();
             } catch (SQLException e) {
                 e.printStackTrace();
-            }
+            } */
         }
-        System.out.println(model.get("[RegistrationController] " + STATUS_ATTRIBUTE_NAME));
+        System.out.println("[RegistrationController] " + model.get(STATUS_ATTRIBUTE_NAME));
         return "home";
 
     }
