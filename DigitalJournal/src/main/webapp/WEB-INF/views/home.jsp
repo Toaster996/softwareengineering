@@ -91,20 +91,21 @@
                                             <c:when test="${status == 'new'}">
                                                 <div id="login">
                                                     <h3>Log in</h3>
-                                                    <p>Please fill out this form to start again.</p>
-                                                    <form>
+                                                    <p>Please fill out this form to log in.</p>
+                                                    <form action="login" method="POST">
                                                         <div class="form-group">
-                                                            <input type="text" class="form-control form-control-lg"
+                                                            <input type="text" name="username" class="form-control form-control-lg"
                                                                    placeholder="Username">
                                                         </div>
                                                         <div class="form-group">
-                                                            <input type="password" class="form-control form-control-lg"
+                                                            <input type="password" name="password" class="form-control form-control-lg"
                                                                    placeholder="Password">
                                                         </div>
                                                         <input type="button" value="Sign Up" id="btn_log-in"
                                                                class="btn btn-outline-light btn-block">
-                                                        <input type="submit" value="Submit"
+                                                        <input type="submit" value="Log In"
                                                                class="btn btn-outline-light btn-block">
+                                                        <jsp:include page="Forms/alerts.jsp"/>
                                                     </form>
                                                 </div>
                                                 <script>

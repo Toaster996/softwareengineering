@@ -19,4 +19,8 @@ public class LoginUser {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public String toString(){
+        return String.format( "LoginUser {\n\tname = %s \n\tpassword = %s\n}", name, password);
+    }
 }

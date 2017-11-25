@@ -42,4 +42,11 @@
             <strong>Name too long!</strong> Password length mustn't be longer than 20 chars.
         </div>
     </c:when>
+    <c:when test="${loginError =='invalidCredentials'}">
+        <hr>
+        <div class="alert alert-danger alert-dismissable">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <strong>Invalid Credentials!</strong> Please make sure the entered credentials are correct.
+        </div>
+    </c:when>
 </c:choose>

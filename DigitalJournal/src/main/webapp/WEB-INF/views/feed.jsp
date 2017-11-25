@@ -94,6 +94,9 @@
                         data-target=".bd-example-modal-lg">Create new Journal
                 </button>
 
+                <form action="/logout">
+                    <input type="submit" value="Log Out" class="btn btn-primary btn-block journal_entry" >
+                </form>
 
                 <div class="card" style="width: 20rem;">
                     <!-- <img class="card-img-top" src="res/img/generic_friends.jpg" alt="Card image cap"> -->
