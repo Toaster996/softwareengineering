@@ -118,8 +118,7 @@
                                         <div id="register">
                                             <h3>Sign Up Today</h3>
                                             <p>Please fill out this form to register</p>
-                                            <form:form method="POST" action="${pageContext.request.contextPath}/addUser"
-                                                       modelAttribute="user">
+                                            <form:form method="POST" action="${pageContext.request.contextPath}/addUser" modelAttribute="user">
                                                 <form>
                                                     <div class="form-group"><input class="form-control form-control-lg"
                                                                                    type="text" placeholder="Name"
@@ -144,11 +143,8 @@
                                                 </form>
                                             </form:form>
                                         </div>
-
                                     </c:otherwise>
                                 </c:choose>
-
-
                             </div>
                         </div>
                     </div>
