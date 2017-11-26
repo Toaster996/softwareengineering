@@ -92,21 +92,21 @@
                                                 <div id="login">
                                                     <h3>Log in</h3>
                                                     <p>Please fill out this form to log in.</p>
-                                                    <form action="login" method="POST">
+                                                    <form:form action="${pageContext.request.contextPath}/login" method="POST" modelAttribute="loginUser">
                                                         <div class="form-group">
-                                                            <input type="text" name="username" class="form-control form-control-lg"
-                                                                   placeholder="Username">
+                                                            <input type="text" name="loginName" class="form-control form-control-lg"
+                                                                   placeholder="Username" <form:input path="loginName"/>
                                                         </div>
                                                         <div class="form-group">
-                                                            <input type="password" name="password" class="form-control form-control-lg"
-                                                                   placeholder="Password">
+                                                            <input type="password" name="loginPassword" class="form-control form-control-lg"
+                                                                   placeholder="Password" <form:input path="loginPassword"/>
                                                         </div>
                                                         <input type="button" value="Sign Up" id="btn_log-in"
                                                                class="btn btn-outline-light btn-block">
                                                         <input type="submit" value="Log In"
                                                                class="btn btn-outline-light btn-block">
                                                         <jsp:include page="Forms/alerts.jsp"/>
-                                                    </form>
+                                                    </form:form>
                                                 </div>
                                                 <script>
                                                     $(function () {

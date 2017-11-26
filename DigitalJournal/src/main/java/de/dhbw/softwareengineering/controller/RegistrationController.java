@@ -1,5 +1,6 @@
 package de.dhbw.softwareengineering.controller;
 
+import de.dhbw.softwareengineering.model.LoginUser;
 import de.dhbw.softwareengineering.model.User;
 import de.dhbw.softwareengineering.utilities.MySQL;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -31,6 +32,7 @@ public class RegistrationController {
     public String showForm(Model m) {
         m.addAttribute(Constants.STATUS_ATTRIBUTE_NAME, "new");
         m.addAttribute(new User());
+        m.addAttribute(new LoginUser());
         return "home";
      //   return new ModelAndView("home", "user", new User());
     }
@@ -71,7 +73,7 @@ public class RegistrationController {
 
             try {
                 preparedStatementUsername = connection.prepareStatement("SELECT COUNT(*) AS count FROM `user` WHERE username = ?");
-                preparedStatementUsername.setString(1, user.getName());
+                preparedStatementUsername.setString(1, user.getLoginName());
                 resultSetUsername = preparedStatementUsername.executeQuery();
 
                 resultSetUsername.next();
@@ -80,7 +82,7 @@ public class RegistrationController {
                 }
 
                 preparedStatementEmail = connection.prepareStatement("SELECT COUNT(*) AS count FROM `user` WHERE email = ?");
-                preparedStatementEmail.setString(1, user.getName());
+                preparedStatementEmail.setString(1, user.getLoginName());
                 resultSetEmail = preparedStatementUsername.executeQuery();
 
                 resultSetEmail.next();
@@ -103,7 +105,7 @@ public class RegistrationController {
         if (!model.containsAttribute(STATUS_ATTRIBUTE_NAME)) {
 
             model.addAttribute(Constants.STATUS_ATTRIBUTE_NAME, Constants.STATUSCODE_SUCREG);
-            model.addAttribute("name", user.getName());
+            model.addAttribute("name", user.getLoginName());
             model.addAttribute("email", user.getEmail());
 
             BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
@@ -115,7 +117,7 @@ public class RegistrationController {
             PreparedStatement preparedStatement;
             try {
                 preparedStatement = connection.prepareStatement("INSERT INTO `users` (`username`, `email`, `password`, `registrationDate`, `verified`) VALUES(?,?,?,?,?);");
-                preparedStatement.setString(1, user.getName());
+                preparedStatement.setString(1, user.getLoginName());
                 preparedStatement.setString(2, user.getEmail());
                 preparedStatement.setString(3, bCryptPasswordEncoder.encode(user.getPassword()));
                 preparedStatement.setLong(4, System.currentTimeMillis());

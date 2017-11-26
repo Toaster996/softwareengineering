@@ -1,12 +1,15 @@
 package de.dhbw.softwareengineering.controller;
 
+import de.dhbw.softwareengineering.model.LoginUser;
 import de.dhbw.softwareengineering.model.User;
+import de.dhbw.softwareengineering.utilities.Constants;
 import de.dhbw.softwareengineering.utilities.MySQL;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,6 +18,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -33,8 +37,10 @@ public class LoginController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public String verifyLogin(@RequestParam String username, @RequestParam String password, HttpSession session, ModelMap model) {
-        User user = loginUser(username, password);
+    public String verifyLogin(@Valid @ModelAttribute("loginUser") final LoginUser loginUser, HttpSession session, ModelMap model) {
+        System.out.println(loginUser);
+
+        User user = loginUser(loginUser.getLoginName(), loginUser.getLoginPassword());
 
         if(user == null){
             model.addAttribute("loginError","invalidCredentials");
@@ -52,8 +58,9 @@ public class LoginController {
     }
 
     private String toHomepage(ModelMap model) {
-        model.addAttribute("status","new");
+        model.addAttribute(Constants.STATUS_ATTRIBUTE_NAME, "new");
         model.addAttribute(new User());
+        model.addAttribute(new LoginUser());
         return "home";
     }
 
