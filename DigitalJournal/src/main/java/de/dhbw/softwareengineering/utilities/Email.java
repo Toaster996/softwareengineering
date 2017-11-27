@@ -1,5 +1,6 @@
 package de.dhbw.softwareengineering.utilities;
 
+import java.io.File;
 import java.util.Date;
 import java.util.Properties;
 
@@ -13,19 +14,42 @@ import javax.mail.internet.MimeMessage;
 
 public class Email {
 
+    private static Email instance;
+
+    private final String host;
+    private final int port;
+    private final String simpleName;
+    private final String accountName;
+    private final String password;
+
+    private Email(){
+        FileConfiguration emailConfiguration = new FileConfiguration(new File("." + File.separator + "conf" + File.separator + "email.conf"));
+
+        this.host           = emailConfiguration.getString("host");
+        this.port           = emailConfiguration.getInt("port");
+        this.simpleName     = emailConfiguration.getString("simpleName");
+        this.accountName    = emailConfiguration.getString("accountName");
+        this.password       = emailConfiguration.getString("password");
+    }
+
+
+    public static Email getInstance(){
+        if(instance == null){
+            instance = new Email();
+        }
+
+        return instance;
+    }
+
+
     /**
      * Utility method to send simple HTML email via SSL SMTP
      *
-     * @param host the smtp host (e.g. smtp.gmail.com)
-     * @param port the smtp port (e.g. 465)
-     * @param simpleName the simple name of the email address (e.g. email: max.mustermann@abc.com --> simpleName: Max Mustermann)
-     * @param accountName the email address you want to authenticate with
-     * @param password the password for the authentication
      * @param recipients who should get the message
      * @param subject the subject of the mail
      * @param body the body of the mail (HTML is possible)
      */
-    public static void sendEmailSSL(String host, int port, String simpleName, final String accountName, final String password, String[] recipients, String subject, String body) {
+    public void sendEmailSSL(String[] recipients, String subject, String body) {
         Properties props = new Properties();
         props.put("mail.smtp.host", host); 				    // SMTP Host
         props.put("mail.smtp.socketFactory.port", port); 	// SSL Port

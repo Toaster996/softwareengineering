@@ -1,6 +1,8 @@
 package de.dhbw.softwareengineering.controller;
 
 import de.dhbw.softwareengineering.model.User;
+import de.dhbw.softwareengineering.utilities.Email;
+import de.dhbw.softwareengineering.utilities.GeneralConfiguration;
 import de.dhbw.softwareengineering.utilities.MySQL;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -13,10 +15,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.io.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.UUID;
 import java.util.regex.Pattern;
 
 
@@ -34,8 +38,12 @@ public class RegistrationController {
     private final static String STATUSCODE_EMAILINVALID         = "emailinvalid";
     private final static String STATUSCODE_EMAILALREADYINUSE    = "usedemail";
     private final static String STATUSCODE_USERNAMEALREADYINUSE = "useduser";
+    private final static String STATUSCODE_ALPHANUMERIC         = "alphanumeric";
 
     private final static Pattern emailPattern = Pattern.compile("(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])");
+    private final static Pattern usernamePattern = Pattern.compile("[a-zA-Z0-9]+");
+
+    private static String emailBody;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String showForm(Model m) {
@@ -57,6 +65,8 @@ public class RegistrationController {
             model.addAttribute(STATUS_ATTRIBUTE_NAME, STATUSCODE_PWMISSMATCH);
         } else if (user.getName().length() > 20) {
             model.addAttribute(STATUS_ATTRIBUTE_NAME, STATUSCODE_USERNAMETOOLONG);
+        } else if(!usernamePattern.matcher(user.getName()).matches()) {
+            model.addAttribute(STATUS_ATTRIBUTE_NAME, STATUSCODE_ALPHANUMERIC);
         } else if (user.getEmail().length() > 100) {
             model.addAttribute(STATUS_ATTRIBUTE_NAME, STATUSCODE_EMAILTOOLONG);
         } else if (user.getPassword().length() < 6) {
@@ -67,7 +77,7 @@ public class RegistrationController {
             model.addAttribute(STATUS_ATTRIBUTE_NAME, STATUSCODE_EMAILINVALID);
         } else {
             model.addAttribute(STATUS_ATTRIBUTE_NAME, STATUSCODE_SUCREG);
-    /*
+
             MySQL mySQL = MySQL.getInstance();
 
             Connection connection = mySQL.getConnection();
@@ -123,6 +133,7 @@ public class RegistrationController {
             Connection connection = mySQL.getConnection();
 
             PreparedStatement preparedStatement;
+            PreparedStatement preparedStatementRegistration;
             try {
                 preparedStatement = connection.prepareStatement("INSERT INTO `users` (`username`, `email`, `password`, `registrationDate`, `verified`) VALUES(?,?,?,?,?);");
                 preparedStatement.setString(1, user.getName());
@@ -131,12 +142,39 @@ public class RegistrationController {
                 preparedStatement.setLong(4, System.currentTimeMillis());
                 preparedStatement.setBoolean(5, false);
                 preparedStatement.executeUpdate();
+
+                String uuid = UUID.randomUUID().toString();
+
+                preparedStatementRegistration = connection.prepareStatement("INSERT INTO `registration_request` (`username`, `registration_uuid`) VALUES (?,?)");
+                preparedStatementRegistration.setString(1, user.getName());
+                preparedStatementRegistration.setString(2, uuid);
+
+                String url = "https://" + GeneralConfiguration.getInstance().getString("domain") + "/confirmEmail?uuid=" + uuid;
+
+                String[] recipients = {user.getEmail()};
+                Email.getInstance().sendEmailSSL(recipients, "DigitalJournal: Confirm your email", getEmailBody(url, user.getName()));
             } catch (SQLException e) {
                 e.printStackTrace();
-            } */
+            }
         }
         System.out.println("[RegistrationController] " + model.get(STATUS_ATTRIBUTE_NAME));
         return "home";
 
+    }
+
+    private String getEmailBody(String url, String username){
+        if(emailBody == null){
+            try (BufferedReader reader = new BufferedReader(new FileReader("." + File.separator + "emailTemplate.html"))){
+                StringBuilder builder = new StringBuilder();
+                while (reader.ready()){
+                    builder.append(reader.readLine());
+                }
+                emailBody = builder.toString();
+            } catch (IOException e){
+                e.printStackTrace();
+            }
+        }
+
+        return emailBody.replace("{$username}", username).replace("{$link}", url);
     }
 }

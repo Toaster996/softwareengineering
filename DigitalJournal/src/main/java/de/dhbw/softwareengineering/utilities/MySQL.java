@@ -18,13 +18,7 @@ public class MySQL {
 
     private MySQL(){
 
-        FileConfiguration mysqlConfiguration = new FileConfiguration(new File("." + File.separator + "mysql.conf"));
-
-        mysqlConfiguration.setDefaultValue("user", "root");
-        mysqlConfiguration.setDefaultValue("database", "digital_journal");
-        mysqlConfiguration.setDefaultValue("password", "asdf");
-        mysqlConfiguration.setDefaultValue("port", "3306");
-        mysqlConfiguration.setDefaultValue("hostname", "localhost");
+        FileConfiguration mysqlConfiguration = new FileConfiguration(new File("." + File.separator + "conf" + File.separator + "mysql.conf"));
 
         this.user = mysqlConfiguration.getString("user");
         this.database = mysqlConfiguration.getString("database");
@@ -32,11 +26,6 @@ public class MySQL {
         this.port = mysqlConfiguration.getString("port");
         this.hostname = mysqlConfiguration.getString("hostname");
 
-        try {
-            mysqlConfiguration.save();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     public static MySQL getInstance(){
