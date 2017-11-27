@@ -1,5 +1,6 @@
 package de.dhbw.softwareengineering.controller;
 
+import de.dhbw.softwareengineering.model.LoginUser;
 import de.dhbw.softwareengineering.model.User;
 import de.dhbw.softwareengineering.utilities.Email;
 import de.dhbw.softwareengineering.utilities.GeneralConfiguration;
@@ -22,6 +23,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
 import java.util.regex.Pattern;
+import de.dhbw.softwareengineering.utilities.Constants;
 
 
 @Controller
@@ -47,8 +49,9 @@ public class RegistrationController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String showForm(Model m) {
-        m.addAttribute(STATUS_ATTRIBUTE_NAME, "new");
+        m.addAttribute(Constants.STATUS_ATTRIBUTE_NAME, "new");
         m.addAttribute(new User());
+        m.addAttribute(new LoginUser());
         return "home";
      //   return new ModelAndView("home", "user", new User());
     }
@@ -60,23 +63,26 @@ public class RegistrationController {
         System.out.println("[RegistrationController] " + user);
 
         if (user.getName().equals("") || user.getEmail().equals("") || user.getPassword().equals("") || user.getPasswordConfirm().equals("")) {
-            model.addAttribute(STATUS_ATTRIBUTE_NAME, STATUSCODE_EMPTYFORM);
+            model.addAttribute(Constants.STATUS_ATTRIBUTE_NAME, Constants.STATUSCODE_EMPTYFORM);
         } else if (!user.getPassword().equals(user.getPasswordConfirm())) {
-            model.addAttribute(STATUS_ATTRIBUTE_NAME, STATUSCODE_PWMISSMATCH);
+            model.addAttribute(Constants.STATUS_ATTRIBUTE_NAME, Constants.STATUSCODE_PWMISSMATCH);
         } else if (user.getName().length() > 20) {
+            model.addAttribute(Constants.STATUS_ATTRIBUTE_NAME, Constants.STATUSCODE_USERNAMETOOLONG);
             model.addAttribute(STATUS_ATTRIBUTE_NAME, STATUSCODE_USERNAMETOOLONG);
         } else if(!usernamePattern.matcher(user.getName()).matches()) {
             model.addAttribute(STATUS_ATTRIBUTE_NAME, STATUSCODE_ALPHANUMERIC);
         } else if (user.getEmail().length() > 100) {
-            model.addAttribute(STATUS_ATTRIBUTE_NAME, STATUSCODE_EMAILTOOLONG);
+            model.addAttribute(Constants.STATUS_ATTRIBUTE_NAME, Constants.STATUSCODE_EMAILTOOLONG);
         } else if (user.getPassword().length() < 6) {
-            model.addAttribute(STATUS_ATTRIBUTE_NAME, STATUSCODE_PWTOOSHORT);
+            model.addAttribute(Constants.STATUS_ATTRIBUTE_NAME, Constants.STATUSCODE_PWTOOSHORT);
         } else if (user.getPassword().length() > 42) {
-            model.addAttribute(STATUS_ATTRIBUTE_NAME, STATUSCODE_PWTOOLONG);
+            model.addAttribute(Constants.STATUS_ATTRIBUTE_NAME, Constants.STATUSCODE_PWTOOLONG);
         } else if (!emailPattern.matcher(user.getEmail()).matches()) {
-            model.addAttribute(STATUS_ATTRIBUTE_NAME, STATUSCODE_EMAILINVALID);
+            model.addAttribute(Constants.STATUS_ATTRIBUTE_NAME, Constants.STATUSCODE_EMAILINVALID);
         } else {
             model.addAttribute(STATUS_ATTRIBUTE_NAME, STATUSCODE_SUCREG);
+
+            model.addAttribute(Constants.STATUS_ATTRIBUTE_NAME, Constants.STATUSCODE_SUCREG);
 
             MySQL mySQL = MySQL.getInstance();
 
@@ -91,7 +97,7 @@ public class RegistrationController {
 
             try {
                 preparedStatementUsername = connection.prepareStatement("SELECT COUNT(*) AS count FROM `user` WHERE username = ?");
-                preparedStatementUsername.setString(1, user.getName());
+                preparedStatementUsername.setString(1, user.getLoginName());
                 resultSetUsername = preparedStatementUsername.executeQuery();
 
                 resultSetUsername.next();
@@ -100,7 +106,7 @@ public class RegistrationController {
                 }
 
                 preparedStatementEmail = connection.prepareStatement("SELECT COUNT(*) AS count FROM `user` WHERE email = ?");
-                preparedStatementEmail.setString(1, user.getName());
+                preparedStatementEmail.setString(1, user.getLoginName());
                 resultSetEmail = preparedStatementUsername.executeQuery();
 
                 resultSetEmail.next();
@@ -122,8 +128,8 @@ public class RegistrationController {
 
         if (!model.containsAttribute(STATUS_ATTRIBUTE_NAME)) {
 
-            model.addAttribute(STATUS_ATTRIBUTE_NAME, STATUSCODE_SUCREG);
-            model.addAttribute("name", user.getName());
+            model.addAttribute(Constants.STATUS_ATTRIBUTE_NAME, Constants.STATUSCODE_SUCREG);
+            model.addAttribute("name", user.getLoginName());
             model.addAttribute("email", user.getEmail());
 
             BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
@@ -136,7 +142,7 @@ public class RegistrationController {
             PreparedStatement preparedStatementRegistration;
             try {
                 preparedStatement = connection.prepareStatement("INSERT INTO `users` (`username`, `email`, `password`, `registrationDate`, `verified`) VALUES(?,?,?,?,?);");
-                preparedStatement.setString(1, user.getName());
+                preparedStatement.setString(1, user.getLoginName());
                 preparedStatement.setString(2, user.getEmail());
                 preparedStatement.setString(3, bCryptPasswordEncoder.encode(user.getPassword()));
                 preparedStatement.setLong(4, System.currentTimeMillis());
@@ -157,7 +163,7 @@ public class RegistrationController {
                 e.printStackTrace();
             }
         }
-        System.out.println("[RegistrationController] " + model.get(STATUS_ATTRIBUTE_NAME));
+        System.out.println("[RegistrationController] " + model.get(Constants.STATUS_ATTRIBUTE_NAME));
         return "home";
 
     }

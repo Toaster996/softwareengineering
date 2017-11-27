@@ -51,11 +51,11 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" +
+        return "User{\n\t" +
                 "name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                ", regist_date=" + regist_date +
-                ", password='" + password + '\'' +
-                '}';
+                ",\n\temail='" + email + '\'' +
+                ",\n\tregist_date=" + regist_date +
+                ",\n\tpassword='" + password + '\'' +
+                "\n}";
     }
 }

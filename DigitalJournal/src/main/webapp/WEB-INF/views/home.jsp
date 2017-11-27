@@ -91,21 +91,22 @@
                                             <c:when test="${status == 'new'}">
                                                 <div id="login">
                                                     <h3>Log in</h3>
-                                                    <p>Please fill out this form to start again.</p>
-                                                    <form>
+                                                    <p>Please fill out this form to log in.</p>
+                                                    <form:form action="${pageContext.request.contextPath}/login" method="POST" modelAttribute="loginUser">
                                                         <div class="form-group">
-                                                            <input type="text" class="form-control form-control-lg"
-                                                                   placeholder="Username">
+                                                            <input type="text" name="loginName" class="form-control form-control-lg"
+                                                                   placeholder="Username" <form:input path="loginName"/>
                                                         </div>
                                                         <div class="form-group">
-                                                            <input type="password" class="form-control form-control-lg"
-                                                                   placeholder="Password">
+                                                            <input type="password" name="loginPassword" class="form-control form-control-lg"
+                                                                   placeholder="Password" <form:input path="loginPassword"/>
                                                         </div>
                                                         <input type="button" value="Sign Up" id="btn_log-in"
                                                                class="btn btn-outline-light btn-block">
-                                                        <input type="submit" value="Submit"
+                                                        <input type="submit" value="Log In"
                                                                class="btn btn-outline-light btn-block">
-                                                    </form>
+                                                        <jsp:include page="Forms/alerts.jsp"/>
+                                                    </form:form>
                                                 </div>
                                                 <script>
                                                     $(function () {
@@ -118,8 +119,7 @@
                                         <div id="register">
                                             <h3>Sign Up Today</h3>
                                             <p>Please fill out this form to register</p>
-                                            <form:form method="POST" action="${pageContext.request.contextPath}/addUser"
-                                                       modelAttribute="user">
+                                            <form:form method="POST" action="${pageContext.request.contextPath}/addUser" modelAttribute="user">
                                                 <form>
                                                     <div class="form-group"><input class="form-control form-control-lg"
                                                                                    type="text" placeholder="Name"
@@ -144,11 +144,8 @@
                                                 </form>
                                             </form:form>
                                         </div>
-
                                     </c:otherwise>
                                 </c:choose>
-
-
                             </div>
                         </div>
                     </div>
