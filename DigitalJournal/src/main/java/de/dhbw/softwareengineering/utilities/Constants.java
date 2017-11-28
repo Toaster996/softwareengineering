@@ -1,5 +1,7 @@
 package de.dhbw.softwareengineering.utilities;
 
+import java.io.File;
+
 public class Constants {
     public final static String STATUS_ATTRIBUTE_NAME           = "status";
     public final static String STATUSCODE_PWMISSMATCH          = "pwmissmatch";
@@ -16,4 +18,12 @@ public class Constants {
 
     public final static String STATUSCODE_MODAL_HEADER = "temp_modal_header";
     public final static String STATUSCODE_MODAL_BODY = "temp_modal_header";
+
+    public final static String CONFIGURATION_DIRECTORY = "." + File.separator + "conf";
+    public final static String MYSQL_CONFIGURATION_NAME = "mysql.conf";
+    public final static String EMAIL_CONFIGURATION_NAME = "email.conf";
+
+    public final static String TEMPLATE_DIRECTORY = "." + File.separator + "template";
+    public final static String SIGNUP_EMAIL_TEMPLATE = "signup.html";
+    public final static String RECOVER_PASSWORD_EMAIL_TEMPLATE = "recover.html";
 }

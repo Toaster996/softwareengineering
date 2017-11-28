@@ -23,7 +23,7 @@ public class Email {
     private final String password;
 
     private Email(){
-        FileConfiguration emailConfiguration = new FileConfiguration(new File("." + File.separator + "conf" + File.separator + "email.conf"));
+        FileConfiguration emailConfiguration = new FileConfiguration(new File(Constants.CONFIGURATION_DIRECTORY + File.separator + Constants.EMAIL_CONFIGURATION_NAME));
 
         this.host           = emailConfiguration.getString("host");
         this.port           = emailConfiguration.getInt("port");
@@ -56,6 +56,9 @@ public class Email {
         props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory"); // SSL Factory Class
         props.put("mail.smtp.auth", "true"); 				// Enabling SMTP Authentication
         props.put("mail.smtp.port", port); 					// SMTP Port
+        props.put("mail.smtp.starttls.enable","true");
+        props.put("mail.smtp.EnableSSL.enable","true");
+
 
         Authenticator auth = new Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
@@ -68,14 +71,14 @@ public class Email {
         try {
             MimeMessage msg = new MimeMessage(session);
 
-            msg.addHeader("Content-type", "text/HTML; charset=UTF-8");
+            msg.addHeader("Content-type", "text/html; charset=UTF-8");
             msg.addHeader("format", "flowed");
             msg.addHeader("Content-Transfer-Encoding", "8bit");
 
             msg.setFrom(new InternetAddress(accountName, simpleName));
             msg.setReplyTo(InternetAddress.parse(accountName, false));
             msg.setSubject(subject, "UTF-8");
-            msg.setText(body, "UTF-8");
+            msg.setContent(body, "text/html; charset=utf-8");
             msg.setSentDate(new Date());
 
             for(String recipient : recipients){

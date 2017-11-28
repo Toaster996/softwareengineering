@@ -1,5 +1,7 @@
-package de.dhbw.softwareengineering;
+package de.dhbw.softwareengineering.controller;
 
+import de.dhbw.softwareengineering.Heartbeat;
+import de.dhbw.softwareengineering.utilities.Constants;
 import de.dhbw.softwareengineering.utilities.FileConfiguration;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
@@ -18,13 +20,15 @@ class StartupHousekeeper {
 
         initEmailConfiguration();
         initMySQLConfiguration();
-        initEmailTemplate();
+        initSignUpEmailTemplate();
+
+        new Heartbeat();
 
     }
 
     private void initMySQLConfiguration(){
 
-        File configurationDirectory = new File("." + File.separator + "conf");
+        File configurationDirectory = new File(Constants.CONFIGURATION_DIRECTORY);
         if(!configurationDirectory.exists()) {
             configurationDirectory.mkdir();
         }
@@ -45,7 +49,7 @@ class StartupHousekeeper {
     }
 
     private void initEmailConfiguration(){
-        FileConfiguration emailConfiguration = new FileConfiguration(new File("." + File.separator + "conf" + File.separator + "mysql.conf"));
+        FileConfiguration emailConfiguration = new FileConfiguration(new File(Constants.CONFIGURATION_DIRECTORY + File.separator + Constants.EMAIL_CONFIGURATION_NAME));
 
         emailConfiguration.setDefaultValue("host", "localhost");
         emailConfiguration.setDefaultValue("port", "587");
@@ -60,8 +64,14 @@ class StartupHousekeeper {
         }
     }
 
-    private void initEmailTemplate(){
-        File file = new File("." + File.separator + "emailTemplate.html");
+    private void initSignUpEmailTemplate(){
+
+        File configurationDirectory = new File(Constants.TEMPLATE_DIRECTORY);
+        if(!configurationDirectory.exists()) {
+            configurationDirectory.mkdir();
+        }
+
+        File file = new File(Constants.TEMPLATE_DIRECTORY + File.separator + Constants.SIGNUP_EMAIL_TEMPLATE);
 
         if(!file.exists()) {
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(file,false))){
@@ -70,7 +80,7 @@ class StartupHousekeeper {
                 writer.write("to finish the registration process click on the following link to confirm your email: <br/><br/>");
                 writer.newLine();
                 writer.newLine();
-                writer.write("{§link} <br/><br/>");
+                writer.write("<a href=\"{$link}\">Confirm your email</a> <br/><br/>");
                 writer.newLine();
                 writer.newLine();
                 writer.write("Kind regards, <br/>");
