@@ -21,7 +21,7 @@ We took a look at our Class Diagram and highlighted Model and Controller Classes
 ![Class Diagram](class_diagramm_full.png)
 
 ## 7. Deployment View
-n/a
+![DeploymentView](DeploymentView.png)
 
 ## 8. Implementation View
 tba
