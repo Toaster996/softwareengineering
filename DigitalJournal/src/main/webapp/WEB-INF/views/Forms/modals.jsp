@@ -25,7 +25,7 @@
             $('#useduser').modal('show');
         </script>
     </c:when>
-    <c:when test="${status =='usedmail'}">
+    <c:when test="${status =='usedemail'}">
         <!-- Modal -->
         <div class="modal fade" id="usedmail" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
              aria-hidden="true">
