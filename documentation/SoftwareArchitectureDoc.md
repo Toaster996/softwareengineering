@@ -17,8 +17,14 @@ To have all benefits of the MVC pattern, we decided to use Spring MVC 4.0 as MVC
 n/a
 
 ## 5. Logical View
-We took a look at our Class Diagram and highlighted Model and Controller Classes.
+We took a look at our Class Diagram and highlighted Model and Controller Classes, aswell as the View JSP Files.
 ![Class Diagram](class_diagramm_full.png)
+
+You may ask yourself what JSP files are. Here's a quick overview:
+
+Java Server Page (JSP) is a technology for controlling the content or appearance of Web pages through the use of servlets, small programs that are specified in the Web page and run on the Web server to modify the Web page before it is sent to the user who requested it. Sun Microsystems, the developer of Java, also refers to the JSP technology as the Servlet application program interface (API). In a nutshell, a Java Server Page calls a Java program that is executed by the Web server.
+    
+- See http://www.theserverside.com/definition/Java-Server-Page-JSP
 
 ## 7. Deployment View
 ![DeploymentView](DeploymentView.png)
