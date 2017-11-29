@@ -20,7 +20,7 @@
     <link href="${bootCSS}" rel="stylesheet"/>
     <link href="${styleCSS}" rel="stylesheet"/>
     <link href="${fontCSS}" rel="stylesheet"/>
-
+    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
 
     <spring:url value="/resources/js/jquery.min.js" var="jQuery"/>
     <spring:url value="/resources/js/popper.min.js" var="popper"/>

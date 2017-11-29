@@ -96,6 +96,7 @@ public class LoginController {
                 DateFormat df = new SimpleDateFormat("yyyy-mm-dd HH:MM:SS");
                 Date result =  df.parse(resultUser.getString("registrationDate"));
                 user.setRegist_date(result.getTime());
+                System.out.println("Date: " + user.getRegist_date());
             }
 
         }catch (SQLException e) {

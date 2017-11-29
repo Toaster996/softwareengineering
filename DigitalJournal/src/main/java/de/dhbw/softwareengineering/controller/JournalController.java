@@ -37,4 +37,12 @@ public class JournalController {
         System.out.println("[JournalController] " + model.get("status"));
         return "feed";
     }
+
+    @RequestMapping(value = "/editjournal", method = RequestMethod.GET)
+    public String show(Model m) {
+        m.addAttribute("journal", new Journal());
+        //TODO: login check
+        return "editjournal";
+    }
+
 }
