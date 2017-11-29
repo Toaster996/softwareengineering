@@ -125,20 +125,20 @@ public class RegistrationController {
 
             try (PreparedStatement preparedStatementUser = connection.prepareStatement("INSERT INTO `users` (`username`, `email`, `password`, `registrationDate`, `verified`) VALUES(?,?,?,?,?);")) {
 
-                String uuid = UUID.randomUUID().toString();
-
-                PreparedStatement preparedStatementRegistration = connection.prepareStatement("INSERT INTO `registration_request` (`username`, `registration_uuid`) VALUES (?,?);");
-
-                preparedStatementRegistration.setString(1, user.getName());
-                preparedStatementRegistration.setString(2, uuid);
-                System.out.println(preparedStatementRegistration.executeUpdate());
-
                 preparedStatementUser.setString(1, user.getName());
                 preparedStatementUser.setString(2, user.getEmail());
                 preparedStatementUser.setString(3, bCryptPasswordEncoder.encode(user.getPassword()));
                 preparedStatementUser.setLong(4, System.currentTimeMillis());
                 preparedStatementUser.setBoolean(5, false);
                 preparedStatementUser.executeUpdate();
+
+                String uuid = UUID.randomUUID().toString();
+
+                PreparedStatement preparedStatementRegistration = connection.prepareStatement("INSERT INTO `registration_request` (`username`, `registration_uuid`) VALUES (?,?);");
+
+                preparedStatementRegistration.setString(1, user.getName());
+                preparedStatementRegistration.setString(2, uuid);
+                preparedStatementRegistration.executeUpdate();
 
                 String url = "https://" + GeneralConfiguration.getInstance().getString("domain") + "/confirmEmail?uuid=" + uuid;
                 String[] recipients = {user.getEmail()};

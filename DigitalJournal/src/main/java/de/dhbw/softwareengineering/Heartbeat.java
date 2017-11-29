@@ -57,9 +57,9 @@ public class Heartbeat implements Runnable {
 
         Connection connection = mySQL.getConnection();
 
-        try (PreparedStatement preparedStatement = connection.prepareStatement("SELECT `registration_request`.username " +
+        try (PreparedStatement preparedStatement = connection.prepareStatement("SELECT `registration_request`.username, `users`.registrationDate " +
                 "FROM `registration_request` " +
-                "LEFT JOIN `users` ON `registration_request`.username = `users`.username AND `users`.registrationDate < ?")) {
+                "LEFT JOIN `users` ON `registration_request`.username = `users`.username WHERE `users`.registrationDate < ?")) {
 
             preparedStatement.setLong(1, System.currentTimeMillis() - TWENTYFOUR_HOURS_IN_MILLIS);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -67,13 +67,15 @@ public class Heartbeat implements Runnable {
             while (resultSet.next()) {
                 String username = resultSet.getString("username");
 
+                PreparedStatement preparedStatementDeleteRequest = connection.prepareStatement("DELETE FROM `registration_request` WHERE `username` = ?");
+                preparedStatementDeleteRequest.setString(1, username);
+                preparedStatementDeleteRequest.executeUpdate();
+
                 PreparedStatement preparedStatementDeleteUser = connection.prepareStatement("DELETE FROM `users` WHERE `username` = ?");
                 preparedStatementDeleteUser.setString(1, username);
                 preparedStatementDeleteUser.executeUpdate();
 
-                PreparedStatement preparedStatementDeleteRequest = connection.prepareStatement("DELETE FROM `registration_request` WHERE `username` = ?");
-                preparedStatementDeleteRequest.setString(1, username);
-                preparedStatementDeleteRequest.executeUpdate();
+                System.out.println("[Heartbeat] deleted request for user: " + username);
             }
 
         } catch (SQLException e) {
