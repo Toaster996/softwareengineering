@@ -7,7 +7,7 @@ This document provides a comprehensive architectural overview of the system, usi
 The scope of this SAD is to show the architecture of the vnv project. Affected are the class structure, the use cases and the data representation.
 
 ## 2. Architectural Representation
-![Spring Arch](ArchitectureSpringMVC.PNG)
+![Spring Arch](images/ArchitectureSpringMVC.PNG)
 In principle, this is the architecture we want to use. Nevertheless, not all of our current classes follow this structure. In fact, we tend to have some BL implemented in Controllerclasses.
 
 ## 3. Architectural Goals and Constraints
@@ -18,14 +18,14 @@ n/a
 
 ## 5. Logical View
 We took a look at our Class Diagram and highlighted Model and Controller Classes, aswell as the View JSP Files.
-![Class Diagram](class_diagramm_full.png)
+![Class Diagram](images/class_diagramm_full.png)
 As you can see on the left handside, the view is represented by JavaServer Pages (.jsp). JSP-Files are basically standard HTML5 plus several scripting Tags. The most important one is `<% Content goes here %>`. You can also define other libarys and user further funcionality like if and loops. Another nice feature is the easy partitioning of JSP-Files which we are using e.g. for our footer. 
 ## 7. Deployment View
-![DeploymentView](DeploymentView.png)
+![DeploymentView](images/DeploymentView.png)
 
 ## 8. Implementation View
 tba
 
 ## 9. Data View
 We are using a MySQL database to store user related data. 
-![DB-Model](DB_Diagram.PNG)
+![DB-Model](images/DB_Diagram.PNG)

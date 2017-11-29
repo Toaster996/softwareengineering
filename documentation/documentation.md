@@ -34,7 +34,7 @@ You will be able to create journal entries with pictures and videos which are co
 #### The following picture shows the overall use case diagram of our software: 
 
 
-![SRS documentation](UCD.png)
+![SRS documentation](images/UCD.png)
 
 ## 3. Specific Requirements
 ### 3.1 Functionality
