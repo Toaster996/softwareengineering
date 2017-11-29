@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 @Controller
@@ -36,4 +37,13 @@ public class JournalController {
         System.out.println("[JournalController] " + model.get("status"));
         return "feed";
     }
+
+    @RequestMapping(value = "/editjournal", method = RequestMethod.GET)
+    public String show(Model m, HttpSession session) {
+        m.addAttribute("journal", new Journal());
+        if(session.getAttribute("loggedInUser") == null)
+            return "error";
+        return "editjournal";
+    }
+
 }
