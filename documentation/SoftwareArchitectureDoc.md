@@ -19,6 +19,7 @@ n/a
 ## 5. Logical View
 We took a look at our Class Diagram and highlighted Model and Controller Classes.
 ![Class Diagram](class_diagramm_full.png)
+As you can see on the left handside, the view is represented by JavaServer Pages (.jsp). JSP-Files are basically standard HTML5 plus several scripting Tags. The most important one is `<% Content goes here %>`. You can also define other libarys and user further funcionality like if and loops. Another nice feature is the easy partitioning of JSP-Files which we are using e.g. for our footer. 
 
 ## 7. Deployment View
 ![DeploymentView](DeploymentView.png)
