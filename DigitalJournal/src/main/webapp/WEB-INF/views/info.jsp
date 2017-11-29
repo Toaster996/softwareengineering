@@ -6,7 +6,7 @@
 
 <head>
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta username="viewport" content="width=device-width, initial-scale=1.0"/>
     <!-- <link rel="stylesheet" href="../../resources/css/font-awesome.min.css">
      <link rel="stylesheet" href="../../resources/css/style.css">
 
@@ -89,7 +89,7 @@
                     <div class="col-lg-4">
                         <div class="card bg-primary text-center card-form pb-4">
                             <div class="card-body">
-                                <h3>Welcome, ${name}! </h3>
+                                <h3>Welcome, ${username}! </h3>
                                 <p>We sent you an email to your address ${email}. Please click on the link you can find there within 24 hours.</p>
                                 </div>
                                 <input type="submit" value="Create your Journal!" href="#" class="btn btn-outline-light mr-3 ml-3">
@@ -292,7 +292,7 @@
             <div class="modal-body">
                 <!-- <form>
                      <div class="form-group">
-                         <label for="name">Name</label>
+                         <label for="username">Name</label>
                          <input type="text" class="form-control">
                      </div>
                      <div class="form-group">

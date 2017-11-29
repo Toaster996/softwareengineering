@@ -7,7 +7,7 @@
 
 <head>
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta username="viewport" content="width=device-width, initial-scale=1.0"/>
     <!-- <link rel="stylesheet" href="../../resources/css/font-awesome.min.css">
      <link rel="stylesheet" href="../../resources/css/style.css">
 
@@ -80,7 +80,7 @@
                                 <!--In here, we need to show different things, depending on the model -->
                                 <c:choose>
                                     <c:when test="${status =='sucreg'}">
-                                        <h3>Welcome, ${name}! </h3>
+                                        <h3>Welcome, ${username}! </h3>
                                         <p>We sent you an email to your address ${email}. Please click on the link you
                                             can find there within 24 hours.</p>
                                         <input type="submit" value="Create your Journal!" href="#"
@@ -94,11 +94,11 @@
                                                     <p>Please fill out this form to log in.</p>
                                                     <form:form action="${pageContext.request.contextPath}/login" method="POST" modelAttribute="loginUser">
                                                         <div class="form-group">
-                                                            <input type="text" name="loginName" class="form-control form-control-lg"
+                                                            <input type="text" username="loginName" class="form-control form-control-lg"
                                                                    placeholder="Username" <form:input path="loginName"/>
                                                         </div>
                                                         <div class="form-group">
-                                                            <input type="password" name="loginPassword" class="form-control form-control-lg"
+                                                            <input type="password" username="loginPassword" class="form-control form-control-lg"
                                                                    placeholder="Password" <form:input path="loginPassword"/>
                                                         </div>
                                                         <input type="button" value="Sign Up" id="btn_log-in"
@@ -119,12 +119,11 @@
                                         <div id="register">
                                             <h3>Sign Up Today</h3>
                                             <p>Please fill out this form to register</p>
-                                            <form:form method="POST" action="${pageContext.request.contextPath}/addUser" modelAttribute="user">
+                                            <form:form method="POST" action="${pageContext.request.contextPath}/addUser" modelAttribute="registrationUser">
                                                 <form>
                                                     <div class="form-group"><input class="form-control form-control-lg"
                                                                                    type="text" placeholder="Name"
-                                                        <form:input
-                                                                path="name"/></div>
+                                                        <form:input path="name"/></div>
                                                     <div class="form-group"><input class="form-control form-control-lg"
                                                                                    type="email" placeholder="Email"
                                                         <form:input

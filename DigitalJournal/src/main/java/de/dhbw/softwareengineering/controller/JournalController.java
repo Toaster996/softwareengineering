@@ -1,7 +1,6 @@
 package de.dhbw.softwareengineering.controller;
 
 import de.dhbw.softwareengineering.model.Journal;
-import de.dhbw.softwareengineering.model.User;
 import de.dhbw.softwareengineering.utilities.Constants;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

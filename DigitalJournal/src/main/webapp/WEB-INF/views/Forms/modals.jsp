@@ -13,7 +13,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        The username ${name} has already been taken. Please choose another one.
+                        The username ${username} has already been taken. Please choose another one.
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

@@ -1,7 +1,7 @@
 package de.dhbw.softwareengineering.controller;
 
 import de.dhbw.softwareengineering.model.LoginUser;
-import de.dhbw.softwareengineering.model.User;
+import de.dhbw.softwareengineering.model.RegistrationUser;
 import de.dhbw.softwareengineering.utilities.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -11,10 +11,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
-import java.io.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -40,14 +38,14 @@ public class RegistrationController {
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String showForm(Model m) {
         m.addAttribute(Constants.STATUS_ATTRIBUTE_NAME, "new");
-        m.addAttribute(new User());
+        m.addAttribute(new RegistrationUser());
         m.addAttribute(new LoginUser());
         return "home";
-        //   return new ModelAndView("home", "user", new User());
+        //   return new ModelAndView("home", "user", new RegistrationUser());
     }
 
     @RequestMapping(value = "/addUser", method = RequestMethod.POST)
-    public String submit(@Valid @ModelAttribute("user") final User user, final BindingResult result, final ModelMap model) {
+    public String submit(@Valid @ModelAttribute("registrationUser") final RegistrationUser user, final BindingResult result, final ModelMap model) {
         if (result.hasErrors())
             return "error";
         System.out.println("[RegistrationController] " + user);

@@ -16,7 +16,7 @@
             <div class="form-group"><input class="form-control form-control-lg"
                                            type="text" placeholder="Name"
                 <form:input
-                        path="name"/></div>
+                        path="username"/></div>
             <div class="form-group"><input class="form-control form-control-lg"
                                            type="email" placeholder="Email"
                 <form:input

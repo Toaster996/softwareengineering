@@ -19,7 +19,7 @@ You can see the .feature file that describes this Use-Case [here](https://github
 
 ### 2.1 Basic flow
 
-The basic flow of this usecase is that a user enters a journal name and a journal description and does neither leave the name nor the description empty. Afterwards he will be redirected to his newly created journal.
+The basic flow of this usecase is that a user enters a journal username and a journal description and does neither leave the username nor the description empty. Afterwards he will be redirected to his newly created journal.
 
 #### Creation Dialog 
 
@@ -29,9 +29,9 @@ The basic flow of this usecase is that a user enters a journal name and a journa
 
 ![journals](journals.png)
 
-### 2.2 Journal name was left empty
+### 2.2 Journal username was left empty
 
-The value entered into **Name** can not be null or empty. Therefor the user has to put a name in it. If he does not, a messagebox will pop up.
+The value entered into **Name** can not be null or empty. Therefor the user has to put a username in it. If he does not, a messagebox will pop up.
 
 ![journal_name_empty](journal_name_empty.png)
 

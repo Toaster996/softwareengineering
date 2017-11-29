@@ -1,28 +1,28 @@
 package de.dhbw.softwareengineering.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "users")
 public class User {
-    private String name;
+
+    @Id
+    @Column(name = "username")
+    private String username;
     private String email;
-    private long regist_date;
+    private long registrationDate;
     private String password;
-    private String passwordConfirm;
-    //TODO: Pic, friends, ....
+    private boolean verified;
 
-
-    public String getPasswordConfirm() {
-        return passwordConfirm;
+    public String getUsername() {
+        return username;
     }
 
-    public void setPasswordConfirm(String passwordConfirm) {
-        this.passwordConfirm = passwordConfirm;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getEmail() {
@@ -33,12 +33,12 @@ public class User {
         this.email = email;
     }
 
-    public long getRegist_date() {
-        return regist_date;
+    public long getRegistrationDate() {
+        return registrationDate;
     }
 
-    public void setRegist_date(long regist_date) {
-        this.regist_date = regist_date;
+    public void setRegistrationDate(long registrationDate) {
+        this.registrationDate = registrationDate;
     }
 
     public String getPassword() {
@@ -49,12 +49,20 @@ public class User {
         this.password = password;
     }
 
+    public boolean isVerified() {
+        return verified;
+    }
+
+    public void setVerified(boolean verified) {
+        this.verified = verified;
+    }
+
     @Override
     public String toString() {
-        return "User{\n\t" +
-                "name='" + name + '\'' +
+        return "RegistrationUser{\n\t" +
+                "username='" + username + '\'' +
                 ",\n\temail='" + email + '\'' +
-                ",\n\tregist_date=" + regist_date +
+                ",\n\tregistrationDate=" + registrationDate +
                 ",\n\tpassword='" + password + '\'' +
                 "\n}";
     }

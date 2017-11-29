@@ -25,7 +25,7 @@
 <form:form method="POST" action="${pageContext.request.contextPath}/addEmployee" modelAttribute="employee">
 
     <form>
-        <div class="form-group"><input type="text" placeholder="name" <form:input path="name"/></div>
+        <div class="form-group"><input type="text" placeholder="username" <form:input path="username"/></div>
         <div class="form-group"><input type="email" placeholder="email" <form:input path="id"/></div>
         <div class="form-group"><input type="text" placeholder="contractNumber" <form:input path="contractNumber"/></div>
         <input type="submit" value="Submit" class="btn btn-primary"/>

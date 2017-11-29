@@ -1,38 +1,36 @@
 package de.dhbw.softwareengineering.controller;
 
 import de.dhbw.softwareengineering.model.LoginUser;
+import de.dhbw.softwareengineering.model.RegistrationUser;
 import de.dhbw.softwareengineering.model.User;
+import de.dhbw.softwareengineering.model.dao.UserDAO;
+import de.dhbw.softwareengineering.utilities.ApplicationContextProvider;
 import de.dhbw.softwareengineering.utilities.Constants;
 import de.dhbw.softwareengineering.utilities.MySQL;
-import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.RedirectView;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.List;
 
 @Controller
 public class LoginController {
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String showLoginForm(ModelMap model) {
+        System.out.println("Testing!");
+        test();
+
         return toHomepage(model);
     }
 
@@ -57,7 +55,7 @@ public class LoginController {
 
     private String toHomepage(ModelMap model) {
         model.addAttribute(Constants.STATUS_ATTRIBUTE_NAME, "new");
-        model.addAttribute(new User());
+        model.addAttribute(new RegistrationUser());
         model.addAttribute(new LoginUser());
         return "home";
     }
@@ -75,7 +73,7 @@ public class LoginController {
 
         BCryptPasswordEncoder encoder =  new BCryptPasswordEncoder();
 
-        //System.out.println(String.format("Looking for User { \n\tusername = %s\n\tpassword = %s\n\thashed = %s\n}", username, password, encoder.encode(password)));
+        //System.out.println(String.format("Looking for RegistrationUser { \n\tusername = %s\n\tpassword = %s\n\thashed = %s\n}", username, password, encoder.encode(password)));
         try{
             preparedStatementUser = connection.prepareStatement("SELECT username, email, password, registrationDate, verified FROM `users` WHERE username = ?");
             preparedStatementUser.setString(1, username);
@@ -88,23 +86,34 @@ public class LoginController {
                 }
 
                 user = new User();
-                user.setName(resultUser.getString("username"));
+                user.setUsername(resultUser.getString("username"));
                 user.setPassword(resultUser.getString("password"));
-                user.setPasswordConfirm(resultUser.getString("password"));
                 user.setEmail(resultUser.getString("email"));
-
-                DateFormat df = new SimpleDateFormat("yyyy-mm-dd HH:MM:SS");
-                Date result =  df.parse(resultUser.getString("registrationDate"));
-                user.setRegist_date(result.getTime());
+                user.setRegistrationDate(resultUser.getLong("registrationDate"));
             }
 
         }catch (SQLException e) {
             System.err.println("[LoginController] Caught exception while looking for user: [" + e.getMessage() + "]");
-        } catch (ParseException e) {
-            e.printStackTrace();
         }
 
         return user;
+    }
+
+    private void test() {
+        ApplicationContextProvider appContext = new ApplicationContextProvider();
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(appContext.getApplicationContext());
+
+        context.refresh();
+
+        UserDAO userDAO = context.getBean(UserDAO.class);
+
+        List<User> list = userDAO.list();
+
+        for(User p : list){
+            System.out.println("Person List::"+p);
+        }
+        //close resources
+        context.close();
     }
 
 

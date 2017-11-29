@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class Journal {
     private String name;
-    private User user;
+    private RegistrationUser user;
     private String content;
     private Date date;
 
@@ -16,11 +16,11 @@ public class Journal {
         this.name = name;
     }
 
-    public User getUser() {
+    public RegistrationUser getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(RegistrationUser user) {
         this.user = user;
     }
 

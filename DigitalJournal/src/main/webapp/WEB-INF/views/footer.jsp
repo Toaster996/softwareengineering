@@ -25,7 +25,7 @@ Contact Us
 <div class="modal-body">
 <!-- <form>
 <div class="form-group">
-<label for="name">Name</label>
+<label for="username">Name</label>
 <input type="text" class="form-control">
 </div>
 <div class="form-group">

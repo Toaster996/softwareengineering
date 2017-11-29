@@ -15,7 +15,7 @@
 
 <head>
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta username="viewport" content="width=device-width, initial-scale=1.0"/>
     <spring:url value="/resources/css/bootstrap.css" var="bootCSS"/>
     <spring:url value="/resources/css/style.css" var="styleCSS"/>
     <spring:url value="/resources/css/font-awesome.min.css" var="fontCSS"/>
@@ -148,7 +148,7 @@
                                 <div class="form-group">
                                     <label id="txt_journalname" class="control-label">Name</label>
                                     <input class="form-control form-control-lg" type="text" placeholder="Name"
-                                    <form:input path="name"/>
+                                    <form:input path="username"/>
                                 </div>
                                 <!-- <input type="submit" value="Submit" class="btn btn-outline-light btn-block"/>
                                  <!--Alerts -->
