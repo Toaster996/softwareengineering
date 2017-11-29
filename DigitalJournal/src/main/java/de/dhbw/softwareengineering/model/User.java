@@ -59,7 +59,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "RegistrationUser{\n\t" +
+        return "User {\n\t" +
                 "username='" + username + '\'' +
                 ",\n\temail='" + email + '\'' +
                 ",\n\tregistrationDate=" + registrationDate +

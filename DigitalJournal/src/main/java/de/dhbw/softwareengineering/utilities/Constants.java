@@ -1,8 +1,18 @@
 package de.dhbw.softwareengineering.utilities;
 
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
 import java.io.File;
 
 public class Constants {
+
+    public static final ClassPathXmlApplicationContext context;
+
+    static{
+        ApplicationContextProvider appContext = new ApplicationContextProvider();
+        context = new ClassPathXmlApplicationContext(appContext.getApplicationContext());
+    }
+
     public final static String STATUS_ATTRIBUTE_NAME           = "status";
     public final static String STATUSCODE_PWMISSMATCH          = "pwmissmatch";
     public final static String STATUSCODE_USERNAMETOOLONG      = "nametoolong";

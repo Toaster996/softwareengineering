@@ -4,7 +4,6 @@ import de.dhbw.softwareengineering.model.LoginUser;
 import de.dhbw.softwareengineering.model.RegistrationUser;
 import de.dhbw.softwareengineering.model.User;
 import de.dhbw.softwareengineering.model.dao.UserDAO;
-import de.dhbw.softwareengineering.utilities.ApplicationContextProvider;
 import de.dhbw.softwareengineering.utilities.Constants;
 import de.dhbw.softwareengineering.utilities.MySQL;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -29,7 +28,7 @@ public class LoginController {
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String showLoginForm(ModelMap model) {
         System.out.println("Testing!");
-        test();
+        testHibernateIntegration();
 
         return toHomepage(model);
     }
@@ -99,20 +98,21 @@ public class LoginController {
         return user;
     }
 
-    private void test() {
-        ApplicationContextProvider appContext = new ApplicationContextProvider();
-        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(appContext.getApplicationContext());
+    private void testHibernateIntegration() {
+        // Accessing the context
+        ClassPathXmlApplicationContext context = Constants.context;
 
+        // open resources
         context.refresh();
 
-        UserDAO userDAO = context.getBean(UserDAO.class);
+            UserDAO userDAO = context.getBean(UserDAO.class);
+            List<User> list = userDAO.list();
+            System.out.println("Listing all available Users:");
+            for(User user : list){
+                System.out.println(user);
+            }
 
-        List<User> list = userDAO.list();
-
-        for(User p : list){
-            System.out.println("Person List::"+p);
-        }
-        //close resources
+        // close resources
         context.close();
     }
 
