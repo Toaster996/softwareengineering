@@ -18,8 +18,8 @@ class StartupHousekeeper {
     @EventListener(ContextRefreshedEvent.class)
     void contextRefreshedEvent() {
 
-        initEmailConfiguration();
         initMySQLConfiguration();
+        initEmailConfiguration();
         initSignUpEmailTemplate();
 
         new Heartbeat();
