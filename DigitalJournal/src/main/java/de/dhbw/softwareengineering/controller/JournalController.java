@@ -22,9 +22,11 @@ public class JournalController {
     }
 
     @RequestMapping(value = "/newjournal", method = RequestMethod.POST)
-    public String submit(@Valid @ModelAttribute("journal") final Journal journal, final BindingResult result, final ModelMap model) {
+    public String submit(@Valid @ModelAttribute("journal") final Journal journal, final BindingResult result, final ModelMap model, HttpSession session) {
         if (result.hasErrors())
             return "error";
+        if(session.getAttribute("loggedInUser") == null)
+            return "notloggedin";
         System.out.println("[JournalController] " + journal);
         if(journal.getName().equals(""))
             model.addAttribute(Constants.STATUS_ATTRIBUTE_NAME, Constants.STATUSCODE_EMPTYFORM);
@@ -42,7 +44,7 @@ public class JournalController {
     public String show(Model m, HttpSession session) {
         m.addAttribute("journal", new Journal());
         if(session.getAttribute("loggedInUser") == null)
-            return "error";
+            return "notloggedin";
         return "editjournal";
     }
 
