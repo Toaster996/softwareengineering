@@ -1,6 +1,8 @@
 package de.dhbw.softwareengineering.controller;
 
 import de.dhbw.softwareengineering.model.Journal;
+import de.dhbw.softwareengineering.model.User;
+import de.dhbw.softwareengineering.model.dao.JournalDAO;
 import de.dhbw.softwareengineering.utilities.Constants;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+
+import static de.dhbw.softwareengineering.utilities.Constants.applicationContext;
 
 @Controller
 public class JournalController {
@@ -37,6 +41,16 @@ public class JournalController {
         }
 
         System.out.println("[JournalController] " + model.get("status"));
+        //Get logged int user
+
+        User user = (User) session.getAttribute("loggedInUser");
+        journal.setUser(user);
+
+        applicationContext.refresh();
+        JournalDAO journalDAO = applicationContext.getBean(JournalDAO.class);
+        journalDAO.newJournal(journal);
+
+        applicationContext.close();
         return "feed";
     }
 

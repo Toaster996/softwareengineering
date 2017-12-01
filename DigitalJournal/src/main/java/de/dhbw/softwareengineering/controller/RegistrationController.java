@@ -6,7 +6,10 @@ import de.dhbw.softwareengineering.model.RegistrationUser;
 import de.dhbw.softwareengineering.model.User;
 import de.dhbw.softwareengineering.model.dao.RegistrationRequestDAO;
 import de.dhbw.softwareengineering.model.dao.UserDAO;
-import de.dhbw.softwareengineering.utilities.*;
+import de.dhbw.softwareengineering.utilities.Constants;
+import de.dhbw.softwareengineering.utilities.Email;
+import de.dhbw.softwareengineering.utilities.GeneralConfiguration;
+import de.dhbw.softwareengineering.utilities.Templates;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,15 +19,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import  static de.dhbw.softwareengineering.utilities.Constants.applicationContext;
-
 import javax.validation.Valid;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.UUID;
 import java.util.regex.Pattern;
+
+import static de.dhbw.softwareengineering.utilities.Constants.applicationContext;
 
 
 @Controller
@@ -77,13 +76,13 @@ public class RegistrationController {
             // Check entered information against database
             applicationContext.refresh();
 
-                UserDAO userDAO = applicationContext.getBean(UserDAO.class);
-                if(userDAO.getUserByName(registrationUser.getName()) != null){
-                    model.addAttribute(STATUS_ATTRIBUTE_NAME, STATUSCODE_USERNAMEALREADYINUSE);
-                }
-                if(userDAO.getUserByEMail(registrationUser.getEmail()) != null){
-                    model.addAttribute(STATUS_ATTRIBUTE_NAME, STATUSCODE_EMAILALREADYINUSE);
-                }
+            UserDAO userDAO = applicationContext.getBean(UserDAO.class);
+            if (userDAO.getUserByName(registrationUser.getName()) != null) {
+                model.addAttribute(STATUS_ATTRIBUTE_NAME, STATUSCODE_USERNAMEALREADYINUSE);
+            }
+            if (userDAO.getUserByEMail(registrationUser.getEmail()) != null) {
+                model.addAttribute(STATUS_ATTRIBUTE_NAME, STATUSCODE_EMAILALREADYINUSE);
+            }
 
             applicationContext.close();
         }
@@ -99,25 +98,25 @@ public class RegistrationController {
             String uuid = UUID.randomUUID().toString();
 
             User newUser = new User();
-                 newUser.setUsername(registrationUser.getName());
-                 newUser.setEmail(registrationUser.getEmail());
-                 newUser.setPassword(bCryptPasswordEncoder.encode(registrationUser.getPassword()));
-                 newUser.setRegistrationDate(System.currentTimeMillis());
-                 newUser.setVerified(false);
+            newUser.setUsername(registrationUser.getName());
+            newUser.setEmail(registrationUser.getEmail());
+            newUser.setPassword(bCryptPasswordEncoder.encode(registrationUser.getPassword()));
+            newUser.setRegistrationDate(System.currentTimeMillis());
+            newUser.setVerified(false);
 
             RegistrationRequest request = new RegistrationRequest();
-                                request.setUsername(registrationUser.getName());
-                                request.setRegistration_uuid(uuid);
+            request.setUsername(registrationUser.getName());
+            request.setRegistration_uuid(uuid);
 
             // add user to database and insert registration request
             applicationContext.refresh();
-                // add user
-                UserDAO userDAO = applicationContext.getBean(UserDAO.class);
-                userDAO.createNewUser(newUser);
+            // add user
+            UserDAO userDAO = applicationContext.getBean(UserDAO.class);
+            userDAO.createNewUser(newUser);
 
-                // insert request
-                RegistrationRequestDAO requestDAO = applicationContext.getBean(RegistrationRequestDAO.class);
-                requestDAO.addRequest(request);
+            // insert request
+            RegistrationRequestDAO requestDAO = applicationContext.getBean(RegistrationRequestDAO.class);
+            requestDAO.addRequest(request);
 
             applicationContext.close();
 

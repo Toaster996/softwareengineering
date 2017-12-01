@@ -1,13 +1,28 @@
 package de.dhbw.softwareengineering.model;
 
+import org.hibernate.annotations.ForeignKey;
+
+import javax.persistence.*;
 import java.util.Date;
 
+@Entity
+@Table(name = "journal")
 public class Journal {
+
+    @Id
+    @Column(name = "journalid")
+    private int id;
+    @Column(name = "journalname")
     private String name;
-    private RegistrationUser user;
+    @ForeignKey(name = "ownername")
+    private User user;
+    @Column(name = "content")
     private String content;
+    @Column(name = "date")
     private Date date;
 
+    @OneToOne
+    @JoinColumn(name = "journal")
     public String getName() {
         return name;
     }
@@ -16,11 +31,11 @@ public class Journal {
         this.name = name;
     }
 
-    public RegistrationUser getUser() {
+    public User getUser() {
         return user;
     }
 
-    public void setUser(RegistrationUser user) {
+    public void setUser(User user) {
         this.user = user;
     }
 
