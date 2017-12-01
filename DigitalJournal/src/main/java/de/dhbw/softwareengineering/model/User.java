@@ -1,9 +1,6 @@
 package de.dhbw.softwareengineering.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "users")
@@ -12,10 +9,19 @@ public class User {
     @Id
     @Column(name = "username")
     private String username;
+    @Column(name = "email")
     private String email;
+    @Column(name = "registrationDate")
     private long registrationDate;
+    @Column(name = "password")
     private String password;
+    @Column(name = "verified")
     private boolean verified;
+
+    @OneToOne
+    @JoinColumn(name="username")
+    private RegistrationRequest registrationRequest;
+
 
     public String getUsername() {
         return username;

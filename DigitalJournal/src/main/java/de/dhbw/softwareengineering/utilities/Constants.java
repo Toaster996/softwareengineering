@@ -6,11 +6,11 @@ import java.io.File;
 
 public class Constants {
 
-    public static final ClassPathXmlApplicationContext context;
+    public static final ClassPathXmlApplicationContext applicationContext;
 
     static{
         ApplicationContextProvider appContext = new ApplicationContextProvider();
-        context = new ClassPathXmlApplicationContext(appContext.getApplicationContext());
+        applicationContext = new ClassPathXmlApplicationContext(appContext.getApplicationContext());
     }
 
     public final static String STATUS_ATTRIBUTE_NAME           = "status";

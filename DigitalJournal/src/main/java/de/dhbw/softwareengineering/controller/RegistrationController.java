@@ -1,7 +1,11 @@
 package de.dhbw.softwareengineering.controller;
 
 import de.dhbw.softwareengineering.model.LoginUser;
+import de.dhbw.softwareengineering.model.RegistrationRequest;
 import de.dhbw.softwareengineering.model.RegistrationUser;
+import de.dhbw.softwareengineering.model.User;
+import de.dhbw.softwareengineering.model.dao.RegistrationRequestDAO;
+import de.dhbw.softwareengineering.model.dao.UserDAO;
 import de.dhbw.softwareengineering.utilities.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -11,6 +15,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import  static de.dhbw.softwareengineering.utilities.Constants.applicationContext;
 
 import javax.validation.Valid;
 import java.sql.Connection;
@@ -45,105 +51,79 @@ public class RegistrationController {
     }
 
     @RequestMapping(value = "/addUser", method = RequestMethod.POST)
-    public String submit(@Valid @ModelAttribute("registrationUser") final RegistrationUser user, final BindingResult result, final ModelMap model) {
+    public String submit(@Valid @ModelAttribute("registrationUser") final RegistrationUser registrationUser, final BindingResult result, final ModelMap model) {
         if (result.hasErrors())
             return "error";
-        System.out.println("[RegistrationController] " + user);
+        System.out.println("[RegistrationController] " + registrationUser);
 
-        if (user.getName().equals("") || user.getEmail().equals("") || user.getPassword().equals("") || user.getPasswordConfirm().equals("")) {
+        if (registrationUser.getName().equals("") || registrationUser.getEmail().equals("") || registrationUser.getPassword().equals("") || registrationUser.getPasswordConfirm().equals("")) {
             model.addAttribute(Constants.STATUS_ATTRIBUTE_NAME, Constants.STATUSCODE_EMPTYFORM);
-        } else if (!user.getPassword().equals(user.getPasswordConfirm())) {
+        } else if (!registrationUser.getPassword().equals(registrationUser.getPasswordConfirm())) {
             model.addAttribute(Constants.STATUS_ATTRIBUTE_NAME, Constants.STATUSCODE_PWMISSMATCH);
-        } else if (user.getName().length() > 20) {
+        } else if (registrationUser.getName().length() > 20) {
             model.addAttribute(Constants.STATUS_ATTRIBUTE_NAME, Constants.STATUSCODE_USERNAMETOOLONG);
-        } else if (!usernamePattern.matcher(user.getName()).matches()) {
+        } else if (!usernamePattern.matcher(registrationUser.getName()).matches()) {
             model.addAttribute(STATUS_ATTRIBUTE_NAME, STATUSCODE_ALPHANUMERIC);
-        } else if (user.getEmail().length() > 100) {
+        } else if (registrationUser.getEmail().length() > 100) {
             model.addAttribute(Constants.STATUS_ATTRIBUTE_NAME, Constants.STATUSCODE_EMAILTOOLONG);
-        } else if (user.getPassword().length() < 6) {
+        } else if (registrationUser.getPassword().length() < 6) {
             model.addAttribute(Constants.STATUS_ATTRIBUTE_NAME, Constants.STATUSCODE_PWTOOSHORT);
-        } else if (user.getPassword().length() > 42) {
+        } else if (registrationUser.getPassword().length() > 42) {
             model.addAttribute(Constants.STATUS_ATTRIBUTE_NAME, Constants.STATUSCODE_PWTOOLONG);
-        } else if (!emailPattern.matcher(user.getEmail()).matches()) {
+        } else if (!emailPattern.matcher(registrationUser.getEmail()).matches()) {
             model.addAttribute(Constants.STATUS_ATTRIBUTE_NAME, Constants.STATUSCODE_EMAILINVALID);
         } else {
 
-            MySQL mySQL = MySQL.getInstance();
+            // Check entered information against database
+            applicationContext.refresh();
 
-            Connection connection = mySQL.getConnection();
-
-            PreparedStatement preparedStatementUsername;
-            ResultSet resultSetUsername;
-
-            PreparedStatement preparedStatementEmail;
-            ResultSet resultSetEmail;
-
-
-            try {
-                preparedStatementUsername = connection.prepareStatement("SELECT COUNT(*) AS count FROM `users` WHERE username = ?");
-                preparedStatementUsername.setString(1, user.getName());
-                resultSetUsername = preparedStatementUsername.executeQuery();
-
-                resultSetUsername.next();
-                if (resultSetUsername.getInt("count") != 0) {
+                UserDAO userDAO = applicationContext.getBean(UserDAO.class);
+                if(userDAO.getUserByName(registrationUser.getName()) != null){
                     model.addAttribute(STATUS_ATTRIBUTE_NAME, STATUSCODE_USERNAMEALREADYINUSE);
                 }
-
-                preparedStatementEmail = connection.prepareStatement("SELECT COUNT(*) AS count FROM `users` WHERE email = ?");
-                preparedStatementEmail.setString(1, user.getEmail());
-                resultSetEmail = preparedStatementEmail.executeQuery();
-
-                resultSetEmail.next();
-                if (resultSetEmail.getInt("count") != 0) {
+                if(userDAO.getUserByEMail(registrationUser.getEmail()) != null){
                     model.addAttribute(STATUS_ATTRIBUTE_NAME, STATUSCODE_EMAILALREADYINUSE);
                 }
 
-                preparedStatementEmail.close();
-                preparedStatementUsername.close();
-
-                resultSetEmail.close();
-                resultSetUsername.close();
-
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            applicationContext.close();
         }
 
 
         if (!model.containsAttribute(STATUS_ATTRIBUTE_NAME)) {
             model.addAttribute(Constants.STATUS_ATTRIBUTE_NAME, Constants.STATUSCODE_SUCREG);
-            model.addAttribute("name", user.getName());
-            model.addAttribute("email", user.getEmail());
+            model.addAttribute("name", registrationUser.getName());
+            model.addAttribute("email", registrationUser.getEmail());
 
             BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
-            MySQL mySQL = MySQL.getInstance();
+            String uuid = UUID.randomUUID().toString();
 
-            Connection connection = mySQL.getConnection();
+            User newUser = new User();
+                 newUser.setUsername(registrationUser.getName());
+                 newUser.setEmail(registrationUser.getEmail());
+                 newUser.setPassword(bCryptPasswordEncoder.encode(registrationUser.getPassword()));
+                 newUser.setRegistrationDate(System.currentTimeMillis());
+                 newUser.setVerified(false);
 
-            try (PreparedStatement preparedStatementUser = connection.prepareStatement("INSERT INTO `users` (`username`, `email`, `password`, `registrationDate`, `verified`) VALUES(?,?,?,?,?);")) {
+            RegistrationRequest request = new RegistrationRequest();
+                                request.setUsername(registrationUser.getName());
+                                request.setRegistration_uuid(uuid);
 
-                preparedStatementUser.setString(1, user.getName());
-                preparedStatementUser.setString(2, user.getEmail());
-                preparedStatementUser.setString(3, bCryptPasswordEncoder.encode(user.getPassword()));
-                preparedStatementUser.setLong(4, System.currentTimeMillis());
-                preparedStatementUser.setBoolean(5, false);
-                preparedStatementUser.executeUpdate();
+            // add user to database and insert registration request
+            applicationContext.refresh();
+                // add user
+                UserDAO userDAO = applicationContext.getBean(UserDAO.class);
+                userDAO.createNewUser(newUser);
 
-                String uuid = UUID.randomUUID().toString();
+                // insert request
+                RegistrationRequestDAO requestDAO = applicationContext.getBean(RegistrationRequestDAO.class);
+                requestDAO.addRequest(request);
 
-                PreparedStatement preparedStatementRegistration = connection.prepareStatement("INSERT INTO `registration_request` (`username`, `registration_uuid`) VALUES (?,?);");
+            applicationContext.close();
 
-                preparedStatementRegistration.setString(1, user.getName());
-                preparedStatementRegistration.setString(2, uuid);
-                preparedStatementRegistration.executeUpdate();
-
-                String url = "https://" + GeneralConfiguration.getInstance().getString("domain") + "/confirmEmail?uuid=" + uuid;
-                String[] recipients = {user.getEmail()};
-                Email.getInstance().sendEmailSSL(recipients, "DigitalJournal: Confirm your email", getEmailBody(url, user.getName()));
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            String url = "https://" + GeneralConfiguration.getInstance().getString("domain") + "/confirmEmail?uuid=" + uuid;
+            String[] recipients = {registrationUser.getEmail()};
+            Email.getInstance().sendEmailSSL(recipients, "DigitalJournal: Confirm your email", getEmailBody(url, registrationUser.getName()));
         }
         System.out.println("[RegistrationController] " + model.get(Constants.STATUS_ATTRIBUTE_NAME));
         return "home";

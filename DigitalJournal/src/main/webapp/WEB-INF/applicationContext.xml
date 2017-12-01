@@ -21,6 +21,7 @@
             <property name="annotatedClasses">
                 <list>
                     <value>de.dhbw.softwareengineering.model.User</value>
+                    <value>de.dhbw.softwareengineering.model.RegistrationRequest</value>
                 </list>
             </property>
             <property name="hibernateProperties">
@@ -34,7 +35,11 @@
         </bean>
 
 
-        <bean id="personDAO" class="de.dhbw.softwareengineering.model.dao.UserDAOImpl">
+        <bean id="userDAO" class="de.dhbw.softwareengineering.model.dao.UserDAOImpl">
+            <property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
+        </bean>
+
+        <bean id="registrationRequestDAO" class="de.dhbw.softwareengineering.model.dao.RegistrationRequestDAOImpl">
             <property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
         </bean>
 </beans>

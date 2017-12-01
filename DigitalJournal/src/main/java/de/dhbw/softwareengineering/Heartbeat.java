@@ -1,11 +1,12 @@
 package de.dhbw.softwareengineering;
 
-import de.dhbw.softwareengineering.utilities.MySQL;
+import de.dhbw.softwareengineering.model.RegistrationRequest;
+import de.dhbw.softwareengineering.model.dao.RegistrationRequestDAO;
+import de.dhbw.softwareengineering.model.dao.UserDAO;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.util.List;
+
+import static de.dhbw.softwareengineering.utilities.Constants.applicationContext;
 
 public class Heartbeat implements Runnable {
 
@@ -53,33 +54,21 @@ public class Heartbeat implements Runnable {
     }
 
     private void deleteOldRegistrationRequests() {
-        MySQL mySQL = MySQL.getInstance();
+        applicationContext.refresh();
 
-        Connection connection = mySQL.getConnection();
+            RegistrationRequestDAO requestDAO = applicationContext.getBean(RegistrationRequestDAO.class);
+            List<RegistrationRequest> requests = requestDAO.getOldRequests(System.currentTimeMillis() - TWENTYFOUR_HOURS_IN_MILLIS);
 
-        try (PreparedStatement preparedStatement = connection.prepareStatement("SELECT `registration_request`.username, `users`.registrationDate " +
-                "FROM `registration_request` " +
-                "LEFT JOIN `users` ON `registration_request`.username = `users`.username WHERE `users`.registrationDate < ?")) {
+            if (requests != null && requests.size() > 0) {
+                UserDAO userDAO = applicationContext.getBean(UserDAO.class);
 
-            preparedStatement.setLong(1, System.currentTimeMillis() - TWENTYFOUR_HOURS_IN_MILLIS);
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            while (resultSet.next()) {
-                String username = resultSet.getString("username");
-
-                PreparedStatement preparedStatementDeleteRequest = connection.prepareStatement("DELETE FROM `registration_request` WHERE `username` = ?");
-                preparedStatementDeleteRequest.setString(1, username);
-                preparedStatementDeleteRequest.executeUpdate();
-
-                PreparedStatement preparedStatementDeleteUser = connection.prepareStatement("DELETE FROM `users` WHERE `username` = ?");
-                preparedStatementDeleteUser.setString(1, username);
-                preparedStatementDeleteUser.executeUpdate();
-
-                System.out.println("[Heartbeat] deleted request for user: " + username);
+                for (RegistrationRequest request : requests) {
+                    requestDAO.removeRequest(request.getRegistration_uuid());
+                    userDAO.removeUser(request.getUsername());
+                    System.out.println("[Heartbeat] deleted request for user: " + request.getUsername());
+                }
             }
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        applicationContext.close();
     }
 }

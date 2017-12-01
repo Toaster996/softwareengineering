@@ -58,7 +58,7 @@ public class MySQL {
     }
 
     /**
-     * @return Connection (save but slower)
+     * @return Connection (createNewUser but slower)
      */
     public Connection getConnection() {
 
