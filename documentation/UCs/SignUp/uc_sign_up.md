@@ -32,13 +32,13 @@ The value entered into email has to have a correct syntax. If it does not a mess
 
 If an account already exists with the given email address a message wil be displayed and the user has to enter another email address.
 
-![email_already_in_use](email_already_in_use.jpg)
+![email_already_in_use](email_already_in_use.png)
 
 ### 2.4 The passwords do not match
 
 If the entered passwords do not match the user has to reenter them.
 
-![passwords_do_not_match](password_do_not_match.jpg)
+![passwords_missmatch](password_missmatch.png)
 
 ### 2.5 The user does not click on the link
 
