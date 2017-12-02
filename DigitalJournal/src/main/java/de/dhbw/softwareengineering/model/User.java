@@ -1,6 +1,7 @@
 package de.dhbw.softwareengineering.model;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -22,6 +23,9 @@ public class User {
     @JoinColumn(name="username")
     private RegistrationRequest registrationRequest;
 
+    @OneToMany
+    @JoinColumn(name = "username")
+    private Set<Journal> journals;
 
     public String getUsername() {
         return username;

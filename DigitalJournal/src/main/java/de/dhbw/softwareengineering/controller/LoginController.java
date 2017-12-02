@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import static de.dhbw.softwareengineering.utilities.Constants.applicationContext;
-
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+
+import static de.dhbw.softwareengineering.utilities.Constants.applicationContext;
 
 @Controller
 public class LoginController {
@@ -53,17 +53,17 @@ public class LoginController {
 
     private User loginUser(String username, String password) {
         User user = null;
-        BCryptPasswordEncoder encoder =  new BCryptPasswordEncoder();
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
         applicationContext.refresh();
 
-            UserDAO userDAO = applicationContext.getBean(UserDAO.class);
-            User possibleUser = userDAO.getUserByName(username);
-            if(possibleUser != null && encoder.matches(password, possibleUser.getPassword())){
-                if(possibleUser.isVerified()){
-                    user = possibleUser;
-                }
+        UserDAO userDAO = applicationContext.getBean(UserDAO.class);
+        User possibleUser = userDAO.getUserByName(username);
+        if (possibleUser != null && encoder.matches(password, possibleUser.getPassword())) {
+            if (possibleUser.isVerified()) {
+                user = possibleUser;
             }
+        }
 
         applicationContext.close();
 
