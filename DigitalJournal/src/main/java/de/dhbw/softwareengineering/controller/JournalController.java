@@ -32,9 +32,9 @@ public class JournalController {
         if(session.getAttribute("loggedInUser") == null)
             return "notloggedin";
         System.out.println("[JournalController] " + journal);
-        if(journal.getName().equals(""))
+        if(journal.getJournalName().equals(""))
             model.addAttribute(Constants.STATUS_ATTRIBUTE_NAME, Constants.STATUSCODE_EMPTYFORM);
-        if(journal.getName().length() > 100) {
+        if(journal.getJournalName().length() > 100) {
             model.addAttribute(Constants.STATUS_ATTRIBUTE_NAME, Constants.STATUSCODE_MODAL_TEMP);
             model.addAttribute(Constants.STATUSCODE_MODAL_HEADER, "Journalname to long!");
             model.addAttribute(Constants.STATUSCODE_MODAL_BODY, "Please enter an shorter Journalname.");

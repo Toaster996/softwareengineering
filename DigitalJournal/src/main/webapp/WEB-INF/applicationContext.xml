@@ -22,6 +22,7 @@
                 <list>
                     <value>de.dhbw.softwareengineering.model.User</value>
                     <value>de.dhbw.softwareengineering.model.RegistrationRequest</value>
+                    <value>de.dhbw.softwareengineering.model.Journal</value>
                 </list>
             </property>
             <property name="hibernateProperties">
@@ -42,4 +43,11 @@
         <bean id="registrationRequestDAO" class="de.dhbw.softwareengineering.model.dao.RegistrationRequestDAOImpl">
             <property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
         </bean>
+
+        <bean id="journalDAO" class="de.dhbw.softwareengineering.model.dao.JournalDAOImpl">
+            <property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
+        </bean>
+
+
+
 </beans>

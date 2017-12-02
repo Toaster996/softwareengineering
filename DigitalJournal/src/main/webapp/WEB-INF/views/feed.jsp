@@ -149,7 +149,7 @@
                             <div class="form-group">
                                 <label id="txt_journalname" class="control-label">Name</label>
                                 <input class="form-control form-control-lg" type="text" placeholder="Name"
-                                <form:input path="name"/>
+                                <form:input path="journalName"/>
                             </div>
                             <!-- <input type="submit" value="Submit" class="btn btn-outline-light btn-block"/>
                              <!--Alerts -->
