@@ -53,27 +53,22 @@
                 <div class="row text-dark">
                     <div class="col-md-9">
                         <!-- Card Examples -->
-                        <div class="card journal_entry">
-                            <div class="card-header">
-                                Journalname
-                            </div>
-                            <div class="card-block p-3">
-                                <h4 class="card-title">A day in a german Train Station</h4>
-                                <p class="card-text">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Deserunt
-                                    vero
-                                    temporibus numquam laudantium
-                                    possimus enim unde! Eius vero reiciendis labore, debitis necessitatibus saepe, fugit
-                                    aliquid
-                                    a ad repudiandae natus. Rem.</p>
-                                <div class="entry_btn">
-                                    <a href="/editjournal" class="btn btn-secondary">Edit</a>
-                                    <a href="/" class="btn btn-outline-secondary">Share</a>
+                        <c:forEach items="${journals}" var="journal">
+                            <div class="card journal_entry">
+                                <div class="card-block p-3">
+                                    <h4 class="card-title">${journal.journalName}</h4>
+                                    <p class="card-text">${journal.content}</p>
+                                    <div class="entry_btn">
+                                        <a href="/editjournal" class="btn btn-secondary">Edit</a>
+                                        <a href="/" class="btn btn-outline-secondary">Share</a>
+                                    </div>
+                                </div>
+                                <div class="card-footer text-muted">2 days ago${journal.date}
                                 </div>
                             </div>
-                            <div class="card-footer text-muted">
-                                2 days ago
-                            </div>
-                        </div>
+
+                        </c:forEach>
+
                         <div class="card journal_entry">
                             <div class="card-header">
                                 Journalname
@@ -149,7 +144,10 @@
                             <div class="form-group">
                                 <label id="txt_journalname" class="control-label">Name</label>
                                 <input class="form-control form-control-lg" type="text" placeholder="Name"
-                                <form:input path="name"/>
+                                <form:input path="journalName"/>
+                                <label id="txt_journalname" class="control-label">Content</label>
+                                <textarea class="form-control form-control-lg" type="text" rows="10" placeholder="What is this Journal about?"
+                                <form:textarea path="content"/>
                             </div>
                             <!-- <input type="submit" value="Submit" class="btn btn-outline-light btn-block"/>
                              <!--Alerts -->
