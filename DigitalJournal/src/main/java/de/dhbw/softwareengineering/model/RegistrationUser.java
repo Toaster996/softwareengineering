@@ -1,5 +1,7 @@
 package de.dhbw.softwareengineering.model;
 
+import de.dhbw.softwareengineering.utilities.Constants;
+
 public class RegistrationUser {
     private String name;
     private String email;
@@ -40,10 +42,6 @@ public class RegistrationUser {
 
     @Override
     public String toString() {
-        return "RegistrationUser{\n\t" +
-                "name='" + name + '\'' +
-                ",\n\temail='" + email + '\'' +
-                ",\n\tpassword='" + password + '\'' +
-                "\n}";
+        return Constants.prettyPrinter.formatObject(this);
     }
 }

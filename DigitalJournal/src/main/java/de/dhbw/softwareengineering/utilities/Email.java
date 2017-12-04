@@ -49,7 +49,7 @@ public class Email {
      * @param subject the subject of the mail
      * @param body the body of the mail (HTML is possible)
      */
-    public void sendEmailSSL(String[] recipients, String subject, String body) {
+    public boolean sendEmailSSL(String[] recipients, String subject, String body) {
         Properties props = new Properties();
         props.put("mail.smtp.host", host); 				    // SMTP Host
         props.put("mail.smtp.socketFactory.port", port); 	// SSL Port
@@ -86,10 +86,12 @@ public class Email {
             }
 
             Transport.send(msg);
-            System.out.println("Mail sending successful!");
+            Constants.prettyPrinter.info("Mail sending successful!");
+            return true;
         } catch (Exception e) {
-            System.err.println("Error while sending mail!\n\t [Message]: "+e.getMessage());
+            Constants.prettyPrinter.error(e);
         }
+        return false;
     }
 
 }

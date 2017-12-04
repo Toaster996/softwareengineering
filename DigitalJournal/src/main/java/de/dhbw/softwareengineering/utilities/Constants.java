@@ -7,6 +7,7 @@ import java.io.File;
 public class Constants {
 
     public static final ClassPathXmlApplicationContext applicationContext;
+    public static PrettyPrinter prettyPrinter = new PrettyPrinter();
 
     static{
         ApplicationContextProvider appContext = new ApplicationContextProvider();
@@ -35,5 +36,8 @@ public class Constants {
 
     public final static String TEMPLATE_DIRECTORY = "." + File.separator + "template";
     public final static String SIGNUP_EMAIL_TEMPLATE = "signup.html";
+    public final static String SUPPORT_EMAIL_TEMPLATE = "support.html";
     public final static String RECOVER_PASSWORD_EMAIL_TEMPLATE = "recover.html";
+
+    public static final String[] SUPPORT_RECIPIENT = new String[]{"support@minerlevel.de"};
 }

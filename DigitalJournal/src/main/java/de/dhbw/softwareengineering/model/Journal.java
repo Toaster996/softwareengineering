@@ -1,5 +1,7 @@
 package de.dhbw.softwareengineering.model;
 
+import de.dhbw.softwareengineering.utilities.Constants;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -62,12 +64,6 @@ public class Journal {
 
     @Override
     public String toString() {
-        return "Journal{\n\t" +
-                "ID=" + journalid +
-                ",\n\tjournalname='" + journalName + '\'' +
-                ",\n\tcontent=" + content +
-                ",\n\tusername='" + username + '\'' +
-                ",\n\tdate=" + date +
-                "\n}";
+        return Constants.prettyPrinter.formatObject(this);
     }
 }

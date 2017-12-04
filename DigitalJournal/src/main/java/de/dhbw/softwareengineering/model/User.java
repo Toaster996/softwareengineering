@@ -1,5 +1,7 @@
 package de.dhbw.softwareengineering.model;
 
+import de.dhbw.softwareengineering.utilities.Constants;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -69,11 +71,6 @@ public class User {
 
     @Override
     public String toString() {
-        return "User {\n\t" +
-                "username='" + username + '\'' +
-                ",\n\temail='" + email + '\'' +
-                ",\n\tregistrationDate=" + registrationDate +
-                ",\n\tpassword='" + password + '\'' +
-                "\n}";
+        return Constants.prettyPrinter.formatObject(this);
     }
 }

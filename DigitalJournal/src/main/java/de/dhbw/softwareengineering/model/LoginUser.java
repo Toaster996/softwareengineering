@@ -1,5 +1,7 @@
 package de.dhbw.softwareengineering.model;
 
+import de.dhbw.softwareengineering.utilities.Constants;
+
 public class LoginUser {
     private String loginName;
     private String loginPassword;
@@ -21,6 +23,6 @@ public class LoginUser {
     }
 
     public String toString(){
-        return String.format( "LoginUser {\n\tname = %s \n\tpassword = %s\n}", loginName, loginPassword);
+        return Constants.prettyPrinter.formatObject(this);
     }
 }

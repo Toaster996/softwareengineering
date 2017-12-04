@@ -1,5 +1,7 @@
 package de.dhbw.softwareengineering.model;
 
+import de.dhbw.softwareengineering.utilities.Constants;
+
 import javax.persistence.*;
 
 @Entity
@@ -30,10 +32,7 @@ public class RegistrationRequest {
 
     @Override
     public String toString() {
-        return "RegistrationRequest{\n\t" +
-                "username='" + username + '\'' +
-                ",\n\tregistration_uuid='" + registration_uuid + '\'' +
-                "\n}";
+        return Constants.prettyPrinter.formatObject(this);
     }
 
 }

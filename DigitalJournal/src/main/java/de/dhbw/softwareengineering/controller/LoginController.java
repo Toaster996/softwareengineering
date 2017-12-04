@@ -30,14 +30,13 @@ public class LoginController {
     public String verifyLogin(@Valid @ModelAttribute("loginUser") final LoginUser loginUser, HttpSession session, ModelMap model) {
         if(session.getAttribute("loggedInUser") == null){
             User user = loginUser(loginUser.getLoginName(), loginUser.getLoginPassword());
-            user.setUsername(user.getUsername().trim());
 
             if (user == null) {
                 model.addAttribute("loginError", "invalidCredentials");
                 return toHomepage(model);
             }
+            user.setUsername(user.getUsername().trim());
             session.setAttribute("loggedInUser", user);
-
         }
         return "redirect:/journal";
     }
@@ -52,7 +51,7 @@ public class LoginController {
         model.addAttribute(Constants.STATUS_ATTRIBUTE_NAME, "new");
         model.addAttribute(new RegistrationUser());
         model.addAttribute(new LoginUser());
-        return "home";
+        return "redirect:/";
     }
 
     private User loginUser(String username, String password) {

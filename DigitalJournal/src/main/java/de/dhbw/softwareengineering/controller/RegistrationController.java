@@ -1,9 +1,6 @@
 package de.dhbw.softwareengineering.controller;
 
-import de.dhbw.softwareengineering.model.LoginUser;
-import de.dhbw.softwareengineering.model.RegistrationRequest;
-import de.dhbw.softwareengineering.model.RegistrationUser;
-import de.dhbw.softwareengineering.model.User;
+import de.dhbw.softwareengineering.model.*;
 import de.dhbw.softwareengineering.model.dao.RegistrationRequestDAO;
 import de.dhbw.softwareengineering.model.dao.UserDAO;
 import de.dhbw.softwareengineering.utilities.Constants;
@@ -50,6 +47,7 @@ public class RegistrationController {
         m.addAttribute(Constants.STATUS_ATTRIBUTE_NAME, "new");
         m.addAttribute(new RegistrationUser());
         m.addAttribute(new LoginUser());
+        m.addAttribute(new ContactRequest());
 
         return "home";
     }
@@ -62,7 +60,8 @@ public class RegistrationController {
 
         if (result.hasErrors())
             return "error";
-        System.out.println("[RegistrationController] " + registrationUser);
+
+        Constants.prettyPrinter.info(registrationUser.toString());
 
         if (registrationUser.getName().equals("") || registrationUser.getEmail().equals("") || registrationUser.getPassword().equals("") || registrationUser.getPasswordConfirm().equals("")) {
             model.addAttribute(Constants.STATUS_ATTRIBUTE_NAME, Constants.STATUSCODE_EMPTYFORM);
@@ -133,7 +132,9 @@ public class RegistrationController {
             String[] recipients = {registrationUser.getEmail()};
             Email.getInstance().sendEmailSSL(recipients, "DigitalJournal: Confirm your email", getEmailBody(url, registrationUser.getName()));
         }
-        System.out.println("[RegistrationController] " + model.get(Constants.STATUS_ATTRIBUTE_NAME));
+
+        Constants.prettyPrinter.info(model.get(Constants.STATUS_ATTRIBUTE_NAME).toString());
+
         return "home";
 
     }

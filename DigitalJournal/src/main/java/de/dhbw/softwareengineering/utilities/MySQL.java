@@ -81,7 +81,7 @@ public class MySQL {
                 connection.close();
                 connection = null;
             } catch (SQLException e) {
-                System.err.println("Error closing the MySQL Connection!");
+                Constants.prettyPrinter.error(e);
                 e.printStackTrace();
             }
         }

@@ -1,4 +1,4 @@
-package de.dhbw.softwareengineering.controller;
+package de.dhbw.softwareengineering;
 
 import de.dhbw.softwareengineering.Heartbeat;
 import de.dhbw.softwareengineering.utilities.Constants;
@@ -26,10 +26,10 @@ class StartupHousekeeper {
 
     }
 
-    private void initMySQLConfiguration(){
+    private void initMySQLConfiguration() {
 
         File configurationDirectory = new File(Constants.CONFIGURATION_DIRECTORY);
-        if(!configurationDirectory.exists()) {
+        if (!configurationDirectory.exists()) {
             configurationDirectory.mkdir();
         }
 
@@ -48,7 +48,7 @@ class StartupHousekeeper {
         }
     }
 
-    private void initEmailConfiguration(){
+    private void initEmailConfiguration() {
         FileConfiguration emailConfiguration = new FileConfiguration(new File(Constants.CONFIGURATION_DIRECTORY + File.separator + Constants.EMAIL_CONFIGURATION_NAME));
 
         emailConfiguration.setDefaultValue("host", "localhost");
@@ -64,17 +64,17 @@ class StartupHousekeeper {
         }
     }
 
-    private void initSignUpEmailTemplate(){
+    private void initSignUpEmailTemplate() {
 
         File configurationDirectory = new File(Constants.TEMPLATE_DIRECTORY);
-        if(!configurationDirectory.exists()) {
+        if (!configurationDirectory.exists()) {
             configurationDirectory.mkdir();
         }
 
         File file = new File(Constants.TEMPLATE_DIRECTORY + File.separator + Constants.SIGNUP_EMAIL_TEMPLATE);
 
-        if(!file.exists()) {
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter(file,false))){
+        if (!file.exists()) {
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, false))) {
                 writer.write("Hello {$username},<br/>");
                 writer.newLine();
                 writer.write("to finish the registration process click on the following link to confirm your email: <br/><br/>");
@@ -88,7 +88,28 @@ class StartupHousekeeper {
                 writer.write("Your DigitalJournal-Team");
 
                 writer.flush();
-            } catch (IOException e){
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        file = new File(Constants.TEMPLATE_DIRECTORY + File.separator + Constants.SUPPORT_EMAIL_TEMPLATE);
+
+        if (!file.exists()) {
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, false))) {
+                writer.write("New Contact Request,<br/>");
+                writer.newLine();
+                writer.write("Email: {$email} <br/><br/>");
+                writer.newLine();
+                writer.newLine();
+                writer.write("Name: {$name} <br/><br/>");
+                writer.newLine();
+                writer.newLine();
+                writer.write("Message: {$message} <br/><br/>");
+                writer.newLine();
+                writer.newLine();
+                writer.flush();
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }

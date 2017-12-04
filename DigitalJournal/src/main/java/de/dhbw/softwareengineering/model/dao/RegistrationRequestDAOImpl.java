@@ -1,10 +1,11 @@
 package de.dhbw.softwareengineering.model.dao;
 
 import de.dhbw.softwareengineering.model.RegistrationRequest;
+import de.dhbw.softwareengineering.utilities.Constants;
+import de.dhbw.softwareengineering.utilities.HibernateUtil;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 
 import java.util.ArrayList;
@@ -29,12 +30,10 @@ public class RegistrationRequestDAOImpl implements RegistrationRequestDAO {
     }
 
     public void addRequest(RegistrationRequest request) {
-        Session session = this.sessionFactory.openSession();
-        Transaction tx = session.beginTransaction();
-        session.persist(request);
-        tx.commit();
-        session.close();
+        HibernateUtil.create(request, sessionFactory);
     }
+
+    public void removeRequest(String uuid) { HibernateUtil.delete(getRequestByUUID(uuid), sessionFactory); }
 
     public RegistrationRequest getRequestByUUID(String uuid) {
         Session session = null;
@@ -44,7 +43,7 @@ public class RegistrationRequestDAOImpl implements RegistrationRequestDAO {
             Criteria criteria = session.createCriteria(RegistrationRequest.class);
             request = (RegistrationRequest) criteria.add(Restrictions.eq("registration_uuid",uuid)).uniqueResult();
         } catch (Exception e) {
-            System.out.println("[RegistrationRequestDAOImpl] Error while getting request by UUID(\'" + uuid + "\'): " + e.getMessage());
+            Constants.prettyPrinter.error(e);
         } finally {
             if (session != null && session.isOpen()) {
                 session.close();
@@ -70,7 +69,7 @@ public class RegistrationRequestDAOImpl implements RegistrationRequestDAO {
             }
 
         } catch (Exception e) {
-            System.out.println("[RegistrationRequestDAOImpl] Error while deleting old requests: " + e.getMessage());
+            Constants.prettyPrinter.error(e);
         } finally {
             if (session != null && session.isOpen()) {
                 session.close();
@@ -78,13 +77,5 @@ public class RegistrationRequestDAOImpl implements RegistrationRequestDAO {
         }
 
         return requests;
-    }
-
-    public void removeRequest(String uuid) {
-        Session session = this.sessionFactory.openSession();
-        Transaction tx = session.beginTransaction();
-        session.delete(getRequestByUUID(uuid));
-        tx.commit();
-        session.close();
     }
 }
