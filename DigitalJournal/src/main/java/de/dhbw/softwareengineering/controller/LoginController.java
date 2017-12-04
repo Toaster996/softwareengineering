@@ -21,20 +21,24 @@ import static de.dhbw.softwareengineering.utilities.Constants.applicationContext
 public class LoginController {
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String showLoginForm(ModelMap model) {
+    public String showLoginForm(ModelMap model, HttpSession session) {
+        if(session.getAttribute("loggedInUser") != null)return "redirect:/journal";
         return toHomepage(model);
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public String verifyLogin(@Valid @ModelAttribute("loginUser") final LoginUser loginUser, HttpSession session, ModelMap model) {
-        User user = loginUser(loginUser.getLoginName(), loginUser.getLoginPassword());
-        user.setUsername(user.getUsername().trim());
-        if (user == null) {
-            model.addAttribute("loginError", "invalidCredentials");
-            return toHomepage(model);
-        }
-        session.setAttribute("loggedInUser", user);
+        if(session.getAttribute("loggedInUser") == null){
+            User user = loginUser(loginUser.getLoginName(), loginUser.getLoginPassword());
+            user.setUsername(user.getUsername().trim());
 
+            if (user == null) {
+                model.addAttribute("loginError", "invalidCredentials");
+                return toHomepage(model);
+            }
+            session.setAttribute("loggedInUser", user);
+
+        }
         return "redirect:/journal";
     }
 
