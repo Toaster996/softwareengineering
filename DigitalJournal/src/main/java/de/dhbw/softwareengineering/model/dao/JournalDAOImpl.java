@@ -35,7 +35,7 @@ public class JournalDAOImpl implements JournalDAO {
         List<Journal> journals = new ArrayList<>();
 
         Session session = this.sessionFactory.openSession();
-        Query q = session.createQuery("FROM User AS u INNER JOIN u.journals j WHERE u.username = j.username AND u.username LIKE :user");
+        Query q = session.createQuery("FROM User AS u INNER JOIN u.journals j WHERE u.username = j.username AND u.username LIKE :user ORDER BY j.date DESC");
               q.setParameter("user", user);
         List<Object> rawResult = q.list();
         System.out.println("Raw-list");
