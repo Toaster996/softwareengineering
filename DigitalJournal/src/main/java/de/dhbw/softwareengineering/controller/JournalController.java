@@ -32,6 +32,7 @@ public class JournalController {
             System.out.println(journals);
         }
         m.addAttribute("journals", journals);
+        m.addAttribute("currentTime", System.currentTimeMillis());
         applicationContext.close();
         return "feed";
     }
@@ -40,7 +41,6 @@ public class JournalController {
     public String submit(@Valid @ModelAttribute("journal") final Journal journal, final BindingResult result, final ModelMap model, HttpSession session) {
         if (result.hasErrors())
             return "error";
-        System.out.println("[JournalController] " + journal);
         if(journal.getJournalName().equals(""))
             model.addAttribute(Constants.STATUS_ATTRIBUTE_NAME, Constants.STATUSCODE_EMPTYFORM);
         if(journal.getJournalName().length() > 100) {
@@ -53,13 +53,14 @@ public class JournalController {
         //Get logged int user
         User user = (User) session.getAttribute("loggedInUser");
         journal.setUsername(user.getUsername());
-        //journal.setDate(System.currentTimeMillis());
+        journal.setDate(System.currentTimeMillis());
+
         applicationContext.refresh();
         JournalDAO journalDAO = applicationContext.getBean(JournalDAO.class);
         journalDAO.newJournal(journal);
-
         applicationContext.close();
-        return "feed";
+
+        return "redirect:/journal";
     }
 
     @RequestMapping(value = "/editjournal", method = RequestMethod.GET)

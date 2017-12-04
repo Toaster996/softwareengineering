@@ -17,7 +17,7 @@ public class Journal {
     @Column(name = "username")
     private String username;
     @Column(name = "date")
-    private Date date;
+    private long date;
 
     public int getJournalid() {
         return journalid;
@@ -51,11 +51,11 @@ public class Journal {
         this.username = username;
     }
 
-    public Date getDate() {
+    public long getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(long date) {
         this.date = date;
     }
 

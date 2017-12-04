@@ -9,6 +9,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -63,7 +64,9 @@
                                         <a href="/" class="btn btn-outline-secondary">Share</a>
                                     </div>
                                 </div>
-                                <div class="card-footer text-muted">2 days ago${journal.date}
+                                <jsp:useBean id="dateValue" class="java.util.Date"/>
+                                <jsp:setProperty name="dateValue" property="time" value="${journal.date}"/>
+                                <div class="card-footer text-muted"> <fmt:formatDate value="${dateValue}" pattern="MM/dd/yyyy HH:mm"/>
                                 </div>
                             </div>
 
