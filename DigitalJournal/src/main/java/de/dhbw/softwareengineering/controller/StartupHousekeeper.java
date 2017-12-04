@@ -1,4 +1,4 @@
-package de.dhbw.softwareengineering;
+package de.dhbw.softwareengineering.controller;
 
 import de.dhbw.softwareengineering.Heartbeat;
 import de.dhbw.softwareengineering.utilities.Constants;
@@ -17,17 +17,14 @@ class StartupHousekeeper {
 
     @EventListener(ContextRefreshedEvent.class)
     void contextRefreshedEvent() {
-
         initMySQLConfiguration();
         initEmailConfiguration();
         initSignUpEmailTemplate();
 
         new Heartbeat();
-
     }
 
     private void initMySQLConfiguration() {
-
         File configurationDirectory = new File(Constants.CONFIGURATION_DIRECTORY);
         if (!configurationDirectory.exists()) {
             configurationDirectory.mkdir();
@@ -93,10 +90,10 @@ class StartupHousekeeper {
             }
         }
 
-        file = new File(Constants.TEMPLATE_DIRECTORY + File.separator + Constants.SUPPORT_EMAIL_TEMPLATE);
+        File file2 = new File(Constants.TEMPLATE_DIRECTORY + File.separator + Constants.SUPPORT_EMAIL_TEMPLATE);
 
-        if (!file.exists()) {
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, false))) {
+        if (!file2.exists()) {
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(file2, false))) {
                 writer.write("New Contact Request,<br/>");
                 writer.newLine();
                 writer.write("Email: {$email} <br/><br/>");
@@ -108,7 +105,9 @@ class StartupHousekeeper {
                 writer.write("Message: {$message} <br/><br/>");
                 writer.newLine();
                 writer.newLine();
+
                 writer.flush();
+                writer.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }

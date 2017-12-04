@@ -48,12 +48,11 @@ public class Heartbeat implements Runnable {
         new Thread(this).start();
     }
 
-    private void executeEverySecond() {
-        sendContactRequestsToSupport();
-    }
+    private void executeEverySecond() {}
 
     private void executeEveryMinute() {
         deleteOldRegistrationRequests();
+        sendContactRequestsToSupport();
     }
 
     private void executeEveryHour() {
@@ -64,13 +63,12 @@ public class Heartbeat implements Runnable {
         applicationContext.refresh();
             ContactRequestDAO requestDAO = applicationContext.getBean(ContactRequestDAO.class);
             List<ContactRequest> requests = requestDAO.getUnsentRequests();
-
             for(ContactRequest request : requests){
                 if(Email.getInstance().sendEmailSSL(Constants.SUPPORT_RECIPIENT, "DigitalJournal: ContactRequest from " + request.getName(), getEmailBody(request))){
                     requestDAO.solveRequest(request);
                 }else{
-                    prettyPrinter.error(new Exception("Could not send mail to " + request.getEmail() + "! Deleting request..."));
-                    requestDAO.deleteRequest(request);
+                    //prettyPrinter.error(new Exception("Could not send mail to support! Deleting request..."));
+                    //requestDAO.deleteRequest(request);
                 }
             }
         applicationContext.close();
