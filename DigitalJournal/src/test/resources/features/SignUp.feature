@@ -4,7 +4,7 @@ Feature:
   so that i have an account
 
   Scenario: Successful registration
-    Given I navigate to "index.html"
+    Given I navigate to ""
     And I click on element having id "btn_log-in"
     When I enter "Jonas" into input field having id "txt_name"
     And I enter "jonas@example.com" into input field having id "txt_email"
@@ -14,7 +14,7 @@ Feature:
     Then I should see modal "mdl_sucrec"
 
   Scenario: Username already taken
-    Given I navigate to "index.html"
+    Given I navigate to ""
     And I click on element having id "btn_log-in"
     And user "duplicate" exists
     When I enter "duplicate" into input field having id "txt_name"
@@ -25,7 +25,7 @@ Feature:
     Then I should see modal "mdl_useduser"
 
   Scenario: Email already taken
-    Given I navigate to "index.html"
+    Given I navigate to ""
     And I click on element having id "btn_log-in"
     And email "duplicate@example.com" taken
     When I enter "jonas" into input field having id "txt_name"
@@ -36,7 +36,7 @@ Feature:
     Then I should see modal "mdl_usedemail"
 
   Scenario: Email has invalid format
-    Given I navigate to "index.html"
+    Given I navigate to ""
     And I click on element having id "btn_log-in"
     When I enter "jonas" into input field having id "txt_name"
     And I enter "error" into input field having id "txt_email"
@@ -46,7 +46,7 @@ Feature:
     Then element having id "alt_email" should be present
 
   Scenario: Passwords do not match
-    Given I navigate to "index.html"
+    Given I navigate to ""
     And I click on element having id "btn_log-in"
     When I enter "jonas" into input field having id "txt_name"
     And I enter "jonas@example.com" into input field having id "txt_email"

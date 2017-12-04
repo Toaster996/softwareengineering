@@ -1,7 +1,5 @@
 package de.dhbw.softwareengineering.model;
 
-import org.hibernate.annotations.ForeignKey;
-
 import javax.persistence.*;
 import java.util.Date;
 
@@ -11,32 +9,30 @@ public class Journal {
 
     @Id
     @Column(name = "journalid")
-    private int id;
+    private int journalid;
     @Column(name = "journalname")
-    private String name;
-    @ForeignKey(name = "ownername")
-    private User user;
+    private String journalName;
     @Column(name = "content")
     private String content;
+    @Column(name = "username")
+    private String username;
     @Column(name = "date")
-    private Date date;
+    private long date;
 
-    @OneToOne
-    @JoinColumn(name = "journal")
-    public String getName() {
-        return name;
+    public int getJournalid() {
+        return journalid;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setJournalid(int journalid) {
+        this.journalid = journalid;
     }
 
-    public User getUser() {
-        return user;
+    public String getJournalName() {
+        return journalName;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setJournalName(String journalName) {
+        this.journalName = journalName;
     }
 
     public String getContent() {
@@ -47,21 +43,31 @@ public class Journal {
         this.content = content;
     }
 
-    public Date getDate() {
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public long getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(long date) {
         this.date = date;
     }
 
+
     @Override
     public String toString() {
-        return "Journal{" +
-                "name='" + name + '\'' +
-                ", user=" + user +
-                ", content='" + content + '\'' +
-                ", date=" + date +
-                '}';
+        return "Journal{\n\t" +
+                "ID=" + journalid +
+                ",\n\tjournalname='" + journalName + '\'' +
+                ",\n\tcontent=" + content +
+                ",\n\tusername='" + username + '\'' +
+                ",\n\tdate=" + date +
+                "\n}";
     }
 }

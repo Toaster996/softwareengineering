@@ -101,9 +101,9 @@
                                                             <input type="password" username="loginPassword" class="form-control form-control-lg"
                                                                    placeholder="Password" <form:input path="loginPassword"/>
                                                         </div>
-                                                        <input type="button" value="Sign Up" id="btn_log-in"
-                                                               class="btn btn-outline-light btn-block">
                                                         <input type="submit" value="Log In"
+                                                               class="btn btn-outline-light btn-block">
+                                                        <input type="button" value="Sign Up" id="btn_log-in"
                                                                class="btn btn-outline-light btn-block">
                                                         <jsp:include page="Forms/alerts.jsp"/>
                                                     </form:form>

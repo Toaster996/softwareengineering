@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.UUID;
 import java.util.regex.Pattern;
@@ -41,16 +42,24 @@ public class RegistrationController {
     private static String emailBody;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String showForm(Model m) {
+    public String showForm(Model m, HttpSession session) {
+        if(session.getAttribute("loggedInUser")!=null){
+            return "redirect:/journal";
+        }
+
         m.addAttribute(Constants.STATUS_ATTRIBUTE_NAME, "new");
         m.addAttribute(new RegistrationUser());
         m.addAttribute(new LoginUser());
+
         return "home";
-        //   return new ModelAndView("home", "user", new RegistrationUser());
     }
 
     @RequestMapping(value = "/addUser", method = RequestMethod.POST)
-    public String submit(@Valid @ModelAttribute("registrationUser") final RegistrationUser registrationUser, final BindingResult result, final ModelMap model) {
+    public String submit(@Valid @ModelAttribute("registrationUser") final RegistrationUser registrationUser, final BindingResult result, final ModelMap model, HttpSession session) {
+        if(session.getAttribute("loggedInUser")!=null){
+            return "redirect:/journal";
+        }
+
         if (result.hasErrors())
             return "error";
         System.out.println("[RegistrationController] " + registrationUser);

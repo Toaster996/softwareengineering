@@ -14,14 +14,27 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.List;
 
 import static de.dhbw.softwareengineering.utilities.Constants.applicationContext;
 
 @Controller
 public class JournalController {
     @RequestMapping(value = "/journal", method = RequestMethod.GET)
-    public String showForm(Model m) {
+    public String showForm(Model m, HttpSession session) {
         m.addAttribute("journal", new Journal());
+        //Load all Journals
+        applicationContext.refresh();
+        JournalDAO journalDAO = applicationContext.getBean(JournalDAO.class);
+        User user = (User) session.getAttribute("loggedInUser");
+        List<Journal> journals = journalDAO.getallJournals(user.getUsername());
+
+        for(Journal j: journals){
+            System.out.println(journals);
+        }
+        m.addAttribute("journals", journals);
+        m.addAttribute("currentTime", System.currentTimeMillis());
+        applicationContext.close();
         return "feed";
     }
 
@@ -29,9 +42,6 @@ public class JournalController {
     public String submit(@Valid @ModelAttribute("journal") final Journal journal, final BindingResult result, final ModelMap model, HttpSession session) {
         if (result.hasErrors())
             return "error";
-        if(session.getAttribute("loggedInUser") == null)
-            return "notloggedin";
-        System.out.println("[JournalController] " + journal);
         if(journal.getJournalName().equals(""))
             model.addAttribute(Constants.STATUS_ATTRIBUTE_NAME, Constants.STATUSCODE_EMPTYFORM);
         if(journal.getJournalName().length() > 100) {
@@ -40,25 +50,25 @@ public class JournalController {
             model.addAttribute(Constants.STATUSCODE_MODAL_BODY, "Please enter an shorter Journalname.");
         }
 
-        System.out.println("[JournalController] " + model.get("status"));
+        System.out.println("[JournalController] Status: " + model.get("status"));
         //Get logged int user
-
         User user = (User) session.getAttribute("loggedInUser");
-        journal.setUser(user);
+        journal.setUsername(user.getUsername());
+        journal.setDate(System.currentTimeMillis());
 
         applicationContext.refresh();
         JournalDAO journalDAO = applicationContext.getBean(JournalDAO.class);
         journalDAO.newJournal(journal);
-
         applicationContext.close();
-        return "feed";
+
+        return "redirect:/journal";
     }
 
     @RequestMapping(value = "/editjournal", method = RequestMethod.GET)
     public String show(Model m, HttpSession session) {
         m.addAttribute("journal", new Journal());
         if(session.getAttribute("loggedInUser") == null)
-            return "notloggedin";
+            return "error";
         return "editjournal";
     }
 

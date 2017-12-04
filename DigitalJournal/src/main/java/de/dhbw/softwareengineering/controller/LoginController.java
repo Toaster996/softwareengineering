@@ -12,29 +12,33 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import static de.dhbw.softwareengineering.utilities.Constants.applicationContext;
-
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+
+import static de.dhbw.softwareengineering.utilities.Constants.applicationContext;
 
 @Controller
 public class LoginController {
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String showLoginForm(ModelMap model) {
+    public String showLoginForm(ModelMap model, HttpSession session) {
+        if(session.getAttribute("loggedInUser") != null)return "redirect:/journal";
         return toHomepage(model);
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public String verifyLogin(@Valid @ModelAttribute("loginUser") final LoginUser loginUser, HttpSession session, ModelMap model) {
-        User user = loginUser(loginUser.getLoginName(), loginUser.getLoginPassword());
+        if(session.getAttribute("loggedInUser") == null){
+            User user = loginUser(loginUser.getLoginName(), loginUser.getLoginPassword());
+            user.setUsername(user.getUsername().trim());
 
-        if (user == null) {
-            model.addAttribute("loginError", "invalidCredentials");
-            return toHomepage(model);
+            if (user == null) {
+                model.addAttribute("loginError", "invalidCredentials");
+                return toHomepage(model);
+            }
+            session.setAttribute("loggedInUser", user);
+
         }
-        session.setAttribute("loggedInUser", user);
-
         return "redirect:/journal";
     }
 
@@ -53,17 +57,17 @@ public class LoginController {
 
     private User loginUser(String username, String password) {
         User user = null;
-        BCryptPasswordEncoder encoder =  new BCryptPasswordEncoder();
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
         applicationContext.refresh();
 
-            UserDAO userDAO = applicationContext.getBean(UserDAO.class);
-            User possibleUser = userDAO.getUserByName(username);
-            if(possibleUser != null && encoder.matches(password, possibleUser.getPassword())){
-                if(possibleUser.isVerified()){
-                    user = possibleUser;
-                }
+        UserDAO userDAO = applicationContext.getBean(UserDAO.class);
+        User possibleUser = userDAO.getUserByName(username);
+        if (possibleUser != null && encoder.matches(password, possibleUser.getPassword())) {
+            if (possibleUser.isVerified()) {
+                user = possibleUser;
             }
+        }
 
         applicationContext.close();
 
