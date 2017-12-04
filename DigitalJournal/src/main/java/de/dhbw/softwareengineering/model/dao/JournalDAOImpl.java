@@ -1,7 +1,6 @@
 package de.dhbw.softwareengineering.model.dao;
 
 import de.dhbw.softwareengineering.model.Journal;
-import de.dhbw.softwareengineering.model.RegistrationRequest;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -33,18 +32,20 @@ public class JournalDAOImpl implements JournalDAO {
 
     @Override
     public List<Journal> getallJournals(String user) {
-        List<Journal> journals = new ArrayList<>();;
+        List<Journal> journals = new ArrayList<>();
 
         Session session = this.sessionFactory.openSession();
         Query q = session.createQuery("FROM User AS u INNER JOIN u.journals j WHERE u.username = j.username AND u.username LIKE :user");
               q.setParameter("user", user);
         List<Object> rawResult = q.list();
+        System.out.println("Raw-list");
         if(rawResult.size() > 0){
             for(Object o : rawResult) {
                 Object rawJournal = ((Object[]) o)[1];
                 if (rawJournal instanceof Journal) {
                     Journal j = (Journal) rawJournal;
-                    if (j != null) journals.add(j);
+                    System.out.println(j);
+                    journals.add(j);
                 }
             }
         }

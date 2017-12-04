@@ -28,6 +28,7 @@ public class JournalController {
         JournalDAO journalDAO = applicationContext.getBean(JournalDAO.class);
         User user = (User) session.getAttribute("loggedInUser");
         List<Journal> journals = journalDAO.getallJournals(user.getUsername());
+
         for(Journal j: journals){
             System.out.println(journals);
         }

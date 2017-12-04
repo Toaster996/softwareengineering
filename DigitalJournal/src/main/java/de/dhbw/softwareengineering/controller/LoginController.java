@@ -28,7 +28,7 @@ public class LoginController {
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public String verifyLogin(@Valid @ModelAttribute("loginUser") final LoginUser loginUser, HttpSession session, ModelMap model) {
         User user = loginUser(loginUser.getLoginName(), loginUser.getLoginPassword());
-
+        user.setUsername(user.getUsername().trim());
         if (user == null) {
             model.addAttribute("loginError", "invalidCredentials");
             return toHomepage(model);
