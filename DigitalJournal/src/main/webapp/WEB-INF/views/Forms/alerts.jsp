@@ -18,7 +18,7 @@
         <hr>
         <div class="alert alert-danger alert-dismissable">
             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-            <strong>Email mismatch!</strong> Please retry with an valid Email.
+            <strong>Email invalid!</strong> Please retry with an valid Email.
         </div
     </c:when>
     <c:when test="${status =='pwtooshort'}">

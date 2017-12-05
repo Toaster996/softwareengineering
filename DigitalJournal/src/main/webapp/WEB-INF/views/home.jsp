@@ -83,7 +83,7 @@
                                         <h3>Welcome, ${username}! </h3>
                                         <p>We sent you an email to your address ${email}. Please click on the link you
                                             can find there within 24 hours.</p>
-                                        <input type="submit" value="Create your Journal!" href="#"
+                                        <input type="submit" value="Create your Journal!" href="/journal"
                                                class="btn btn-outline-light mr-3 ml-3">
                                     </c:when>
                                     <c:otherwise> <!--In the otherwise case, we have to show forms-->

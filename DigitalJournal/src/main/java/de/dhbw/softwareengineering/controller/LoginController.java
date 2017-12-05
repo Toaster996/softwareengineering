@@ -1,5 +1,6 @@
 package de.dhbw.softwareengineering.controller;
 
+import de.dhbw.softwareengineering.model.ContactRequest;
 import de.dhbw.softwareengineering.model.LoginUser;
 import de.dhbw.softwareengineering.model.RegistrationUser;
 import de.dhbw.softwareengineering.model.User;
@@ -51,6 +52,7 @@ public class LoginController {
         model.addAttribute(Constants.STATUS_ATTRIBUTE_NAME, "new");
         model.addAttribute(new RegistrationUser());
         model.addAttribute(new LoginUser());
+        model.addAttribute(new ContactRequest());
         return "redirect:/";
     }
 
@@ -69,7 +71,6 @@ public class LoginController {
         }
 
         applicationContext.close();
-
         return user;
     }
 }

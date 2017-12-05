@@ -23,9 +23,10 @@ import static de.dhbw.softwareengineering.utilities.Constants.applicationContext
 public class JournalController {
     @RequestMapping(value = "/journal", method = RequestMethod.GET)
     public String showForm(Model m, HttpSession session) {
+        m.addAttribute(new ContactRequest());
         if(session.getAttribute("loggedInUser") == null) return "notloggedin";
         m.addAttribute("journal", new Journal());
-        m.addAttribute(new ContactRequest());
+
         //Load all Journals
         applicationContext.refresh();
             JournalDAO journalDAO = applicationContext.getBean(JournalDAO.class);

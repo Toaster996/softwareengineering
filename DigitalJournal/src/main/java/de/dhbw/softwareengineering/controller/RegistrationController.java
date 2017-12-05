@@ -40,7 +40,7 @@ public class RegistrationController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String showForm(Model m, HttpSession session) {
-        if(session.getAttribute("loggedInUser")!=null){
+        if (session.getAttribute("loggedInUser") != null) {
             return "redirect:/journal";
         }
 
@@ -54,10 +54,10 @@ public class RegistrationController {
 
     @RequestMapping(value = "/addUser", method = RequestMethod.POST)
     public String submit(@Valid @ModelAttribute("registrationUser") final RegistrationUser registrationUser, final BindingResult result, final ModelMap model, HttpSession session) {
-        if(session.getAttribute("loggedInUser")!=null){
+        if (session.getAttribute("loggedInUser") != null) {
             return "redirect:/journal";
         }
-
+        model.addAttribute(new ContactRequest());
         if (result.hasErrors())
             return "error";
 
@@ -70,7 +70,7 @@ public class RegistrationController {
         } else if (registrationUser.getName().length() > 20) {
             model.addAttribute(Constants.STATUS_ATTRIBUTE_NAME, Constants.STATUSCODE_USERNAMETOOLONG);
         } else if (!usernamePattern.matcher(registrationUser.getName()).matches()) {
-            model.addAttribute(STATUS_ATTRIBUTE_NAME, STATUSCODE_ALPHANUMERIC);
+            model.addAttribute(Constants.STATUS_ATTRIBUTE_NAME, STATUSCODE_ALPHANUMERIC);
         } else if (registrationUser.getEmail().length() > 100) {
             model.addAttribute(Constants.STATUS_ATTRIBUTE_NAME, Constants.STATUSCODE_EMAILTOOLONG);
         } else if (registrationUser.getPassword().length() < 6) {
@@ -80,10 +80,8 @@ public class RegistrationController {
         } else if (!emailPattern.matcher(registrationUser.getEmail()).matches()) {
             model.addAttribute(Constants.STATUS_ATTRIBUTE_NAME, Constants.STATUSCODE_EMAILINVALID);
         } else {
-
             // Check entered information against database
             applicationContext.refresh();
-
             UserDAO userDAO = applicationContext.getBean(UserDAO.class);
             if (userDAO.getUserByName(registrationUser.getName()) != null) {
                 model.addAttribute(STATUS_ATTRIBUTE_NAME, STATUSCODE_USERNAMEALREADYINUSE);
@@ -91,14 +89,13 @@ public class RegistrationController {
             if (userDAO.getUserByEMail(registrationUser.getEmail()) != null) {
                 model.addAttribute(STATUS_ATTRIBUTE_NAME, STATUSCODE_EMAILALREADYINUSE);
             }
-
             applicationContext.close();
         }
 
 
         if (!model.containsAttribute(STATUS_ATTRIBUTE_NAME)) {
             model.addAttribute(Constants.STATUS_ATTRIBUTE_NAME, Constants.STATUSCODE_SUCREG);
-            model.addAttribute("name", registrationUser.getName());
+            model.addAttribute("username", registrationUser.getName());
             model.addAttribute("email", registrationUser.getEmail());
 
             BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
@@ -134,14 +131,11 @@ public class RegistrationController {
         }
 
         Constants.prettyPrinter.info(model.get(Constants.STATUS_ATTRIBUTE_NAME).toString());
-
         return "home";
-
     }
 
     private String getEmailBody(String url, String username) {
         emailBody = Templates.getInstance().getTemplate(Constants.SIGNUP_EMAIL_TEMPLATE);
-
         return emailBody.replace("{$username}", username).replace("{$link}", url);
     }
 }

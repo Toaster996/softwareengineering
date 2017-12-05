@@ -45,7 +45,7 @@
         <hr>
         <h6 class="page-information">Please log in to start your journey with an DigitalJournal.</h6>
         <hr>
-        <a href="/" class="btn btn-primary">Back to home.</a>
+        <a href="/" class="btn btn-primary mb-5">Back to home.</a>
     </div>
 
 </main>

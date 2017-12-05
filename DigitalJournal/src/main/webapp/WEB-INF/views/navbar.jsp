@@ -1,6 +1,8 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
     <div class="container">
-        <a href="../../resources/html2/index.html" class="navbar-brand">DigitalJournal</a>
+        <a href="/" class="navbar-brand">DigitalJournal</a>
         <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -18,6 +20,11 @@
                 <li class="nav-item">
                     <a href="#share-head-section" class="nav-link">Share</a>
                 </li>
+                <c:choose>
+                    <c:when test="${loggedInUser != null}">
+                        <a href="/logout" class="nav-link">Log Out</a>
+                    </c:when>
+                </c:choose>
             </ul>
         </div>
     </div>

@@ -10,7 +10,7 @@
         <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
         <property name="url" value="jdbc:mysql://localhost:3306/digital_journal"/>
         <property name="username" value="root"/>
-        <property name="password" value="asdf"/>
+        <property name="password" value="7053Informatik12"/>
     </bean>
 
 

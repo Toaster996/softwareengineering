@@ -45,12 +45,7 @@
 
 <main role="main">
     <div class="container journal_conatainer">
-        <c:choose>
-            <c:when test="${empty loggedInUser}">
-                <jsp:include page="notloggedin.jsp"></jsp:include>
-            </c:when>
-            <c:otherwise>
-                <h2>Your Journals</h2>
+                <h2 class="pb-2">Your Journals</h2>
                 <div class="row text-dark">
                     <div class="col-md-9">
                         <!-- Card Examples -->
@@ -58,10 +53,10 @@
                             <div class="card journal_entry">
                                 <div class="card-block p-3">
                                     <h4 class="card-title">${journal.journalName}</h4>
-                                    <p class="card-text">${journal.content}</p>
+                                    <p class="card-text text-muted">${journal.content}</p>
                                     <div class="entry_btn">
-                                        <a href="/editjournal" class="btn btn-secondary">Edit</a>
-                                        <a href="/" class="btn btn-outline-secondary">Share</a>
+                                        <a href="/editjournal" class="btn btn-secondary btn_entry">Edit</a>
+                                        <a href="/" class="btn btn-outline-secondary btn_entry_outline">Share</a>
                                     </div>
                                 </div>
                                 <jsp:useBean id="dateValue" class="java.util.Date"/>
@@ -73,12 +68,9 @@
                         </c:forEach>
 
                         <div class="card journal_entry">
-                            <div class="card-header">
-                                Journalname
-                            </div>
                             <div class="card-block p-3">
                                 <h4 class="card-title">How I won against the eye of the Tiger.</h4>
-                                <p class="card-text">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Deserunt
+                                <p class="card-text text-muted">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Deserunt
                                     vero
                                     temporibus numquam laudantium
                                     possimus enim unde! Eius vero reiciendis labore, debitis necessitatibus saepe, fugit
@@ -103,9 +95,7 @@
                                 data-target=".bd-example-modal-lg">Create new Journal
                         </button>
 
-                        <form action="/logout">
-                            <input type="submit" value="Log Out" class="btn btn-primary btn-block journal_entry">
-                        </form>
+
 
                         <div class="card" style="width: 20rem;">
                             <!-- <img class="card-img-top" src="res/img/generic_friends.jpg" alt="Card image cap"> -->
@@ -124,8 +114,6 @@
                         </div>
                     </div>
                 </div>
-            </c:otherwise>
-        </c:choose>
     </div>
 
     <!-- new Journal Feed -->
