@@ -112,5 +112,30 @@ class StartupHousekeeper {
                 e.printStackTrace();
             }
         }
+
+        File file3 = new File(Constants.TEMPLATE_DIRECTORY + File.separator + Constants.RECOVER_PASSWORD_EMAIL_TEMPLATE);
+
+        if (!file3.exists()) {
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(file3, false))) {
+                writer.write("Hello {$username},<br/>");
+                writer.newLine();
+                writer.write("to change your password click on the following link: <br/><br/>");
+                writer.newLine();
+                writer.newLine();
+                writer.write("<a href=\"{$link}\">Change Password</a> <br/><br/>");
+                writer.newLine();
+                writer.newLine();
+                writer.write("If you did not requested a password change just ignore this mail!");
+                writer.newLine();
+                writer.newLine();
+                writer.write("Kind regards, <br/>");
+                writer.newLine();
+                writer.write("Your DigitalJournal-Team");
+
+                writer.flush();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
