@@ -23,6 +23,7 @@ public class PrettyPrinter {
      * @return a formatted String
      */
     public String formatObject(Object object) {
+        if(object == null)return "null {}";
         // Get the object's classname
         String result = String.format("%s {\n", object.getClass().getSimpleName());
         int longestFieldName = -1;
@@ -68,7 +69,7 @@ public class PrettyPrinter {
      *
      * @param msg the message to output
      */
-    public void info(String msg) {
+    public void info(Object msg) {
         Class<?> class_ = getCallerClass();
         System.out.println(String.format("[%s] %s", class_ != null ? getCallerClass().getSimpleName() : "Unknown caller", msg));
     }

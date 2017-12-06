@@ -67,9 +67,9 @@ public class Email {
         };
 
         Session session = Session.getDefaultInstance(props, auth);
-
+        MimeMessage msg = null;
         try {
-            MimeMessage msg = new MimeMessage(session);
+            msg = new MimeMessage(session);
 
             msg.addHeader("Content-type", "text/html; charset=UTF-8");
             msg.addHeader("format", "flowed");
@@ -82,6 +82,7 @@ public class Email {
             msg.setSentDate(new Date());
 
             for(String recipient : recipients){
+                System.out.println(recipient);
                 msg.addRecipients(Message.RecipientType.TO, InternetAddress.parse(recipient, false));
             }
 

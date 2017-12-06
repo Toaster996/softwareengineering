@@ -1,14 +1,15 @@
 package de.dhbw.softwareengineering.controller;
 
-import de.dhbw.softwareengineering.model.PasswordRecoveryRequest;
-import de.dhbw.softwareengineering.model.User;
+import de.dhbw.softwareengineering.model.*;
 import de.dhbw.softwareengineering.model.dao.PasswordRecoveryRequestDAO;
 import de.dhbw.softwareengineering.model.dao.UserDAO;
 import de.dhbw.softwareengineering.utilities.Constants;
 import de.dhbw.softwareengineering.utilities.Email;
 import de.dhbw.softwareengineering.utilities.GeneralConfiguration;
 import de.dhbw.softwareengineering.utilities.Templates;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,7 +20,9 @@ import javax.validation.Valid;
 import java.util.UUID;
 
 import static de.dhbw.softwareengineering.utilities.Constants.applicationContext;
+import static de.dhbw.softwareengineering.utilities.Constants.prettyPrinter;
 
+@Controller
 public class RecoverPasswordController {
 
     /**
@@ -32,6 +35,9 @@ public class RecoverPasswordController {
      */
     @RequestMapping(value = "/recoverpassword", method = RequestMethod.POST)
     public String index(@RequestParam("email") String email, Model model) {
+        model.addAttribute(new RegistrationUser());
+        model.addAttribute(new LoginUser());
+        model.addAttribute(new ContactRequest());
 
         applicationContext.refresh();
 
@@ -46,6 +52,7 @@ public class RecoverPasswordController {
 
             String url = "https://" + GeneralConfiguration.getInstance().getString("domain") + "/recoverpassword?uuid=" + UUID.randomUUID().toString();
             String[] recipients = {user.getEmail()};
+
             Email.getInstance().sendEmailSSL(recipients, "DigitalJournal: Change your password", getEmailBody(url, user.getUsername()));
         } else{
             model.addAttribute("recover", "false");
@@ -55,7 +62,10 @@ public class RecoverPasswordController {
     }
 
     @RequestMapping(value = "/changepassword", method = RequestMethod.POST)
-    public String index(@RequestParam("password") String password, @RequestParam("password_confirm") String password_confirm, Model model, @RequestParam(value = "uuid") String uuid) {
+    public String index(@RequestParam("password") String password, @RequestParam("password_confirm") String password_confirm, ModelMap model, @RequestParam(value = "uuid") String uuid) {
+
+        prettyPrinter.info(model.get("username"));
+
         return "redirect:/";
     }
 
@@ -63,11 +73,11 @@ public class RecoverPasswordController {
     public String index(Model model, @RequestParam(value = "uuid") String uuid) {
 
         applicationContext.refresh();
-        PasswordRecoveryRequestDAO recoveryRequestDAO = applicationContext.getBean(PasswordRecoveryRequestDAO.class);
-        PasswordRecoveryRequest passwordRecoveryRequest = recoveryRequestDAO.getRequestByUUID(uuid);
+            PasswordRecoveryRequestDAO recoveryRequestDAO = applicationContext.getBean(PasswordRecoveryRequestDAO.class);
+            PasswordRecoveryRequest passwordRecoveryRequest = recoveryRequestDAO.getRequestByUUID(uuid);
 
-        UserDAO userDAO = applicationContext.getBean(UserDAO.class);
-        User user = userDAO.getUserByName(passwordRecoveryRequest.getUsername());
+            UserDAO userDAO = applicationContext.getBean(UserDAO.class);
+            User user = userDAO.getUserByName(passwordRecoveryRequest.getUsername());
         applicationContext.close();
 
         if (passwordRecoveryRequest == null || user == null) {

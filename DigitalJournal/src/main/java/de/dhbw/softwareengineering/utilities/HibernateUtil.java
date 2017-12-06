@@ -1,11 +1,17 @@
 package de.dhbw.softwareengineering.utilities;
 
+import de.dhbw.softwareengineering.model.Journal;
 import de.dhbw.softwareengineering.model.User;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Projection;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 
 import javax.persistence.Entity;
+import java.util.List;
 
 /**
  * @author straub-florian
@@ -70,18 +76,17 @@ public class HibernateUtil {
 
     /**
      * Gets an DAO from the database through the given parameters
-     * @param clazz The DAO Class
-     * @param identifier basically the column
+     * @param clazz the @Entity class
+     * @param columnName the column
      * @param sessionFactory the session factory
      * @return a DAO object
      */
-    public static Object getDAOByIdentifier(Class<?> clazz, String identifier, SessionFactory sessionFactory) {
+    public static Object getData(Class<?> clazz, String columnName, Object value, SessionFactory sessionFactory) {
         Session session = null;
         Object o = null;
         try {
             session = sessionFactory.openSession();
-            o = session.get(clazz, identifier);
-            session.close();
+            o = session.createCriteria(clazz).add(Restrictions.eq(columnName,value)).uniqueResult();
         } catch (Exception e) {
             Constants.prettyPrinter.error(e);
         } finally {
@@ -89,6 +94,7 @@ public class HibernateUtil {
                 session.close();
             }
         }
+
         return o;
     }
 

@@ -1,7 +1,6 @@
 package de.dhbw.softwareengineering.model.dao;
 
 import de.dhbw.softwareengineering.model.User;
-import de.dhbw.softwareengineering.utilities.Constants;
 import de.dhbw.softwareengineering.utilities.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -47,11 +46,11 @@ public class UserDAOImpl implements UserDAO {
     }
 
     public User getUserByName(String username) {
-        return (User) HibernateUtil.getDAOByIdentifier(User.class,username,sessionFactory);
+        return (User) HibernateUtil.getData(User.class,"username", username,sessionFactory);
     }
 
     @Override
     public User getUserByEMail(String email) {
-        return (User) HibernateUtil.getDAOByIdentifier(User.class,email,sessionFactory);
+        return (User) HibernateUtil.getData(User.class,"email",email,sessionFactory);
     }
 }

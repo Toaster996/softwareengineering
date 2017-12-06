@@ -1,12 +1,8 @@
 package de.dhbw.softwareengineering.model.dao;
 
-import de.dhbw.softwareengineering.model.ContactRequest;
 import de.dhbw.softwareengineering.model.PasswordRecoveryRequest;
 import de.dhbw.softwareengineering.utilities.HibernateUtil;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-
-import java.util.List;
 
 public class PasswordRecoveryRequestDAOImpl implements PasswordRecoveryRequestDAO {
 
@@ -25,6 +21,6 @@ public class PasswordRecoveryRequestDAOImpl implements PasswordRecoveryRequestDA
     }
 
     public PasswordRecoveryRequest getRequestByUUID(String uuid) {
-        return (PasswordRecoveryRequest)HibernateUtil.getDAOByIdentifier(PasswordRecoveryRequest.class,uuid,sessionFactory);
+        return (PasswordRecoveryRequest)HibernateUtil.getData(PasswordRecoveryRequest.class, "recoveryUUID",uuid,sessionFactory);
     }
 }

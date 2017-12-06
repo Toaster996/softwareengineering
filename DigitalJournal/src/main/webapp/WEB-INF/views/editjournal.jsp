@@ -65,7 +65,7 @@
 
                         <div class="form-group">
                             <div class="text-right">
-                                <a href="/delete?journalid=${journal.journalid}" class="btn btn-outline-danger">Delete</a>
+                                <a href="/delete" class="btn btn-outline-danger">Delete</a>
                                 <button type="submit" id="btn_submitjournal" class="btn btn-primary">Save</button>
                             </div>
                         </div>

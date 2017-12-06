@@ -39,5 +39,5 @@ public class Constants {
     public final static String SUPPORT_EMAIL_TEMPLATE = "support.html";
     public final static String RECOVER_PASSWORD_EMAIL_TEMPLATE = "recover.html";
 
-    public static final String[] SUPPORT_RECIPIENT = new String[]{"support@minerlevel.de"};
+    public static final String[] SUPPORT_RECIPIENT = new String[]{"minerlevel@gmx.de"};
 }
