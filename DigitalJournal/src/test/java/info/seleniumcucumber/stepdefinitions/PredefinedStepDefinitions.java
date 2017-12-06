@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import cucumber.api.java.Before;
 import de.dhbw.softwareengeneering.test.TestUtil;
+import env.DriverUtil;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
@@ -26,7 +27,7 @@ public class PredefinedStepDefinitions implements BaseTest {
 
         TestUtil.setup();
 
-        driver = new FirefoxDriver();
+        driver = DriverUtil.getDefaultDriver();
     }
     //Navigation Steps
 
@@ -550,16 +551,14 @@ public class PredefinedStepDefinitions implements BaseTest {
 				name += "_" + t;
 				}
 				*/
-                String name = "cucumber" + File.separator + "Screenshots" + File.separator + impl.getId().replaceAll("\\W", "_");
+                String name = "." + File.separator + "cucumber" + File.separator + "Screenshots" + File.separator + impl.getId().replaceAll("\\W", "_");
                 System.err.println(name);
-                File screenshot = new File(getClass().getClassLoader().getResource(name).getFile());
+                File screenshot = new File(name);
                 FileUtils.copyFile(srcFile, screenshot);
             } catch (IOException ex) {
                 //Logger.getLogger(SmapScenario.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-
-        driver.quit();
     }
 
 }
