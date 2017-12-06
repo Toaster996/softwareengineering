@@ -16,6 +16,8 @@ public class PasswordRecoveryRequest {
     private String username;
     @Column(name = "recoveryUUID")
     private String recoveryUUID;
+    @Column(name = "creationDate")
+    private long creationDate;
 
     public String getUsername() {
         return username;
@@ -33,7 +35,14 @@ public class PasswordRecoveryRequest {
         this.recoveryUUID = recoveryUUID;
     }
 
-    @Override
+    public long getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(long creationDate) {
+        this.creationDate = creationDate;
+    }
+
     public String toString() {
         return Constants.prettyPrinter.formatObject(this);
     }

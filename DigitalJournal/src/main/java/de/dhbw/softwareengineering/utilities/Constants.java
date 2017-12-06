@@ -40,4 +40,8 @@ public class Constants {
     public final static String RECOVER_PASSWORD_EMAIL_TEMPLATE = "recover.html";
 
     public static final String[] SUPPORT_RECIPIENT = new String[]{"minerlevel@gmx.de"};
+
+    public static int ONE_HOUR_IN_MILLIS = 24 * 60 * 60 * 1000;
+    public static int ONE_DAY_IN_MILLIS = 24 * ONE_HOUR_IN_MILLIS;
+
 }

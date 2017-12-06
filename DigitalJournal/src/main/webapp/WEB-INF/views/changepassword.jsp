@@ -87,7 +87,7 @@
 
 </main>
 
-<jsp:include page="footer.jsp"/>
+<!--< j s p : include page="footer.jsp"/> -->
 
 <script src="js/jquery.min.js"></script>
 <script src="js/popper.min.js"></script>

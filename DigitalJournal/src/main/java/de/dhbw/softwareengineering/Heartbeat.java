@@ -1,8 +1,10 @@
 package de.dhbw.softwareengineering;
 
 import de.dhbw.softwareengineering.model.ContactRequest;
+import de.dhbw.softwareengineering.model.PasswordRecoveryRequest;
 import de.dhbw.softwareengineering.model.RegistrationRequest;
 import de.dhbw.softwareengineering.model.dao.ContactRequestDAO;
+import de.dhbw.softwareengineering.model.dao.PasswordRecoveryRequestDAO;
 import de.dhbw.softwareengineering.model.dao.RegistrationRequestDAO;
 import de.dhbw.softwareengineering.model.dao.UserDAO;
 import de.dhbw.softwareengineering.utilities.Constants;
@@ -16,9 +18,6 @@ import static de.dhbw.softwareengineering.utilities.Constants.prettyPrinter;
 
 public class Heartbeat implements Runnable {
 
-    private static int TWENTYFOUR_HOURS_IN_MILLIS = 24 * 60 * 60 * 1000;
-
-    @Override
     public void run() {
         Constants.prettyPrinter.info("Heartbeat started");
 
@@ -52,11 +51,21 @@ public class Heartbeat implements Runnable {
 
     private void executeEveryMinute() {
         deleteOldRegistrationRequests();
+        deleteOldPasswordRecoveryRequests();
         sendContactRequestsToSupport();
     }
 
-    private void executeEveryHour() {
+    private void executeEveryHour() {}
 
+    private void deleteOldPasswordRecoveryRequests() {
+        applicationContext.refresh();
+            PasswordRecoveryRequestDAO recoveryRequestDAO = applicationContext.getBean(PasswordRecoveryRequestDAO.class);
+
+            for(PasswordRecoveryRequest recoveryRequest : recoveryRequestDAO.getOldRequests()){
+                recoveryRequestDAO.deleteRequest(recoveryRequest);
+                Constants.prettyPrinter.info("Deleted old password recovery request from user: " + recoveryRequest.getUsername());
+            }
+        applicationContext.close();
     }
 
     private void sendContactRequestsToSupport() {
@@ -74,16 +83,11 @@ public class Heartbeat implements Runnable {
         applicationContext.close();
     }
 
-    private String getEmailBody(ContactRequest request) {
-        String emailBody = Templates.getInstance().getTemplate(Constants.SIGNUP_EMAIL_TEMPLATE);
-        return emailBody.replace("{$email}", request.getEmail()).replace("{$name}", request.getName()).replace("{$message}", request.getMessage());
-    }
-
     private void deleteOldRegistrationRequests() {
         applicationContext.refresh();
 
             RegistrationRequestDAO requestDAO = applicationContext.getBean(RegistrationRequestDAO.class);
-            List<RegistrationRequest> requests = requestDAO.getOldRequests(System.currentTimeMillis() - TWENTYFOUR_HOURS_IN_MILLIS);
+            List<RegistrationRequest> requests = requestDAO.getOldRequests(System.currentTimeMillis() - Constants.ONE_DAY_IN_MILLIS);
 
             if (requests != null && requests.size() > 0) {
                 UserDAO userDAO = applicationContext.getBean(UserDAO.class);
@@ -91,10 +95,15 @@ public class Heartbeat implements Runnable {
                 for (RegistrationRequest request : requests) {
                     requestDAO.removeRequest(request.getRegistration_uuid());
                     userDAO.removeUser(request.getUsername());
-                    Constants.prettyPrinter.info("deleted request for user: " + request.getUsername());
+                    Constants.prettyPrinter.info("Deleted old registration request from user: " + request.getUsername());
                 }
             }
 
         applicationContext.close();
+    }
+
+    private String getEmailBody(ContactRequest request) {
+        String emailBody = Templates.getInstance().getTemplate(Constants.SIGNUP_EMAIL_TEMPLATE);
+        return emailBody.replace("{$email}", request.getEmail()).replace("{$name}", request.getName()).replace("{$message}", request.getMessage());
     }
 }
