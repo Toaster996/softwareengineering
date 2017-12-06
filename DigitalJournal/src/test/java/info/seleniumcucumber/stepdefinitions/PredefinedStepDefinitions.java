@@ -3,6 +3,7 @@ import java.io.File;
 import java.io.IOException;
 
 import cucumber.api.java.Before;
+import de.dhbw.softwareengeneering.test.TestUtil;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
@@ -22,8 +23,9 @@ public class PredefinedStepDefinitions implements BaseTest {
 
     @Before
     public final void setup(){
-        File geckodriver = new File(getClass().getClassLoader().getResource("geckodriver.exe").getFile());
-        System.setProperty("webdriver.gecko.driver", geckodriver.getAbsolutePath());
+
+        TestUtil.setup();
+
         driver = new FirefoxDriver();
     }
     //Navigation Steps
@@ -32,7 +34,7 @@ public class PredefinedStepDefinitions implements BaseTest {
     @Then("^I navigate to \"([^\"]*)\"$")
     public void navigate_to(String link)
     {
-        navigationObj.navigateTo("http://localhost:8080/" + link);
+        navigationObj.navigateTo(TestUtil.baseUrl + link);
     }
 
     //Step to navigate forward
@@ -314,7 +316,7 @@ public class PredefinedStepDefinitions implements BaseTest {
 
     // enter text into input field steps
     @Then("^I enter \"([^\"]*)\" into input field having (.+) \"([^\"]*)\"$")
-    public void enter_text(String text, String type,String accessName) throws Exception
+    public void enter_text(String text, String type, String accessName) throws Exception
     {
         miscmethodObj.validateLocator(type);
         inputObj.enterText(type, text, accessName);
@@ -534,8 +536,9 @@ public class PredefinedStepDefinitions implements BaseTest {
     {
         configObj.printDesktopConfiguration();
     }
+
     @After
-    public final void takeScreenShot(Scenario scenario) {
+    public final void teardown(Scenario scenario) {
         if (scenario.isFailed()) {
             TakesScreenshot ts = (TakesScreenshot) driver;
             File srcFile = ts.getScreenshotAs(OutputType.FILE);
@@ -547,17 +550,16 @@ public class PredefinedStepDefinitions implements BaseTest {
 				name += "_" + t;
 				}
 				*/
-                String name = "Screenshots/" + impl.getId().replaceAll("\\W", "_");
+                String name = "cucumber" + File.separator + "Screenshots" + File.separator + impl.getId().replaceAll("\\W", "_");
                 System.err.println(name);
-                FileUtils.copyFile(srcFile, new File(name + ".png"));
+                File screenshot = new File(getClass().getClassLoader().getResource(name).getFile());
+                FileUtils.copyFile(srcFile, screenshot);
             } catch (IOException ex) {
                 //Logger.getLogger(SmapScenario.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-    }
 
-    @After
-    public final void tearDown() {
         driver.quit();
     }
+
 }
