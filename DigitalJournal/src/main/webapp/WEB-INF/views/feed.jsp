@@ -52,10 +52,10 @@
                         <c:forEach items="${journals}" var="journal">
                             <div class="card journal_entry">
                                 <div class="card-block p-3">
-                                    <h4 class="card-title">${journal.journalName}</h4>
+                                    <h4 class="card-title" >${journal.journalName}</h4>
                                     <p class="card-text text-muted">${journal.content}</p>
                                     <div class="entry_btn">
-                                        <a href="/editjournal" class="btn btn-secondary btn_entry">Edit</a>
+                                        <a href="/editjournal?journalid=${journal.journalid}" name="${journal.journalid}" class="btn btn-secondary btn_entry">Edit</a>
                                         <a href="/" class="btn btn-outline-secondary btn_entry_outline">Share</a>
                                     </div>
                                 </div>

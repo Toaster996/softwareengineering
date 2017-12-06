@@ -42,6 +42,13 @@
             <strong>Name too long!</strong> Password length mustn't be longer than 20 chars.
         </div>
     </c:when>
+    <c:when test="${status =='emailtoolong'}">
+        <hr>
+        <div class="alert alert-danger alert-dismissable" id="emailtoolong">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <strong>Email too long!</strong> Email length mustn't be longer than 100 chars.
+        </div>
+    </c:when>
     <c:when test="${loginError =='invalidCredentials'}">
         <hr>
         <div class="alert alert-danger alert-dismissable" id="invalidCredentials">

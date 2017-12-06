@@ -45,18 +45,18 @@
         <h2>Edit Journals</h2>
         <div class="row">
             <div class="col-md-9">
-                <form:form method="POST" action="${pageContext.request.contextPath}/newjournal"
+                <form:form method="POST" action="${pageContext.request.contextPath}/editjournal"
                            modelAttribute="journal">
 
                     <form>
                         <div class="form-group">
                             <label id="txt_journalname" class="control-label">Name</label>
                             <input class="form-control form-control-lg" type="text" placeholder=""
-                            <form:input path="name"/>
+                            <form:input path="journalName"/>
                         </div>
                         <div class="form-group">
                             <label id="txt_journalname" class="control-label">Content</label>
-                            <textarea class="form-control form-control-lg" type="text" placeholder=""
+                            <textarea class="form-control form-control-lg" rows="15" type="text" placeholder=""
                             <form:textarea path="content"/>
                         </div>
                         <!-- <input type="submit" value="Submit" class="btn btn-outline-light btn-block"/>
@@ -65,6 +65,7 @@
 
                         <div class="form-group">
                             <div class="text-right">
+                                <a href="/delete?journalid=${journal.journalid}" class="btn btn-outline-danger">Delete</a>
                                 <button type="submit" id="btn_submitjournal" class="btn btn-primary">Save</button>
                             </div>
                         </div>
