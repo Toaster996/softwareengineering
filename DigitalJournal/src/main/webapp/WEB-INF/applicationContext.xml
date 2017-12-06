@@ -24,6 +24,7 @@
                 <value>de.dhbw.softwareengineering.model.RegistrationRequest</value>
                 <value>de.dhbw.softwareengineering.model.Journal</value>
                 <value>de.dhbw.softwareengineering.model.ContactRequest</value>
+                <value>de.dhbw.softwareengineering.model.PasswordRecoveryRequest</value>
             </list>
         </property>
         <property name="hibernateProperties">
@@ -49,6 +50,10 @@
     </bean>
 
     <bean id="contactRequestDAO" class="de.dhbw.softwareengineering.model.dao.ContactRequestDAOImpl">
+        <property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory"/>
+    </bean>
+
+    <bean id="passwordRecoveryRequestDAO" class="de.dhbw.softwareengineering.model.dao.PasswordRecoveryRequestDAOImpl">
         <property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory"/>
     </bean>
 </beans>

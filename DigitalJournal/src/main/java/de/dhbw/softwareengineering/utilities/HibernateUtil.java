@@ -1,5 +1,6 @@
 package de.dhbw.softwareengineering.utilities;
 
+import de.dhbw.softwareengineering.model.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -65,6 +66,30 @@ public class HibernateUtil {
         } catch (Exception e) {
             Constants.prettyPrinter.error(e);
         }
+    }
+
+    /**
+     * Gets an DAO from the database through the given parameters
+     * @param clazz The DAO Class
+     * @param identifier basically the column
+     * @param sessionFactory the session factory
+     * @return a DAO object
+     */
+    public static Object getDAOByIdentifier(Class<?> clazz, String identifier, SessionFactory sessionFactory) {
+        Session session = null;
+        Object o = null;
+        try {
+            session = sessionFactory.openSession();
+            o = session.get(clazz, identifier);
+            session.close();
+        } catch (Exception e) {
+            Constants.prettyPrinter.error(e);
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+        return o;
     }
 
 }

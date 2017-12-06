@@ -47,28 +47,11 @@ public class UserDAOImpl implements UserDAO {
     }
 
     public User getUserByName(String username) {
-        return getUserByIdentifier(username);
+        return (User) HibernateUtil.getDAOByIdentifier(User.class,username,sessionFactory);
     }
 
     @Override
     public User getUserByEMail(String email) {
-        return getUserByIdentifier(email);
-    }
-
-    private User getUserByIdentifier(String identifier) {
-        Session session = null;
-        User user = null;
-        try {
-            session = this.sessionFactory.openSession();
-            user = (User) session.get(User.class, identifier);
-            session.close();
-        } catch (Exception e) {
-            Constants.prettyPrinter.error(e);
-        } finally {
-            if (session != null && session.isOpen()) {
-                session.close();
-            }
-        }
-        return user;
+        return (User) HibernateUtil.getDAOByIdentifier(User.class,email,sessionFactory);
     }
 }

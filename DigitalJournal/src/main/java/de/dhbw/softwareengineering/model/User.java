@@ -23,6 +23,10 @@ public class User {
 
     @OneToOne
     @JoinColumn(name="username")
+    private PasswordRecoveryRequest passwordRecoveryRequest;
+
+    @OneToOne
+    @JoinColumn(name="username")
     private RegistrationRequest registrationRequest;
 
     @OneToMany
