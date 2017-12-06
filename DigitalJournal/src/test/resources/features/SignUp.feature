@@ -16,7 +16,6 @@ Feature:
   Scenario: Username already taken
     Given I navigate to ""
     And I click on element having id "btn_log-in"
-    And user "duplicate" exists
     When I enter "duplicate" into input field having id "txt_name"
     And I enter "jonas@example.com" into input field having id "txt_email"
     And I enter "password" into input field having id "txt_pw"
@@ -27,7 +26,6 @@ Feature:
   Scenario: Email already taken
     Given I navigate to ""
     And I click on element having id "btn_log-in"
-    And email "duplicate@example.com" taken
     When I enter "jonas" into input field having id "txt_name"
     And I enter "duplicate@example.com" into input field having id "txt_email"
     And I enter "password" into input field having id "txt_pw"
