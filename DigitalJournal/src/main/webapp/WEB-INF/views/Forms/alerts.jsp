@@ -9,42 +9,42 @@
 <c:choose>
     <c:when test="${status =='pwmissmatch'}">
         <hr>
-        <div class="alert alert-danger alert-dismissable">
+        <div class="alert alert-danger alert-dismissable" id="pwmissmatch">
             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
             <strong>Password mismatch!</strong> Please retry.
         </div
     </c:when>
     <c:when test="${status =='emailinvalid'}">
         <hr>
-        <div class="alert alert-danger alert-dismissable">
+        <div class="alert alert-danger alert-dismissable" id="emailinvaild">
             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
             <strong>Email invalid!</strong> Please retry with an valid Email.
         </div
     </c:when>
     <c:when test="${status =='pwtooshort'}">
         <hr>
-        <div class="alert alert-danger alert-dismissable">
+        <div class="alert alert-danger alert-dismissable" id="pwtooshort">
             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
             <strong>Password too short!</strong> Password length must be greater than 6 chars.
         </div
     </c:when>
     <c:when test="${status =='pwtoolong'}">
         <hr>
-        <div class="alert alert-danger alert-dismissable">
+        <div class="alert alert-danger alert-dismissable" id="pwtoolong">
             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
             <strong>Password too long!</strong> Password length mustn't be longer than 42 chars.
         </div
     </c:when>
     <c:when test="${status =='nametoolong'}">
         <hr>
-        <div class="alert alert-danger alert-dismissable">
+        <div class="alert alert-danger alert-dismissable" id="nametoolong">
             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
             <strong>Name too long!</strong> Password length mustn't be longer than 20 chars.
         </div>
     </c:when>
     <c:when test="${loginError =='invalidCredentials'}">
         <hr>
-        <div class="alert alert-danger alert-dismissable">
+        <div class="alert alert-danger alert-dismissable" id="invalidCredentials">
             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
             <strong>Invalid Credentials!</strong> Please make sure the entered credentials are correct.
         </div>
