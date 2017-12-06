@@ -12,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -65,13 +66,66 @@ public class JournalController {
     }
 
     @RequestMapping(value = "/editjournal", method = RequestMethod.GET)
-    public String show(Model m, HttpSession session) {
+    public String show(@RequestParam(name = "journalid") String journalid,  Model m, HttpSession session) {
         m.addAttribute("journal", new Journal());
         m.addAttribute(new ContactRequest());
+        System.out.println("Journal ID: " + journalid);
 
         if(session.getAttribute("loggedInUser") == null)
             return "error";
-        return "editjournal";
+
+        applicationContext.refresh();
+        JournalDAO journalDAO = applicationContext.getBean(JournalDAO.class);
+        Journal journal = journalDAO.getJournal(Integer.parseInt(journalid));
+        User user = (User) session.getAttribute("loggedInUser");
+        if(user.getUsername().equals(journal.getUsername())){
+            System.out.println(journal);
+            m.addAttribute("journal", journal);
+            return "editjournal";
+        }
+
+        return "home";
+    }
+
+    @RequestMapping(value = "/editjournal", method = RequestMethod.POST)
+    public String editJournal(@Valid @ModelAttribute("journal") final Journal journal, final BindingResult result, final ModelMap model, HttpSession session) {
+        if (result.hasErrors())
+            return "error";
+        if(journal.getJournalName().equals(""))
+            model.addAttribute(Constants.STATUS_ATTRIBUTE_NAME, Constants.STATUSCODE_EMPTYFORM);
+        if(journal.getJournalName().length() > 100) {
+            model.addAttribute(Constants.STATUS_ATTRIBUTE_NAME, Constants.STATUSCODE_MODAL_TEMP);
+            model.addAttribute(Constants.STATUSCODE_MODAL_HEADER, "Journalname to long!");
+            model.addAttribute(Constants.STATUSCODE_MODAL_BODY, "Please enter an shorter Journalname.");
+        }
+
+        applicationContext.refresh();
+        JournalDAO journalDAO = applicationContext.getBean(JournalDAO.class);
+        journalDAO.updateJournal(journal);
+        applicationContext.close();
+
+        return "redirect:/journal";
+    }
+
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
+    public String delete(@RequestParam(name = "journalid") String journalid,  Model m, HttpSession session) {
+        m.addAttribute("journal", new Journal());
+        m.addAttribute(new ContactRequest());
+        System.out.println("Journal ID: " + journalid);
+
+        if(session.getAttribute("loggedInUser") == null)
+            return "error";
+
+        applicationContext.refresh();
+        JournalDAO journalDAO = applicationContext.getBean(JournalDAO.class);
+        Journal journal = journalDAO.getJournal(Integer.parseInt(journalid));
+        User user = (User) session.getAttribute("loggedInUser");
+        if(user.getUsername().equals(journal.getUsername())){
+            journalDAO.removeJournal(journal);
+            return "editjournal";
+        }
+
+        return "redirect:/journal";
     }
 
 }

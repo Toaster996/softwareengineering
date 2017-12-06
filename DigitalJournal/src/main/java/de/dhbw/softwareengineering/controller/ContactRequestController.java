@@ -27,10 +27,10 @@ public class ContactRequestController {
             return "error";
 
         applicationContext.refresh();
-            ContactRequestDAO dao = applicationContext.getBean(ContactRequestDAO.class);
-            dao.addRequest(contactRequest);
+        ContactRequestDAO dao = applicationContext.getBean(ContactRequestDAO.class);
+        dao.addRequest(contactRequest);
         applicationContext.close();
 
-        return "redirect:"+servletRequest.getHeader("Referer");
+        return "redirect:" + servletRequest.getHeader("Referer");
     }
 }

@@ -1,6 +1,7 @@
 package de.dhbw.softwareengineering.model.dao;
 
 import de.dhbw.softwareengineering.model.Journal;
+import de.dhbw.softwareengineering.utilities.Constants;
 import de.dhbw.softwareengineering.utilities.HibernateUtil;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -50,5 +51,24 @@ public class JournalDAOImpl implements JournalDAO {
 
         session.close();
         return journals;
+    }
+
+    @Override
+    public Journal getJournal(int id) {
+        Session session = null;
+        Journal j = null;
+        try {
+            session = sessionFactory.openSession();
+            j = (Journal) session.get(Journal.class, id);
+            session.close();
+        } catch (Exception e) {
+            Constants.prettyPrinter.error(e);
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+        return j;
+
     }
 }

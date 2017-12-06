@@ -12,4 +12,6 @@ public interface JournalDAO {
     public void removeJournal(Journal journal);
 
     public List<Journal> getAllJournals(String user);
+
+    public  Journal getJournal(int id);
 }
