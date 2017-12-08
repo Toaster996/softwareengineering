@@ -43,7 +43,7 @@
     <div class="container journal_conatainer">
 
         <h2>Reset Password</h2>
-        <div class="row">
+        <div class="container">
             <form:form method="POST" action="${pageContext.request.contextPath}/changepassword">
 
                 <div class="form-group">
@@ -88,10 +88,6 @@
 </main>
 
 <!--< j s p : include page="footer.jsp"/> -->
-
-<script src="js/jquery.min.js"></script>
-<script src="js/popper.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
 </body>
 
 </html>
