@@ -82,7 +82,6 @@ public class Email {
             msg.setSentDate(new Date());
 
             for(String recipient : recipients){
-                System.out.println(recipient);
                 msg.addRecipients(Message.RecipientType.TO, InternetAddress.parse(recipient, false));
             }
 

@@ -7,6 +7,9 @@ import java.util.Set;
 
 @Entity
 @Table(name = "users")
+/**
+ * Represents the an entry of a user from the database.
+ */
 public class User {
 
     @Id
@@ -73,7 +76,6 @@ public class User {
         this.verified = verified;
     }
 
-    @Override
     public String toString() {
         return Constants.prettyPrinter.formatObject(this);
     }
