@@ -68,7 +68,7 @@ Feature:
     And I enter "1" into input field having id "lbl_reg_password"
     And I enter "1" into input field having id "lbl_reg_passwordconf"
     And I click on element having id "btn_reg_submit"
-    Then I should see bootstrapalert "pwtoologn"
+    Then I should see bootstrapalert "pwtooshort"
 
   Scenario: Successful registration
     And I navigate to ""
@@ -78,7 +78,7 @@ Feature:
     And I enter "password123456789123456789123456789123456789" into input field having id "lbl_reg_password"
     And I enter "password123456789123456789123456789123456789" into input field having id "lbl_reg_passwordconf"
     And I click on element having id "btn_reg_submit"
-    Then I should see bootstrapalert "pwtoologn"
+    Then I should see bootstrapalert "pwtoolong"
 
   Scenario: Passwords do not match
     Given I navigate to ""

@@ -49,7 +49,7 @@ public class UserDefinedSteps implements BaseTest  {
             } catch (NoSuchElementException e) {}
 
 
-            if (webElement != null && !webElement.getTagName().equalsIgnoreCase("div") && webElement.getAttribute("class").contains("modal")) {
+            if (webElement != null && webElement.getTagName().equalsIgnoreCase("div") && webElement.getAttribute("class").contains("modal")) {
                break;
             }
 
@@ -80,7 +80,7 @@ public class UserDefinedSteps implements BaseTest  {
             } catch (NoSuchElementException e) {}
 
 
-            if (webElement != null && !webElement.getTagName().equalsIgnoreCase("div") && webElement.getAttribute("class").contains("alert")) {
+            if (webElement != null && webElement.getTagName().equalsIgnoreCase("div") && webElement.getAttribute("class").contains("alert")) {
                 break;
             }
 

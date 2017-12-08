@@ -1,40 +1,43 @@
 Feature:
-  As a any user
+  As any user
   I want to contact the site administrators
 
   Scenario: Name is empty
     Given I navigate to ""
+    And I scroll to element having id "btn_contact"
     And I click on element having id "btn_contact"
     And I enter "jonas@example.com" into input field having id "lbl_contact_email"
     And I enter "Test message" into input field having id "lbl_contact_message"
     And I click on element having id "btn_contact_submit"
-    Then I should see bootstrapalert "name_emtpy"
+    Then I should see modal "emptyform"
 
   Scenario: Email is empty
     Given I navigate to ""
+    And I scroll to element having id "btn_contact"
     And I click on element having id "btn_contact"
-    And I enter "jonas@example.com" into input field having id "lbl_contact_email"
+    When I enter "Jonas" into input field having id "lbl_contact_name"
     And I enter "Test message" into input field having id "lbl_contact_message"
     And I click on element having id "btn_contact_submit"
-    Then I should see bootstrapalert "name_emtpy"
+    Then I should see modal "emptyform"
 
   Scenario: Email is invalid
     Given I navigate to ""
+    And I scroll to element having id "btn_contact"
     And I click on element having id "btn_contact"
     When I enter "Jonas" into input field having id "lbl_contact_name"
     And I enter "jonas@example" into input field having id "lbl_contact_email"
     And I enter "Test message" into input field having id "lbl_contact_message"
     And I click on element having id "btn_contact_submit"
-    Then I should see bootstrapalert "email_invalid"
+    Then I should see modal "mdl_email_invalid"
 
   Scenario: Message is empty
     Given I navigate to ""
+    And I scroll to element having id "btn_contact"
     And I click on element having id "btn_contact"
     When I enter "Jonas" into input field having id "lbl_contact_name"
     And I enter "jonas@example.com" into input field having id "lbl_contact_email"
-    And I enter "Test message" into input field having id "lbl_contact_message"
     And I click on element having id "btn_contact_submit"
-    Then I should see bootstrapalert "message_empty"
+    Then I should see modal "emptyform"
 
   Scenario: Successful contact
     Given I navigate to ""
@@ -43,12 +46,13 @@ Feature:
     And I enter "jonas@example.com" into input field having id "lbl_contact_email"
     And I enter "Test message" into input field having id "lbl_contact_message"
     And I click on element having id "btn_contact_submit"
-    Then I should see modal "mdl_email_send"
+    Then I should see modal "mdl_email_sent"
 
   Scenario: Name Too Long
     Given I navigate to "/"
+    And I scroll to element having id "btn_contact"
     And I click on element having id "btn_contact"
-    When I enter "JonasJonasJonasJonasJonas" into input field having id "lbl_contact_name"
+    When I enter "JonasJonasJonasJonasJonasJonasJonasJonasJonasJonasJonas" into input field having id "lbl_contact_name"
     And I enter "jonas@example.com" into input field having id "lbl_contact_email"
     And I enter "Help me! I forgot my password :(" into input field having id "lbl_contact_message"
     And I click on element having id "btn_contact_submit"
@@ -59,15 +63,16 @@ Feature:
     And I click on element having id "btn_contact"
     When I enter "Jonas" into input field having id "lbl_contact_name"
     And I enter "jonas@example.com" into input field having id "lbl_contact_email"
-    And I enter "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu f." into input field having id "lbl_contact_message"
+    And I enter "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu fLorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu f." into input field having id "lbl_contact_message"
     And I click on element having id "btn_contact_submit"
     Then I should see modal "mdl_message_too_long"
 
   Scenario: Email Too Long
     Given I navigate to "/"
+    And I scroll to element having id "btn_contact"
     And I click on element having id "btn_contact"
     When I enter "Jonas" into input field having id "lbl_contact_name"
     And I enter "jonasjonasjonasjonasjonasjonasjonasjonasjonasjonasjonasjonasjonasjonasjonasjonasjonasjonas@example.com" into input field having id "lbl_contact_email"
     And I enter "Help me! I forgot my password :(" into input field having id "lbl_contact_message"
     And I click on element having id "btn_contact_submit"
-    Then I should see modal "mdl_mail_too_long"
+    Then I should see modal "mdl_email_too_long"
