@@ -6,6 +6,9 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "contactRequest")
+/**
+ * Represents an entry of a contact request from the database.
+ */
 public class ContactRequest {
 
     @GeneratedValue(strategy=GenerationType.AUTO)

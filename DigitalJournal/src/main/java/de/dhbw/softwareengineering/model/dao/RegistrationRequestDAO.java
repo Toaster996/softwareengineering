@@ -34,8 +34,10 @@ public interface RegistrationRequestDAO {
     public RegistrationRequest getRequestByUUID(String uuid);
 
     /**
-     * Deletes all old requests older than the given parameter
+     * Finds all old requests older than the given parameter
+     *
      * @param olderThan the maximum "birthdate" of the request
+     * @return a list of old registration requests
      */
     public List<RegistrationRequest> getOldRequests(long olderThan);
 }

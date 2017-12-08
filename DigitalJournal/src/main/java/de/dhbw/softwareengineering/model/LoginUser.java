@@ -2,6 +2,9 @@ package de.dhbw.softwareengineering.model;
 
 import de.dhbw.softwareengineering.utilities.Constants;
 
+/**
+ * This class is used to store the entered data the user inputs during the login process.
+ */
 public class LoginUser {
     private String loginName;
     private String loginPassword;

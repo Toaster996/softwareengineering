@@ -1,6 +1,7 @@
 package de.dhbw.softwareengineering.model.dao;
 
 import de.dhbw.softwareengineering.model.User;
+import de.dhbw.softwareengineering.utilities.Constants;
 import de.dhbw.softwareengineering.utilities.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -39,18 +40,32 @@ public class UserDAOImpl implements UserDAO {
     }
 
     public List<User> getAllUsers() {
-        Session session = this.sessionFactory.openSession();
-        List<User> users = session.createQuery("from User").list();
-        session.close();
+        Session session = null;
+        List<User> users = null;
+
+        try {
+            // open the session
+            session = this.sessionFactory.openSession();
+            // select table
+            users = session.createQuery("from User").list();
+        } catch (Exception e) {
+            Constants.prettyPrinter.error(e);
+        } finally {
+            // close the session if it can be closed
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+
         return users;
     }
 
     public User getUserByName(String username) {
-        return (User) HibernateUtil.getData(User.class,"username", username,sessionFactory);
+        return (User) HibernateUtil.getData(User.class, "username", username, sessionFactory);
     }
 
     @Override
     public User getUserByEMail(String email) {
-        return (User) HibernateUtil.getData(User.class,"email",email,sessionFactory);
+        return (User) HibernateUtil.getData(User.class, "email", email, sessionFactory);
     }
 }

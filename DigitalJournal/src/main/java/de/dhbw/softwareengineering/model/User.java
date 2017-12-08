@@ -8,7 +8,7 @@ import java.util.Set;
 @Entity
 @Table(name = "users")
 /**
- * Represents the an entry of a user from the database.
+ * Represents an entry of an user from the database.
  */
 public class User {
 
@@ -25,15 +25,18 @@ public class User {
     private boolean verified;
 
     @OneToOne
-    @JoinColumn(name="username")
+    @JoinColumn(name = "username")
+    /** Used for hibernate join on a recovery request*/
     private PasswordRecoveryRequest passwordRecoveryRequest;
 
     @OneToOne
-    @JoinColumn(name="username")
+    @JoinColumn(name = "username")
+    /** Used for hibernate join on a registration request*/
     private RegistrationRequest registrationRequest;
 
     @OneToMany
     @JoinColumn(name = "username")
+    /** Used for hibernate join on a the users journals*/
     private Set<Journal> journals;
 
     public String getUsername() {

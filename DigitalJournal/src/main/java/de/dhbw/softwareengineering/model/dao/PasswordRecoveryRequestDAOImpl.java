@@ -34,11 +34,14 @@ public class PasswordRecoveryRequestDAOImpl implements PasswordRecoveryRequestDA
         List<PasswordRecoveryRequest> requests = null;
 
         try {
+            // open the session
             session = this.sessionFactory.openSession();
+            // select table and set restriction to only get requests that are older than one hour
             requests = session.createCriteria(PasswordRecoveryRequest.class).add(Restrictions.lt("creationDate", System.currentTimeMillis() - Constants.ONE_HOUR_IN_MILLIS)).list();
         } catch (Exception e) {
             Constants.prettyPrinter.error(e);
         } finally {
+            // close the session if it can be closed
             if (session != null && session.isOpen()) {
                 session.close();
             }
@@ -53,11 +56,14 @@ public class PasswordRecoveryRequestDAOImpl implements PasswordRecoveryRequestDA
         List<PasswordRecoveryRequest> requests = null;
 
         try {
+            // open the session
             session = this.sessionFactory.openSession();
+            // select table and set restriction to only get requests from the given user
             requests = session.createCriteria(PasswordRecoveryRequest.class).add(Restrictions.eq("username",username)).list();
         } catch (Exception e) {
             Constants.prettyPrinter.error(e);
         } finally {
+            // close the session if it can be closed
             if (session != null && session.isOpen()) {
                 session.close();
             }

@@ -39,12 +39,16 @@ public class RegistrationRequestDAOImpl implements RegistrationRequestDAO {
         Session session = null;
         RegistrationRequest request = null;
         try {
+            // open the session
             session = this.sessionFactory.openSession();
+            // select table
             Criteria criteria = session.createCriteria(RegistrationRequest.class);
+            // set restriction to only get an uuid that matches the given parameter
             request = (RegistrationRequest) criteria.add(Restrictions.eq("registration_uuid",uuid)).uniqueResult();
         } catch (Exception e) {
             Constants.prettyPrinter.error(e);
         } finally {
+            // close the session if it can be closed
             if (session != null && session.isOpen()) {
                 session.close();
             }

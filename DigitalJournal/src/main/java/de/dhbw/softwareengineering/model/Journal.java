@@ -7,6 +7,9 @@ import java.util.Date;
 
 @Entity
 @Table(name = "journal")
+/**
+ * Represents an entry of a journal from the database.
+ */
 public class Journal {
 
     @Id

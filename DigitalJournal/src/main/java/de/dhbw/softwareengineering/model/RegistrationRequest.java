@@ -6,6 +6,9 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "registration_request")
+/**
+ * Represents an entry of a registration from the database.
+ */
 public class RegistrationRequest {
 
     @Id

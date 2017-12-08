@@ -2,6 +2,9 @@ package de.dhbw.softwareengineering.model;
 
 import de.dhbw.softwareengineering.utilities.Constants;
 
+/**
+ * This class is used to store the entered data the user inputs during the registration process.
+ */
 public class RegistrationUser {
     private String name;
     private String email;

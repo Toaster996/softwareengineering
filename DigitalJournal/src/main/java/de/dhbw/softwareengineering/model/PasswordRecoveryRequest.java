@@ -9,6 +9,9 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "passwordRecovery")
+/**
+ * Represents an entry of a PasswordRecoveryRequest from the database.
+ */
 public class PasswordRecoveryRequest {
 
     @Id
