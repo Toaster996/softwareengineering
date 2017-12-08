@@ -13,49 +13,61 @@ The user does not remember his password and wants to reset it
 
 ### 2.1 Basic flow
 
-The uses entered his email correctly and receives an email with a link to recover his password.
+The user entered his email correctly.
 
-![mail_send](mail_send.png)
+![recover_email](recover_email.png)
+
+He therefore receives an email with a link to recover his password.
+
+![email_sent](email_sent.png)
 
 If he clicks on the link an entered a new password twice, the password is 6 to 42 characters long and the password matches then his password will be reset
 
 ![successful_reset](successful_reset.png)
 
-### 2.2 The user does not click on the link in time
+### 2.2 The provided email is invalid
 
-The uses entered his email correctly and receives an email with a link to recover his password. However if he does not do it within 1h. The request will be deleed an the link is no longer valid.
+The user entered an email address that has no valid syntax.
 
-### 2.3 The user typed his email wrong/the email has no account 
-
-The same message will be display in order to avoid bruteforcing of mails.
-
-![mail_send](mail_send.png)
-
-### 2.4 The user clicked on the link but the password is not at least 6 characters long
+### 2.3 The user does not click on the link in time
 
 The uses entered his email correctly and receives an email with a link to recover his password.
 
-![mail_send](mail_send.png)
+![email_sent](email_sent.png)
+ 
+However if he does not do it within 1h. The request will be deleed an the link is no longer valid.
+
+### 2.4 The user typed his email wrong/the email has no account 
+
+The same message will be display in order to avoid bruteforcing of mails.
+
+![email_sent](email_sent.png)
+
+### 2.5 The user clicked on the link but the password is not at least 6 characters long
+
+The uses entered his email correctly and receives an email with a link to recover his password.
+
+![email_sent](email_sent.png)
 
 The user entered a password that is not at least 6 characters long.
 
 ![password_too_short](password_too_short.png)
 
-### 2.5 The user clicked on the link but the password is longer than 42 characters long
+### 2.6 The user clicked on the link but the password is longer than 42 characters long
 
 The uses entered his email correctly and receives an email with a link to recover his password.
 
-![mail_send](mail_send.png)
+![email_sent](email_sent.png)
 
 The user entered a password that is longer than 42 characters long.
 
 ![password_too_long](password_too_long.png)
 
-### 2.4 The user clicked on the link but the passwords do not match
+### 2.7 The user clicked on the link but the passwords do not match
 
 The uses entered his email correctly and receives an email with a link to recover his password.
 
-![mail_send](mail_send.png)
+![email_sent](email_sent.png)
 
 The user entered a passwords that do not match.
 
