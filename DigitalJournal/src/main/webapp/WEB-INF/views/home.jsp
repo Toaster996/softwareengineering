@@ -178,7 +178,7 @@
 
 
 <jsp:include page="Forms/modals.jsp"/>
-
+<jsp:include page="Forms/modalContact.jsp"/>
 
 <!-- EXPLORE HEAD -->
 <section id="explore-head-section">

@@ -85,14 +85,14 @@ public class RecoverPasswordController {
 
 
     @RequestMapping(value = "/recoverpassword", params = {"uuid"}, method = RequestMethod.GET)
-    public String index(@RequestParam(value = "uuid") String uuid, Model model, HttpSession session) {
+    public String index(@RequestParam(value = "uuid") String uuid, Model model, HttpSession session, RedirectAttributes redir) {
 
         applicationContext.refresh();
         PasswordRecoveryRequestDAO recoveryRequestDAO = applicationContext.getBean(PasswordRecoveryRequestDAO.class);
         PasswordRecoveryRequest passwordRecoveryRequest = recoveryRequestDAO.getRequestByUUID(uuid);
 
         prettyPrinter.info(prettyPrinter.formatObject(passwordRecoveryRequest));
-
+        System.out.println(redir.getFlashAttributes());
         User user = null;
         if (passwordRecoveryRequest != null) {
             UserDAO userDAO = applicationContext.getBean(UserDAO.class);
@@ -107,8 +107,10 @@ public class RecoverPasswordController {
             if (session.getAttribute("changePasswordUser") != null) {
                 session.removeAttribute("changePasswordUser");
             }
+            session.setAttribute("uuid", uuid);
             session.setAttribute("changePasswordUser", user);
-            model.addAttribute("status", "success");
+            if(!model.containsAttribute("status"))
+                model.addAttribute("status", "success");
             model.addAttribute("username", user.getUsername());
             model.addAttribute("email", user.getEmail());
         }
@@ -116,20 +118,21 @@ public class RecoverPasswordController {
     }
 
     @RequestMapping(value = "/changepassword", method = RequestMethod.POST)
-    public String index(@RequestParam("password") String password, @RequestParam("password_confirm") String password_confirm, ModelMap model, HttpSession session, RedirectAttributes redir) {
+    public String changePassword(@RequestParam("password") String password, @RequestParam("password_confirm") String password_confirm, ModelMap model, HttpSession session, RedirectAttributes redir) {
         // security checks
         if (password.isEmpty() || password_confirm.isEmpty()) {
-            model.addAttribute(Constants.STATUS_ATTRIBUTE_NAME, Constants.STATUSCODE_EMPTYFORM);
-            return "changepassword";
+           // model.addAttribute(Constants.STATUS_ATTRIBUTE_NAME, Constants.STATUSCODE_EMPTYFORM);
+            redir.addFlashAttribute(Constants.STATUS_ATTRIBUTE_NAME, Constants.STATUSCODE_EMPTYFORM);
         } else if (!password.matches(password_confirm)) {
-            model.addAttribute(Constants.STATUS_ATTRIBUTE_NAME, Constants.STATUSCODE_PWMISSMATCH);
-            return "changepassword";
+            redir.addFlashAttribute(Constants.STATUS_ATTRIBUTE_NAME, Constants.STATUSCODE_PWMISSMATCH);
         } else if (password.length() < 6) {
-            model.addAttribute(Constants.STATUS_ATTRIBUTE_NAME, Constants.STATUSCODE_PWTOOSHORT);
-            return "changepassword";
+            redir.addFlashAttribute(Constants.STATUS_ATTRIBUTE_NAME, Constants.STATUSCODE_PWTOOSHORT);
         } else if (password.length() > 42) {
-            model.addAttribute(Constants.STATUS_ATTRIBUTE_NAME, Constants.STATUSCODE_PWTOOLONG);
-            return "changepassword";
+            redir.addFlashAttribute(Constants.STATUS_ATTRIBUTE_NAME, Constants.STATUSCODE_PWTOOLONG);
+        }
+        if(!model.containsAttribute(Constants.STATUS_ATTRIBUTE_NAME)){
+            String uuid = (String) session.getAttribute("uuid");
+            return "redirect:/recoverpassword?uuid="+ uuid;
         }
 
         // get logged in user

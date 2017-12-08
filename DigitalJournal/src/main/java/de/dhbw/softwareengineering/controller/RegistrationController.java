@@ -15,7 +15,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -39,12 +38,11 @@ public class RegistrationController {
     private static String emailBody;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String showForm(Model m, HttpSession session, RedirectAttributes redir) {
+    public String showForm(Model m, HttpSession session) {
         if (session.getAttribute("loggedInUser") != null) {
             return "redirect:/journal";
         }
 
-        System.out.println(redir.containsAttribute("recover"));
         m.addAttribute(Constants.STATUS_ATTRIBUTE_NAME, "new");
         m.addAttribute(new RegistrationUser());
         m.addAttribute(new LoginUser());

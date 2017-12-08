@@ -42,12 +42,11 @@
 <main role="main">
     <div class="container journal_conatainer">
 
-        <h2>Edit Journals</h2>
+        <h2 class="display-1">Edit Journals</h2>
         <div class="row">
             <div class="col-md-9">
                 <form:form method="POST" action="${pageContext.request.contextPath}/editjournal"
                            modelAttribute="journal">
-
                     <form>
                         <div class="form-group">
                             <label id="txt_journalname" class="control-label">Name</label>
