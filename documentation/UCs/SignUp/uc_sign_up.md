@@ -1,7 +1,5 @@
 # DigitalJournal
-## Use-Case Specification: Sign Up | Version 1.0
-
-
+## Use-Case Specification: Sign Up | Version 1.3
 
 ## 1. Use-Case: Sign Up
 
