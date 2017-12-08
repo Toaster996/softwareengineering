@@ -107,6 +107,34 @@
 
 </main>
 
+<c:choose>
+    <c:when test="${delete == 'true'}">
+        <!-- Modal -->
+        <div class="modal fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content text-black">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Delete Journal </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Do you really want to delete this journal?
+                    </div>
+                    <div class="modal-footer">
+                        <a href="/deleteconfirm" class="btn btn-danger">Delete</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            $('#delete').modal('show');
+        </script>
+    </c:when>
+</c:choose>
+
 <jsp:include page="footer.jsp"/>
 
 <script src="js/jquery.min.js"></script>
