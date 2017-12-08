@@ -6,6 +6,7 @@
 <html lang="en">
 
 <head>
+    <fav></fav>
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta content="width=device-width, initial-scale=1.0"/>
     <!-- <link rel="stylesheet" href="../../resources/css/font-awesome.min.css">
@@ -83,7 +84,8 @@
                                     <c:when test="${status =='sucreg'}">
                                         <div id="sucreg">
                                             <h3>Welcome, ${username}! </h3>
-                                            <p>We sent you an email to your address ${email}. Please click on the link you
+                                            <p>We sent you an email to your address ${email}. Please click on the link
+                                                you
                                                 can find there within 24 hours.</p>
                                             <input type="submit" value="Create your Journal!" href="/journal"
                                                    class="btn btn-outline-light mr-3 ml-3">
@@ -135,19 +137,23 @@
                                             <form:form method="POST" action="${pageContext.request.contextPath}/addUser"
                                                        modelAttribute="registrationUser">
                                                 <form>
-                                                    <div class="form-group"><input class="form-control form-control-lg" id="lbl_reg_name"
+                                                    <div class="form-group"><input class="form-control form-control-lg"
+                                                                                   id="lbl_reg_name"
                                                                                    type="text" placeholder="Name"
                                                         <form:input path="name"/></div>
                                                     <div class="form-group">
-                                                        <input class="form-control form-control-lg" type="email" id="lbl_reg_email"
+                                                        <input class="form-control form-control-lg" type="email"
+                                                               id="lbl_reg_email"
                                                                placeholder="Email"
                                                         <form:input path="email"/>
                                                     </div>
-                                                    <div class="form-group"><input class="form-control form-control-lg" id="lbl_reg_password"
+                                                    <div class="form-group"><input class="form-control form-control-lg"
+                                                                                   id="lbl_reg_password"
                                                                                    type="password"
                                                                                    placeholder="Password"
                                                         <form:input path="password"/></div>
-                                                    <div class="form-group"><input class="form-control form-control-lg" id="lbl_reg_passwordconf"
+                                                    <div class="form-group"><input class="form-control form-control-lg"
+                                                                                   id="lbl_reg_passwordconf"
                                                                                    type="password"
                                                                                    placeholder="Password Confirm"
                                                         <form:input path="passwordConfirm"/></div>
@@ -367,7 +373,7 @@
 </div>
 
 <c:choose>
-    <c:when test="${recover != null}">
+    <c:when test="${recover == 'true' || recover == 'false'}">
         <!-- Modal -->
         <div class="modal fade" id="recover" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
              aria-hidden="true">
@@ -380,7 +386,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        You recieved an recovery email at ${email}. Please click on the link in this email within 1
+                        You received an recovery email at ${email}. Please click on the link in this email within 1
                         hour.
                     </div>
                     <div class="modal-footer">
@@ -391,6 +397,56 @@
         </div>
         <script>
             $('#recover').modal('show');
+        </script>
+    </c:when>
+    <c:when test="${recover == 'invalidEmail'}">
+        <!-- Modal -->
+        <div class="modal fade" id="recovermail" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content text-black">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Invalid Email!</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        This Email Address is invalid. Please retry.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            $('#recovermail').modal('show');
+        </script>
+    </c:when>
+    <c:when test="${recover == 'pwchangesuccess'}">
+        <!-- Modal -->
+        <div class="modal fade" id="recoverdone" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content text-black">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Password resetted!</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        You Password has been resetted. Check out your Journals.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            $('#recoverdone').modal('show');
         </script>
     </c:when>
 </c:choose>
