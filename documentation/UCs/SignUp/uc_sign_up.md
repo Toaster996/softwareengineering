@@ -22,11 +22,19 @@ You can see the .feature file that describes this Use-Case [here](https://github
 
 The basic flow of this usecase is that the user enters his credentials, the email address is valid and not already in use and the passwords match. He will then receive an email with a link he needs to click withing 24h. If he does this the account is successfully created.
 
-### 2.2 Email address invalid
+### 2.2 Form is empty
+
+The user did not fill in every entry in the form. A message that the Form is empty will be displayed.
+
+### 2.3 Username too long
+
+
+
+### 2.4 Email invalid
 
 The value entered into email has to have a correct syntax. If it does not a message will be displayed. The user has to reenter this value.
 
-![invalid_email](invalid_email.png) 
+![invalid_email](invalid_email.jpg) 
 
 ### 2.3 Email already in use.
 
