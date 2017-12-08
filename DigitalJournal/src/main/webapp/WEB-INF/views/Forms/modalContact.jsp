@@ -7,9 +7,9 @@
 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:choose>
-    <c:when test="${contactStatus =='mdl_email_invalid'}">
+    <c:when test="${contactStatus =='emailinvalid'}">
         <!-- Modal -->
-        <div class="modal fade" id="email_invalid" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        <div class="modal fade" id="mdl_email_invalid" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
              aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content text-black">
