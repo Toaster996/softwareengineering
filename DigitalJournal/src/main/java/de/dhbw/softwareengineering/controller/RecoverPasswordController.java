@@ -116,9 +116,22 @@ public class RecoverPasswordController {
 
     @RequestMapping(value = "/changepassword", method = RequestMethod.POST)
     public String index(@RequestParam("password") String password, @RequestParam("password_confirm") String password_confirm, ModelMap model, HttpSession session) {
-        User user = (User) session.getAttribute("changePasswordUser");
+        // security checks
+        if(password.isEmpty() || password_confirm.isEmpty()){
+            model.addAttribute(Constants.STATUS_ATTRIBUTE_NAME, Constants.STATUSCODE_EMPTYFORM); return "changepassword";
+        } else if(!password.matches(password_confirm)){
+            model.addAttribute(Constants.STATUS_ATTRIBUTE_NAME, Constants.STATUSCODE_PWMISSMATCH); return "changepassword";
+        } else if (password.length() < 6) {
+            model.addAttribute(Constants.STATUS_ATTRIBUTE_NAME, Constants.STATUSCODE_PWTOOSHORT); return "changepassword";
+        } else if (password.length() > 42) {
+            model.addAttribute(Constants.STATUS_ATTRIBUTE_NAME, Constants.STATUSCODE_PWTOOLONG); return "changepassword";
+        }
 
-        if(user != null && password.equals(password_confirm)){
+        // get logged in user
+        User user = (User) session.getAttribute(Constants.SESSION_CHANGEPWUSER);
+
+        // change password of user and write to database
+        if(user != null){
             BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
             user.setPassword(encoder.encode(password));
 
@@ -127,13 +140,13 @@ public class RecoverPasswordController {
                         userDAO.updateUser(user);
             applicationContext.close();
 
-            model.addAttribute("changePassword","success");
+            model.addAttribute(Constants.STATUS_ATTRIBUTE_NAME,Constants.STATUSCODE_PWCHANGESUCCESS);
         }else{
             return "error";
         }
 
-        if(session.getAttribute("changePasswordUser")!=null){
-            session.removeAttribute("changePasswordUser");
+        if(session.getAttribute(Constants.SESSION_CHANGEPWUSER)!=null){
+            session.removeAttribute(Constants.SESSION_CHANGEPWUSER);
         }
 
         return "redirect:/";
