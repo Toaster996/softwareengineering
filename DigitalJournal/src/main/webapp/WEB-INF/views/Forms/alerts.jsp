@@ -16,7 +16,7 @@
     </c:when>
     <c:when test="${status =='emailinvalid'}">
         <hr>
-        <div class="alert alert-danger alert-dismissable" id="emailinvaild">
+        <div class="alert alert-danger alert-dismissable" id="emailinvalid">
             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
             <strong>Email invalid!</strong> Please retry with an valid Email.
         </div

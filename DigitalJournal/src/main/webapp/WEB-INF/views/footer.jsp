@@ -10,7 +10,7 @@
                 <div class="py-4">
                     <h1 class="h3">DigitalJournal</h1>
                     <p>Copyright &copy; 2017</p>
-                    <button class="btn btn-primary" data-toggle="modal" data-target="#contactModal">Contact Us</button>
+                    <button id = "btn_contact" class="btn btn-primary" data-toggle="modal" data-target="#contactModal">Contact Us</button>
                 </div>
             </div>
         </div>
@@ -32,19 +32,19 @@
 
                     <div class="form-group">
                         <label>Name</label>
-                        <input type="text" class="form-control" <form:input path="name"/>
+                        <input id = "lbl_contact_name" type="text" class="form-control" <form:input path="name"/>
                     </div>
                     <div class="form-group">
                         <label>Email</label>
-                        <input type="email" class="form-control" <form:input path="email" />
+                        <input id = "lbl_contact_email" type="email" class="form-control" <form:input path="email" />
                     </div>
                     <div class="form-group">
                         <label>Message</label>
-                        <form:textarea class="form-control" path="message"/>
+                        <textarea id = "lbl_contact_message" class="form-control" <form:textarea path="message"/>
                     </div>
             </div>
             <div class="modal-footer">
-                <button type="submit" class="btn btn-primary btn-block">Submit</button>
+                <button id = "btn_contact_submit" type="submit" class="btn btn-primary btn-block">Submit</button>
             </div>
             </form:form>
         </div>

@@ -58,7 +58,7 @@ Feature:
     And I enter "password" into input field having id "lbl_reg_password"
     And I enter "password" into input field having id "lbl_reg_passwordconf"
     And I click on element having id "btn_reg_submit"
-    Then I should see modal "usedemail"
+    Then I should see modal "usedmail"
 
   Scenario: Password too short
     Given I navigate to ""
