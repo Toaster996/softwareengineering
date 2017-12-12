@@ -130,7 +130,7 @@ public class RecoverPasswordController {
         } else if (password.length() > 42) {
             redir.addFlashAttribute(Constants.STATUS_ATTRIBUTE_NAME, Constants.STATUSCODE_PWTOOLONG);
         }
-        if(!model.containsAttribute(Constants.STATUS_ATTRIBUTE_NAME)){
+        if(redir.containsAttribute(Constants.STATUS_ATTRIBUTE_NAME)){
             String uuid = (String) session.getAttribute("uuid");
             return "redirect:/recoverpassword?uuid="+ uuid;
         }
