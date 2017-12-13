@@ -103,7 +103,7 @@ public class Heartbeat implements Runnable {
     }
 
     private String getEmailBody(ContactRequest request) {
-        String emailBody = Templates.getInstance().getTemplate(Constants.SIGNUP_EMAIL_TEMPLATE);
+        String emailBody = Templates.getInstance().getTemplate(Constants.SUPPORT_EMAIL_TEMPLATE);
         return emailBody.replace("{$email}", request.getEmail()).replace("{$name}", request.getName()).replace("{$message}", request.getMessage());
     }
 }

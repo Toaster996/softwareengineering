@@ -66,23 +66,14 @@
                             </div>
 
                         </c:forEach>
+                        <c:choose>
+                            <c:when test="${empty journals}">
+                                <div class="text-light mt-3 text-center">
+                                    No Journals found!
+                                </div>
+                            </c:when>
 
-                        <div class="card journal_entry">
-                            <div class="card-block p-3">
-                                <h4 class="card-title">How I won against the eye of the Tiger.</h4>
-                                <p class="card-text text-muted">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Deserunt
-                                    vero
-                                    temporibus numquam laudantium
-                                    possimus enim unde! Eius vero reiciendis labore, debitis necessitatibus saepe, fugit
-                                    aliquid
-                                    a ad repudiandae natus. Rem.</p>
-                                <a href="#" class="btn btn-secondary">Edit</a>
-                                <a href="#" class="btn btn-outline-secondary">Share</a>
-                            </div>
-                            <div class="card-footer text-muted">
-                                3 days ago
-                            </div>
-                        </div>
+                        </c:choose>
 
                     </div>
 
