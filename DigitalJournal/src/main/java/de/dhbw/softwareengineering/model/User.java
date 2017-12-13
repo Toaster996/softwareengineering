@@ -1,28 +1,50 @@
 package de.dhbw.softwareengineering.model;
 
+import de.dhbw.softwareengineering.utilities.Constants;
+
+import javax.persistence.*;
+import java.util.Set;
+
+@Entity
+@Table(name = "users")
+/**
+ * Represents an entry of an user from the database.
+ */
 public class User {
-    private String name;
+
+    @Id
+    @Column(name = "username")
+    private String username;
+    @Column(name = "email")
     private String email;
-    private long regist_date;
+    @Column(name = "registrationDate")
+    private long registrationDate;
+    @Column(name = "password")
     private String password;
-    private String passwordConfirm;
-    //TODO: Pic, friends, ....
+    @Column(name = "verified")
+    private boolean verified;
 
+    @OneToOne
+    @JoinColumn(name = "username")
+    /** Used for hibernate join on a recovery request*/
+    private PasswordRecoveryRequest passwordRecoveryRequest;
 
-    public String getPasswordConfirm() {
-        return passwordConfirm;
+    @OneToOne
+    @JoinColumn(name = "username")
+    /** Used for hibernate join on a registration request*/
+    private RegistrationRequest registrationRequest;
+
+    @OneToMany
+    @JoinColumn(name = "username")
+    /** Used for hibernate join on a the users journals*/
+    private Set<Journal> journals;
+
+    public String getUsername() {
+        return username;
     }
 
-    public void setPasswordConfirm(String passwordConfirm) {
-        this.passwordConfirm = passwordConfirm;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getEmail() {
@@ -33,12 +55,12 @@ public class User {
         this.email = email;
     }
 
-    public long getRegist_date() {
-        return regist_date;
+    public long getRegistrationDate() {
+        return registrationDate;
     }
 
-    public void setRegist_date(long regist_date) {
-        this.regist_date = regist_date;
+    public void setRegistrationDate(long registrationDate) {
+        this.registrationDate = registrationDate;
     }
 
     public String getPassword() {
@@ -49,13 +71,15 @@ public class User {
         this.password = password;
     }
 
-    @Override
+    public boolean isVerified() {
+        return verified;
+    }
+
+    public void setVerified(boolean verified) {
+        this.verified = verified;
+    }
+
     public String toString() {
-        return "User{\n\t" +
-                "name='" + name + '\'' +
-                ",\n\temail='" + email + '\'' +
-                ",\n\tregist_date=" + regist_date +
-                ",\n\tpassword='" + password + '\'' +
-                "\n}";
+        return Constants.prettyPrinter.formatObject(this);
     }
 }
