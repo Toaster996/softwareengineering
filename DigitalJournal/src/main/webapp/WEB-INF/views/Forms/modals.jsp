@@ -13,7 +13,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        The username ${name} has already been taken. Please choose another one.
+                        The username ${username} has already been taken. Please choose another one.
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -78,7 +78,7 @@
     </c:when>
     <c:when test="${status =='temp_modal'}">
         <!-- Modal -->
-        <div class="modal fade" id="emptyform" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        <div class="modal fade" id="genericModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
              aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content text-black">
@@ -98,7 +98,7 @@
             </div>
         </div>
         <script>
-            $('#emptyform').modal('show');
+            $('#genericModal').modal('show');
         </script>
     </c:when>
 </c:choose>

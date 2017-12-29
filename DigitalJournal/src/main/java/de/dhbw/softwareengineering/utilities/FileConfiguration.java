@@ -52,16 +52,16 @@ public class FileConfiguration {
                         String value = split[1];
 
                         if (identifier.trim().equals("") || value.trim().equals("")) {
-                            System.err.println("Invalid line " + i + " in FileConfiguration \"" + file.getName() + "\": " + line);
+                            Constants.prettyPrinter.error(new Exception("Invalid line " + i + " in FileConfiguration \"" + file.getName() + "\": " + line));
                         } else {
                             if (bufferedValues.containsKey(identifier)) {
-                                System.err.println("Duplicate of identifier \"" + identifier + "\"" + " in FileConfiguration \"" + file.getName() + "\": " + line);
+                                Constants.prettyPrinter.error(new Exception("Duplicate of identifier \"" + identifier + "\"" + " in FileConfiguration \"" + file.getName() + "\": " + line));
                             } else {
                                 bufferedValues.put(identifier, value);
                             }
                         }
                     } else {
-                        System.err.println("Invalid line " + i + " in FileConfiguration \"" + file.getName() + "\": " + line);
+                        Constants.prettyPrinter.error(new Exception("Invalid line " + i + " in FileConfiguration \"" + file.getName() + "\": " + line));
                     }
                 }
             } catch (IOException e) {

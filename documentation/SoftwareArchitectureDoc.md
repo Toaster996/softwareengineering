@@ -14,7 +14,9 @@ In principle, this is the architecture we want to use. Nevertheless, not all of 
 To have all benefits of the MVC pattern, we decided to use Spring MVC 4.0 as MVC Framework. We are using Spring in the Backend and Frontend. To design our Views, we use Bootstrap, which is not part of this document.
 
 ## 4. User-Case View
-n/a
+![UCD](images/UCD.png)
+
+See the [SRS](documentation.md) for further detail
 
 ## 5. Logical View
 We took a look at our Class Diagram and highlighted Model and Controller Classes, aswell as the View JSP Files.

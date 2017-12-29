@@ -7,7 +7,7 @@
     <table>
             <tr>
                 <td>Name :</td>
-                <td>${name}</td>
+                <td>${username}</td>
             </tr>
             <tr>
                 <td>ID :</td>

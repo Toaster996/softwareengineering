@@ -3,54 +3,99 @@ Feature:
   I want to register
   so that i have an account
 
-  Scenario: Successful registration
-    Given I navigate to "index.html"
+  Scenario: Form is Empty
+    Given I navigate to ""
     And I click on element having id "btn_log-in"
-    When I enter "Jonas" into input field having id "txt_name"
-    And I enter "jonas@example.com" into input field having id "txt_email"
-    And I enter "password" into input field having id "txt_pw"
-    And I enter "password" into input field having id "txt_conf_pw"
-    And I click on element having id "btn_register"
-    Then I should see modal "mdl_sucrec"
+    When I click on element having id "btn_reg_submit"
+    Then I should see modal "emptyform"
+
+  Scenario: Username too long
+    Given I navigate to ""
+    And I click on element having id "btn_log-in"
+    When I enter "thisnameistoolong123456" into input field having id "lbl_reg_name"
+    And I enter "jonas@example.com" into input field having id "lbl_reg_email"
+    And I enter "password" into input field having id "lbl_reg_password"
+    And I enter "password" into input field having id "lbl_reg_passwordconf"
+    And I click on element having id "btn_reg_submit"
+    Then I should see bootstrapalert "nametoolong"
+
 
   Scenario: Username already taken
-    Given I navigate to "index.html"
+    Given I navigate to ""
     And I click on element having id "btn_log-in"
-    And user "duplicate" exists
-    When I enter "duplicate" into input field having id "txt_name"
-    And I enter "jonas@example.com" into input field having id "txt_email"
-    And I enter "password" into input field having id "txt_pw"
-    And I enter "password" into input field having id "txt_conf_pw"
-    And I click on element having id "btn_register"
-    Then I should see modal "mdl_useduser"
+    When I enter "duplicate" into input field having id "lbl_reg_name"
+    And I enter "jonas@example.com" into input field having id "lbl_reg_email"
+    And I enter "password" into input field having id "lbl_reg_password"
+    And I enter "password" into input field having id "lbl_reg_passwordconf"
+    And I click on element having id "btn_reg_submit"
+    Then I should see modal "useduser"
 
+  Scenario: Email too long
+    Given I navigate to ""
+    And I click on element having id "btn_log-in"
+    When I enter "duplicate" into input field having id "lbl_reg_name"
+    And I enter "123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890@example.com" into input field having id "lbl_reg_email"
+    And I enter "password" into input field having id "lbl_reg_password"
+    And I enter "password" into input field having id "lbl_reg_passwordconf"
+    And I click on element having id "btn_reg_submit"
+    Then I should see bootstrapalert "emailtoolong"
+
+  Scenario: Email invalid
+    Given I navigate to ""
+    And I click on element having id "btn_log-in"
+    When I enter "Jonas" into input field having id "lbl_reg_name"
+    And I enter "jonas@example" into input field having id "lbl_reg_email"
+    And I enter "password" into input field having id "lbl_reg_password"
+    And I enter "password" into input field having id "lbl_reg_passwordconf"
+    And I click on element having id "btn_reg_submit"
+    Then I should see bootstrapalert "emailinvalid" 
+    
   Scenario: Email already taken
-    Given I navigate to "index.html"
+    Given I navigate to ""
     And I click on element having id "btn_log-in"
-    And email "duplicate@example.com" taken
-    When I enter "jonas" into input field having id "txt_name"
-    And I enter "duplicate@example.com" into input field having id "txt_email"
-    And I enter "password" into input field having id "txt_pw"
-    And I enter "password" into input field having id "txt_conf_pw"
-    And I click on element having id "btn_register"
-    Then I should see modal "mdl_usedemail"
+    When I enter "jonas" into input field having id "lbl_reg_name"
+    And I enter "duplicate@example.com" into input field having id "lbl_reg_email"
+    And I enter "password" into input field having id "lbl_reg_password"
+    And I enter "password" into input field having id "lbl_reg_passwordconf"
+    And I click on element having id "btn_reg_submit"
+    Then I should see modal "usedmail"
 
-  Scenario: Email has invalid format
-    Given I navigate to "index.html"
+  Scenario: Password too short
+    Given I navigate to ""
     And I click on element having id "btn_log-in"
-    When I enter "jonas" into input field having id "txt_name"
-    And I enter "error" into input field having id "txt_email"
-    And I enter "password" into input field having id "txt_pw"
-    And I enter "password" into input field having id "txt_conf_pw"
-    And I click on element having id "btn_register"
-    Then element having id "alt_email" should be present
+    When I enter "Jonas" into input field having id "lbl_reg_name"
+    And I enter "jonas@example.com" into input field having id "lbl_reg_email"
+    And I enter "1" into input field having id "lbl_reg_password"
+    And I enter "1" into input field having id "lbl_reg_passwordconf"
+    And I click on element having id "btn_reg_submit"
+    Then I should see bootstrapalert "pwtooshort"
+
+  Scenario: Successful registration
+    And I navigate to ""
+    And I click on element having id "btn_log-in"
+    When I enter "Jonas" into input field having id "lbl_reg_name"
+    And I enter "jonas@example.com" into input field having id "lbl_reg_email"
+    And I enter "password123456789123456789123456789123456789" into input field having id "lbl_reg_password"
+    And I enter "password123456789123456789123456789123456789" into input field having id "lbl_reg_passwordconf"
+    And I click on element having id "btn_reg_submit"
+    Then I should see bootstrapalert "pwtoolong"
 
   Scenario: Passwords do not match
-    Given I navigate to "index.html"
+    Given I navigate to ""
     And I click on element having id "btn_log-in"
-    When I enter "jonas" into input field having id "txt_name"
-    And I enter "jonas@example.com" into input field having id "txt_email"
-    And I enter "password" into input field having id "txt_pw"
-    And I enter "123" into input field having id "txt_conf_pw"
-    And I click on element having id "btn_register"
-    Then element having id "alt_pw" should be present
+    When I enter "jonas" into input field having id "lbl_reg_name"
+    And I enter "jonas@example.com" into input field having id "lbl_reg_email"
+    And I enter "password" into input field having id "lbl_reg_password"
+    And I enter "123" into input field having id "lbl_reg_passwordconf"
+    And I click on element having id "btn_reg_submit"
+    Then I should see bootstrapalert "pwmissmatch"
+    
+  Scenario: Successful registration
+    Given I navigate to ""
+    And I click on element having id "btn_log-in"
+    When I enter "Jonas" into input field having id "lbl_reg_name"
+    And I enter "jonas@example.com" into input field having id "lbl_reg_email"
+    And I enter "password" into input field having id "lbl_reg_password"
+    And I enter "password" into input field having id "lbl_reg_passwordconf"
+    And I click on element having id "btn_reg_submit"
+    Then element having id "sucreg" should be present

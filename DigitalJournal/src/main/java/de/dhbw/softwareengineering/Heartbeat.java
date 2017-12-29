@@ -1,19 +1,26 @@
 package de.dhbw.softwareengineering;
 
-import de.dhbw.softwareengineering.utilities.MySQL;
+import de.dhbw.softwareengineering.model.ContactRequest;
+import de.dhbw.softwareengineering.model.PasswordRecoveryRequest;
+import de.dhbw.softwareengineering.model.RegistrationRequest;
+import de.dhbw.softwareengineering.model.dao.ContactRequestDAO;
+import de.dhbw.softwareengineering.model.dao.PasswordRecoveryRequestDAO;
+import de.dhbw.softwareengineering.model.dao.RegistrationRequestDAO;
+import de.dhbw.softwareengineering.model.dao.UserDAO;
+import de.dhbw.softwareengineering.utilities.Constants;
+import de.dhbw.softwareengineering.utilities.Email;
+import de.dhbw.softwareengineering.utilities.Templates;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.util.List;
+
+import static de.dhbw.softwareengineering.utilities.Constants.applicationContext;
+import static de.dhbw.softwareengineering.utilities.Constants.prettyPrinter;
 
 public class Heartbeat implements Runnable {
 
-    private static int TWENTYFOUR_HOURS_IN_MILLIS = 24 * 60 * 60 * 1000;
-
-    @Override
     public void run() {
-        System.out.println("Heartbeat started");
+        Constants.prettyPrinter.info("Heartbeat started");
+
         int counter = 0;
         while (true) {
             try {
@@ -40,46 +47,63 @@ public class Heartbeat implements Runnable {
         new Thread(this).start();
     }
 
-    private void executeEverySecond() {
-
-    }
+    private void executeEverySecond() {}
 
     private void executeEveryMinute() {
         deleteOldRegistrationRequests();
+        deleteOldPasswordRecoveryRequests();
+        sendContactRequestsToSupport();
     }
 
-    private void executeEveryHour() {
+    private void executeEveryHour() {}
 
+    private void deleteOldPasswordRecoveryRequests() {
+        applicationContext.refresh();
+            PasswordRecoveryRequestDAO recoveryRequestDAO = applicationContext.getBean(PasswordRecoveryRequestDAO.class);
+
+            for(PasswordRecoveryRequest recoveryRequest : recoveryRequestDAO.getOldRequests()){
+                recoveryRequestDAO.deleteRequest(recoveryRequest);
+                Constants.prettyPrinter.info("Deleted old password recovery request from user: " + recoveryRequest.getUsername());
+            }
+        applicationContext.close();
+    }
+
+    private void sendContactRequestsToSupport() {
+        applicationContext.refresh();
+            ContactRequestDAO requestDAO = applicationContext.getBean(ContactRequestDAO.class);
+            List<ContactRequest> requests = requestDAO.getUnsentRequests();
+            for(ContactRequest request : requests){
+                if(Email.getInstance().sendEmailSSL(Constants.SUPPORT_RECIPIENT, "DigitalJournal: ContactRequest from " + request.getName(), getEmailBody(request))){
+                    requestDAO.solveRequest(request);
+                }else{
+                    //prettyPrinter.error(new Exception("Could not send mail to support! Deleting request..."));
+                    //requestDAO.deleteRequest(request);
+                }
+            }
+        applicationContext.close();
     }
 
     private void deleteOldRegistrationRequests() {
-        MySQL mySQL = MySQL.getInstance();
+        applicationContext.refresh();
 
-        Connection connection = mySQL.getConnection();
+            RegistrationRequestDAO requestDAO = applicationContext.getBean(RegistrationRequestDAO.class);
+            List<RegistrationRequest> requests = requestDAO.getOldRequests(System.currentTimeMillis() - Constants.ONE_DAY_IN_MILLIS);
 
-        try (PreparedStatement preparedStatement = connection.prepareStatement("SELECT `registration_request`.username, `users`.registrationDate " +
-                "FROM `registration_request` " +
-                "LEFT JOIN `users` ON `registration_request`.username = `users`.username WHERE `users`.registrationDate < ?")) {
+            if (requests != null && requests.size() > 0) {
+                UserDAO userDAO = applicationContext.getBean(UserDAO.class);
 
-            preparedStatement.setLong(1, System.currentTimeMillis() - TWENTYFOUR_HOURS_IN_MILLIS);
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            while (resultSet.next()) {
-                String username = resultSet.getString("username");
-
-                PreparedStatement preparedStatementDeleteRequest = connection.prepareStatement("DELETE FROM `registration_request` WHERE `username` = ?");
-                preparedStatementDeleteRequest.setString(1, username);
-                preparedStatementDeleteRequest.executeUpdate();
-
-                PreparedStatement preparedStatementDeleteUser = connection.prepareStatement("DELETE FROM `users` WHERE `username` = ?");
-                preparedStatementDeleteUser.setString(1, username);
-                preparedStatementDeleteUser.executeUpdate();
-
-                System.out.println("[Heartbeat] deleted request for user: " + username);
+                for (RegistrationRequest request : requests) {
+                    requestDAO.removeRequest(request.getRegistration_uuid());
+                    userDAO.removeUser(request.getUsername());
+                    Constants.prettyPrinter.info("Deleted old registration request from user: " + request.getUsername());
+                }
             }
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        applicationContext.close();
+    }
+
+    private String getEmailBody(ContactRequest request) {
+        String emailBody = Templates.getInstance().getTemplate(Constants.SUPPORT_EMAIL_TEMPLATE);
+        return emailBody.replace("{$email}", request.getEmail()).replace("{$name}", request.getName()).replace("{$message}", request.getMessage());
     }
 }

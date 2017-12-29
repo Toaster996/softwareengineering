@@ -1,0 +1,74 @@
+package de.dhbw.softwareengineering.model.dao;
+
+import de.dhbw.softwareengineering.model.PasswordRecoveryRequest;
+import de.dhbw.softwareengineering.utilities.Constants;
+import de.dhbw.softwareengineering.utilities.HibernateUtil;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
+
+import java.util.List;
+
+public class PasswordRecoveryRequestDAOImpl implements PasswordRecoveryRequestDAO {
+
+    private SessionFactory sessionFactory;
+
+    public void setSessionFactory(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
+
+    public void addRequest(PasswordRecoveryRequest request) {
+        HibernateUtil.create(request, sessionFactory);
+    }
+
+    public void deleteRequest(PasswordRecoveryRequest request) {
+        HibernateUtil.delete(request, sessionFactory);
+    }
+
+    public PasswordRecoveryRequest getRequestByUUID(String uuid) {
+        return (PasswordRecoveryRequest)HibernateUtil.getData(PasswordRecoveryRequest.class, "recoveryUUID",uuid,sessionFactory);
+    }
+
+    public List<PasswordRecoveryRequest> getOldRequests() {
+        Session session = null;
+        List<PasswordRecoveryRequest> requests = null;
+
+        try {
+            // open the session
+            session = this.sessionFactory.openSession();
+            // select table and set restriction to only get requests that are older than one hour
+            requests = session.createCriteria(PasswordRecoveryRequest.class).add(Restrictions.lt("creationDate", System.currentTimeMillis() - Constants.ONE_HOUR_IN_MILLIS)).list();
+        } catch (Exception e) {
+            Constants.prettyPrinter.error(e);
+        } finally {
+            // close the session if it can be closed
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+
+        return requests;
+    }
+
+    @Override
+    public List<PasswordRecoveryRequest> getAllRequestsFromUser(String username) {
+        Session session = null;
+        List<PasswordRecoveryRequest> requests = null;
+
+        try {
+            // open the session
+            session = this.sessionFactory.openSession();
+            // select table and set restriction to only get requests from the given user
+            requests = session.createCriteria(PasswordRecoveryRequest.class).add(Restrictions.eq("username",username)).list();
+        } catch (Exception e) {
+            Constants.prettyPrinter.error(e);
+        } finally {
+            // close the session if it can be closed
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+
+        return requests;
+    }
+}

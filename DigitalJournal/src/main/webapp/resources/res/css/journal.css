@@ -5,3 +5,15 @@
 .journal_entry{
     margin-bottom: 2em;
 }
+
+.btn_entry{
+    background-color: #35424a;
+}
+
+.btn_entry_outline{
+    border-color: #35424a;
+}
+
+.btn_entry_outline:hover{
+    background-color: #35424a;
+}
