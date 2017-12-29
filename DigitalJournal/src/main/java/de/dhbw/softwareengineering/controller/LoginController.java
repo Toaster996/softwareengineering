@@ -12,6 +12,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -22,19 +23,19 @@ import static de.dhbw.softwareengineering.utilities.Constants.applicationContext
 public class LoginController {
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String showLoginForm(ModelMap model, HttpSession session) {
+    public String showLoginForm(ModelMap model, HttpSession session, RedirectAttributes redir) {
         if(session.getAttribute("loggedInUser") != null)return "redirect:/journal";
-        return toHomepage(model);
+        return toHomepage(redir);
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public String verifyLogin(@Valid @ModelAttribute("loginUser") final LoginUser loginUser, HttpSession session, ModelMap model) {
+    public String verifyLogin(@Valid @ModelAttribute("loginUser") final LoginUser loginUser, HttpSession session, ModelMap model, RedirectAttributes redir) {
         if(session.getAttribute("loggedInUser") == null){
             User user = loginUser(loginUser.getLoginName(), loginUser.getLoginPassword());
 
             if (user == null) {
-                model.addAttribute("loginError", "invalidCredentials");
-                return toHomepage(model);
+                redir.addFlashAttribute("loginError", "invalidCredentials");
+                return toHomepage(redir);
             }
             user.setUsername(user.getUsername().trim());
             session.setAttribute("loggedInUser", user);
@@ -43,16 +44,16 @@ public class LoginController {
     }
 
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
-    public String logout(HttpSession session, final ModelMap model) {
+    public String logout(HttpSession session, final ModelMap model, RedirectAttributes redir) {
         session.removeAttribute("loggedInUser");
-        return toHomepage(model);
+        return toHomepage(redir);
     }
 
-    private String toHomepage(ModelMap model) {
-        model.addAttribute(Constants.STATUS_ATTRIBUTE_NAME, "new");
-        model.addAttribute(new RegistrationUser());
-        model.addAttribute(new LoginUser());
-        model.addAttribute(new ContactRequest());
+    private String toHomepage(RedirectAttributes redir) {
+        redir.addFlashAttribute(Constants.STATUS_ATTRIBUTE_NAME, "new");
+        redir.addFlashAttribute(new RegistrationUser());
+        redir.addFlashAttribute(new LoginUser());
+        redir.addFlashAttribute(new ContactRequest());
         return "redirect:/";
     }
 

@@ -27,7 +27,6 @@
     <link href="${fontCSS}" rel="stylesheet"/>
     <link href="${journalCSS}" rel="stylesheet"/>
 
-
     <spring:url value="/resources/js/jquery.min.js" var="jQuery"/>
     <spring:url value="/resources/js/popper.min.js" var="popper"/>
     <spring:url value="/resources/js/bootstrap.min.js" var="bootstrap"/>
@@ -55,8 +54,24 @@
                                     <h4 class="card-title" >${journal.journalName}</h4>
                                     <p class="card-text text-muted">${journal.content}</p>
                                     <div class="entry_btn">
-                                        <a href="/editjournal?journalid=${journal.journalid}" name="${journal.journalid}" class="btn btn-secondary btn_entry">Edit</a>
-                                        <a href="/" class="btn btn-outline-secondary btn_entry_outline">Share</a>
+                                        <div class="dropdown">
+                                            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown">More
+                                                <span class="caret"></span>
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li>
+                                                    <a href="/editjournal?journalid=${journal.journalid}" name="${journal.journalid}" class="dropdown-item">Edit</a>
+                                                </li>
+
+                                                <li>
+                                                    <a href="/" class="dropdown-item">Share</a>
+                                                </li>
+
+                                                <li>
+                                                    <a class="dropdown-item" href="#">Delete</a>
+                                                </li>
+                                            </ul>
+                                        </div>
                                     </div>
                                 </div>
                                 <jsp:useBean id="dateValue" class="java.util.Date"/>
@@ -85,9 +100,6 @@
                         <button class="btn btn-primary btn-block journal_entry" id="btn_newjournal" data-toggle="modal"
                                 data-target=".bd-example-modal-lg">Create new Journal
                         </button>
-
-
-
                         <div class="card" style="width: 20rem;">
                             <!-- <img class="card-img-top" src="res/img/generic_friends.jpg" alt="Card image cap"> -->
                             <div class="card-block p-3">
@@ -153,7 +165,6 @@
 <jsp:include page="Forms/modals.jsp"/>
 <!-- MAIN FOOTER -->
 <jsp:include page="footer.jsp"/>
-
 </body>
 
 </html>

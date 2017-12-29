@@ -18,10 +18,11 @@
     <spring:url value="/resources/css/style.css" var="styleCSS"/>
     <spring:url value="/resources/css/font-awesome.min.css" var="fontCSS"/>
     <link href="${styleCSS}" rel="stylesheet"/>
-    <link href="${bootCSS}" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
     <link href="${styleCSS}" rel="stylesheet"/>
     <link href="${fontCSS}" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+
 
     <spring:url value="/resources/js/jquery.min.js" var="jQuery"/>
     <spring:url value="/resources/js/popper.min.js" var="popper"/>

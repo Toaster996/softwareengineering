@@ -92,7 +92,7 @@ public class RecoverPasswordController {
         PasswordRecoveryRequest passwordRecoveryRequest = recoveryRequestDAO.getRequestByUUID(uuid);
 
         prettyPrinter.info(prettyPrinter.formatObject(passwordRecoveryRequest));
-        System.out.println(redir.getFlashAttributes());
+        //System.out.println(redir.getFlashAttributes());
         User user = null;
         if (passwordRecoveryRequest != null) {
             UserDAO userDAO = applicationContext.getBean(UserDAO.class);
