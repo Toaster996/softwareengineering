@@ -21,9 +21,8 @@ import java.sql.SQLException;
 @Controller
 public class EmailConfirmationController {
 
-    @RequestMapping(value = "confirmEmail",
-            params = {"uuid"})
-    public String index(Model model, @RequestParam(value = "uuid") String uuid) {
+    @RequestMapping(value = "confirmEmail/{uuid}")
+    public String index(Model model, @PathVariable String uuid) {
         // Check UUID against database and update if valid
         applicationContext.refresh();
 

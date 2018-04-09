@@ -9,10 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -66,18 +63,18 @@ public class JournalController {
     }
 
     //Cick on Edit Button
-    @RequestMapping(value = "/editjournal", method = RequestMethod.GET)
-    public String show(@RequestParam(name = "journalid") String journalid, Model m, HttpSession session) {
+    @RequestMapping(value = "/editjournal/{journalId}", method = RequestMethod.GET)
+    public String show(@PathVariable String journalId, Model m, HttpSession session) {
         m.addAttribute("journal", new Journal());
         m.addAttribute(new ContactRequest());
-        System.out.println("Journal ID: " + journalid);
+        System.out.println("Journal ID: " + journalId);
 
         if (session.getAttribute("loggedInUser") == null)
             return "error";
 
         applicationContext.refresh();
         JournalDAO journalDAO = applicationContext.getBean(JournalDAO.class);
-        Journal journal = journalDAO.getJournal(Integer.parseInt(journalid));
+        Journal journal = journalDAO.getJournal(Integer.parseInt(journalId));
         applicationContext.close();
 
         User user = (User) session.getAttribute("loggedInUser");

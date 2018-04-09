@@ -123,7 +123,7 @@ public class RegistrationController {
 
             applicationContext.close();
 
-            String url = "https://" + GeneralConfiguration.getInstance().getString("domain") + "/confirmEmail?uuid=" + uuid;
+            String url = "https://" + GeneralConfiguration.getInstance().getString("domain") + "/confirmEmail/" + uuid;
             String[] recipients = {registrationUser.getEmail()};
             Email.getInstance().sendEmailSSL(recipients, "DigitalJournal: Confirm your email", getEmailBody(url, registrationUser.getName()));
         }

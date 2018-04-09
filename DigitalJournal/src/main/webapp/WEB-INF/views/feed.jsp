@@ -60,7 +60,7 @@
                                             </button>
                                             <ul class="dropdown-menu">
                                                 <li>
-                                                    <a href="/editjournal?journalid=${journal.journalid}" name="${journal.journalid}" class="dropdown-item">Edit</a>
+                                                    <a href="/editjournal/${journal.journalid}" name="${journal.journalid}" class="dropdown-item">Edit</a>
                                                 </li>
 
                                                 <li>

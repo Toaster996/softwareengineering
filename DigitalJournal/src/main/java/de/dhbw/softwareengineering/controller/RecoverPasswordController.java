@@ -11,6 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -63,7 +64,7 @@ public class RecoverPasswordController {
 
             String uuid = UUID.randomUUID().toString();
 
-            String url = "https://" + GeneralConfiguration.getInstance().getString("domain") + "/recoverpassword?uuid=" + uuid;
+            String url = "https://" + GeneralConfiguration.getInstance().getString("domain") + "/recoverpassword/" + uuid;
             String[] recipients = {user.getEmail()};
 
 
@@ -84,8 +85,8 @@ public class RecoverPasswordController {
     }
 
 
-    @RequestMapping(value = "/recoverpassword", params = {"uuid"}, method = RequestMethod.GET)
-    public String index(@RequestParam(value = "uuid") String uuid, Model model, HttpSession session, RedirectAttributes redir) {
+    @RequestMapping(value = "/recoverpassword/{uuid}", params = {"uuid"}, method = RequestMethod.GET)
+    public String index(@PathVariable String uuid, Model model, HttpSession session, RedirectAttributes redir) {
 
         applicationContext.refresh();
         PasswordRecoveryRequestDAO recoveryRequestDAO = applicationContext.getBean(PasswordRecoveryRequestDAO.class);
@@ -132,7 +133,7 @@ public class RecoverPasswordController {
         }
         if(redir.containsAttribute(Constants.STATUS_ATTRIBUTE_NAME)){
             String uuid = (String) session.getAttribute("uuid");
-            return "redirect:/recoverpassword?uuid="+ uuid;
+            return "redirect:/recoverpassword/"+ uuid;
         }
 
         // get logged in user
