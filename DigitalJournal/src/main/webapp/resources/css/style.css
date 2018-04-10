@@ -1,56 +1,87 @@
 body {
-  background: #35424a;
-  color: #fff;
-  font-family: 'Raleway', sans-serif; }
+    background  : #35424a;
+    color       : #fff;
+    font-family : 'Raleway', sans-serif;
+}
+
 body .bg-primary {
-  background-color: #e8491d !important; }
+    background-color : #e8491d !important;
+}
+
 body .btn-primary {
-  background-color: #35424a !important;
-  border-color: #e8491d; }
+    background-color : #35424a !important;
+    border-color     : #e8491d;
+}
+
 body .btn-primary:hover {
-  border-color: #fff; }
+    border-color : #fff;
+}
+
 body .img-circles {
-  border-radius: 50%; }
+    border-radius : 50%;
+}
+
 body .navbar {
-  border-bottom: #e8491d 3px solid;
-  opacity: 1.0; }
+    border-bottom : #e8491d 3px solid;
+    opacity       : 1.0;
+}
+
 body #home-section {
-  background: url("../res/img/slide2.jpg") no-repeat;
-  min-height: 700px;
-  background-size: cover;
-  background-attachment: fixed; }
+    background            : url("../res/img/slide2.jpg") no-repeat;
+    min-height            : 700px;
+    background-size       : cover;
+    background-attachment : fixed;
+}
+
 body #home-section .dark-overlay {
-  background-color: rgba(0, 0, 0, 0.5);
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  min-height: 700px; }
+    background-color : rgba(0, 0, 0, 0.5);
+    position         : absolute;
+    top              : 0;
+    left             : 0;
+    width            : 100%;
+    min-height       : 700px;
+}
+
 body #home-section .home-inner {
-  padding-top: 150px; }
+    padding-top : 150px;
+}
+
 body #home-section .card-form {
-  opacity: 1.0; }
+    opacity : 1.0;
+}
+
 body #home-section .card-form input:hover {
-  color: #e8491d; }
+    color : #e8491d;
+}
+
 body #home-section .card-form #btn_recover {
-  color: #fff; }
+    color : #fff;
+}
+
 body #home-section .fa {
-  color: #e8491d;
-  background: #fff;
-  padding: 4px;
-  border-radius: 5px;
-  font-size: 30px; }
+    color         : #e8491d;
+    background    : #fff;
+    padding       : 4px;
+    border-radius : 5px;
+    font-size     : 30px;
+}
+
 body #explore-section .fa, body #share-section .fa {
-  color: #fff;
-  background: #35424a;
-  padding: 4px;
-  border-radius: 5px;
-  font-size: 30px; }
+    color         : #fff;
+    background    : #35424a;
+    padding       : 4px;
+    border-radius : 5px;
+    font-size     : 30px;
+}
+
 body #create-section .fa {
-  color: #e8491d;
-  background: #fff;
-  padding: 4px;
-  border-radius: 5px;
-  font-size: 30px; }
+    color         : #e8491d;
+    background    : #fff;
+    padding       : 4px;
+    border-radius : 5px;
+    font-size     : 30px;
+}
+
 body .text-black {
-  color: black; }
+    color : black;
+}

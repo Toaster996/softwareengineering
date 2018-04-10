@@ -17,11 +17,12 @@
     <spring:url value="/resources/css/style.css" var="styleCSS"/>
     <spring:url value="/resources/css/font-awesome.min.css" var="fontCSS"/>
     <spring:url value="/resources/res/css/journal.css" var="journalCSS"/>
+    <link href="${journalCSS}" rel="stylesheet"/>
     <link href="${styleCSS}" rel="stylesheet"/>
-    <link href="${bootCSS}" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
     <link href="${styleCSS}" rel="stylesheet"/>
     <link href="${fontCSS}" rel="stylesheet"/>
-    <link href="${journalCSS}" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
 
 
     <spring:url value="/resources/js/jquery.min.js" var="jQuery"/>
@@ -37,12 +38,12 @@
 </head>
 
 <body id="home" class="">
-<jsp:include page="navbar.jsp"/>
+<jsp:include page="static elements/navbarLoggedIn.jsp"/>
 
 <main role="main">
     <div class="container journal_conatainer">
 
-        <h2 class="display-1">Edit Journals</h2>
+        <h5 class="display-4">Edit Journals</h5>
         <div class="row">
             <div class="col-md-9">
                 <form:form method="POST" action="${pageContext.request.contextPath}/editjournal"

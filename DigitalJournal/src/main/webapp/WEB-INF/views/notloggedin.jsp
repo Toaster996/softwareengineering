@@ -37,7 +37,7 @@
 </head>
 
 <body id="home" class="">
-<jsp:include page="navbar.jsp"/>
+<jsp:include page="static elements/navbar.jsp"/>
 
 <main role="main">
     <div class="container journal_conatainer">

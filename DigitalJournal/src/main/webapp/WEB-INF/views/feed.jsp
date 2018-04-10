@@ -21,102 +21,133 @@
     <spring:url value="/resources/css/style.css" var="styleCSS"/>
     <spring:url value="/resources/css/font-awesome.min.css" var="fontCSS"/>
     <spring:url value="/resources/res/css/journal.css" var="journalCSS"/>
-    <link href="${styleCSS}" rel="stylesheet"/>
-    <link href="${bootCSS}" rel="stylesheet"/>
-    <link href="${styleCSS}" rel="stylesheet"/>
-    <link href="${fontCSS}" rel="stylesheet"/>
+    <spring:url value="/resources/res/css/actionbutton.css" var="fabCSS"/>
     <link href="${journalCSS}" rel="stylesheet"/>
+    <link href="${styleCSS}" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css"
+          integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+    <link href="${styleCSS}" rel="stylesheet"/>
+    <link href="${fabCSS}" rel="stylesheet"/>
+    <link href="${fontCSS}" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
     <spring:url value="/resources/js/jquery.min.js" var="jQuery"/>
     <spring:url value="/resources/js/popper.min.js" var="popper"/>
     <spring:url value="/resources/js/bootstrap.min.js" var="bootstrap"/>
     <spring:url value="/resources/res/js/main.js" var="main"/>
+    <spring:url value="/resources/res/js/actionbutton.js" var="fabJS"/>
     <script src="${jQuery}"></script>
     <script src="${popper}"></script>
     <script src="${bootstrap}"></script>
     <script src="${main}"></script>
+    <script src="${fabJS}"></script>
 
-    <title>DigitalJournal</title>
+    <title>FEED | DigitalJournal</title>
 </head>
 
 <body id="home" class="">
-<jsp:include page="navbar.jsp"/>
+<jsp:include page="static elements/navbarLoggedIn.jsp"/>
 
 <main role="main">
+    <!-- Floating Action Button -->
+    <div class="fab blue child btn-floating" data-tooltip="I am B" data-subitem="1">
+        <i class="material-icons">date_range</i>
+        <span class="btn-floating fab-tip">Create new Goal</span>
+    </div>
+    <div class="fab blue child btn-floating" data-tooltip="I am A" data-subitem="2" data-toggle="modal"
+         data-target=".bd-example-modal-lg">
+        <i class="material-icons">mode_edit</i>
+        <span class="btn-floating fab-tip">Create new Journal</span>
+    </div>
+    <div class="fab" id="masterfab">
+        <i class="material-icons">add</i>
+    </div>
+
     <div class="container journal_conatainer">
-                <h2 class="pb-2">Your Journals</h2>
-                <div class="row text-dark">
-                    <div class="col-md-9">
-                        <!-- Card Examples -->
-                        <c:forEach items="${journals}" var="journal">
-                            <div class="card journal_entry">
-                                <div class="card-block p-3">
-                                    <h4 class="card-title" >${journal.journalName}</h4>
-                                    <p class="card-text text-muted">${journal.content}</p>
-                                    <div class="entry_btn">
-                                        <div class="dropdown">
-                                            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown">More
-                                                <span class="caret"></span>
-                                            </button>
-                                            <ul class="dropdown-menu">
-                                                <li>
-                                                    <a href="/editjournal/${journal.journalid}" name="${journal.journalid}" class="dropdown-item">Edit</a>
-                                                </li>
+        <h2 class="pb-2">Your Journals</h2>
+        <div class="row text-dark">
+            <div class="col-md-9">
+                <!-- Card Examples -->
+                <c:forEach items="${journals}" var="journal">
+                    <div class="card journal_entry">
+                        <div class="card-block p-3">
+                            <h4 class="card-title">${journal.journalName}</h4>
+                            <p class="card-text text-muted">${journal.content}</p>
+                            <div class="entry_btn">
+                                <div class="dropdown">
+                                    <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                                            data-toggle="dropdown">More
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a href="/editjournal/${journal.journalid}" name="${journal.journalid}"
+                                               class="dropdown-item">Edit</a>
+                                        </li>
 
-                                                <li>
-                                                    <a href="/" class="dropdown-item">Share</a>
-                                                </li>
+                                        <li>
+                                            <a href="/" class="dropdown-item">Share</a>
+                                        </li>
 
-                                                <li>
-                                                    <a class="dropdown-item" href="#">Delete</a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                                <jsp:useBean id="dateValue" class="java.util.Date"/>
-                                <jsp:setProperty name="dateValue" property="time" value="${journal.date}"/>
-                                <div class="card-footer text-muted"> <fmt:formatDate value="${dateValue}" pattern="MM/dd/yyyy HH:mm"/>
+                                        <li>
+                                            <a class="dropdown-item" href="#">Delete</a>
+                                        </li>
+                                    </ul>
                                 </div>
                             </div>
-
-                        </c:forEach>
-                        <c:choose>
-                            <c:when test="${empty journals}">
-                                <div class="text-light mt-3 text-center">
-                                    No Journals found!
-                                </div>
-                            </c:when>
-
-                        </c:choose>
-
-                    </div>
-
-                    <!-- ASIDE -->
-
-                    <div class="col-md-3">
-                        <!-- <img src="../../webapp/resources/res/img/profile.jpg" alt="generic profile" class="img-thumbnail img-circles">
-                         <hr> -->
-                        <button class="btn btn-primary btn-block journal_entry" id="btn_newjournal" data-toggle="modal"
-                                data-target=".bd-example-modal-lg">Create new Journal
-                        </button>
-                        <div class="card" style="width: 20rem;">
-                            <!-- <img class="card-img-top" src="res/img/generic_friends.jpg" alt="Card image cap"> -->
-                            <div class="card-block p-3">
-                                <h4 class="card-title">Your Friends</h4>
-                                <p class="card-text">Quick access to your best friends.</div>
-                            <ul class="list-group list-group-flush text-muted">
-                                <li class="list-group-item">Kurt Cobain</li>
-                                <li class="list-group-item">Dave Grohl</li>
-                                <li class="list-group-item">Krist Novoselic</li>
-                            </ul>
-                            <!-- <div class="card-block">
-                            <a href="#" class="card-link">Card link</a>
-                            <a href="#" class="card-link">Another link</a>
-                        </div> -->
+                        </div>
+                        <jsp:useBean id="dateValue" class="java.util.Date"/>
+                        <jsp:setProperty name="dateValue" property="time" value="${journal.date}"/>
+                        <div class="card-footer text-muted"><fmt:formatDate value="${dateValue}"
+                                                                            pattern="MM/dd/yyyy HH:mm"/>
                         </div>
                     </div>
+
+                </c:forEach>
+                <c:choose>
+                    <c:when test="${empty journals}">
+                        <div class="text-light mt-3 text-center">
+                            No Journals found!
+                        </div>
+                    </c:when>
+
+                </c:choose>
+
+            </div>
+
+            <!-- ASIDE -->
+            <div class="col-md-3">
+
+                <div class="card" style="width: 20rem;">
+                    <div class="card-block p-3">
+                        <h4 class="card-title">Your Friends</h4>
+                        <p class="card-text">Quick access to your best friends.</div>
+                    <ul class="list-group list-group-flush text-muted">
+                        <li class="list-group-item">Kurt Cobain</li>
+                        <li class="list-group-item">Dave Grohl</li>
+                        <li class="list-group-item">Krist Novoselic</li>
+                    </ul>
                 </div>
+                <hr>
+                <div class="card" style="width: 20rem;">
+                    <div class="card-block p-3">
+                        <h4 class="card-title">Your Goals</h4>
+                        <p class="card-text">Overview of your lastest Goals.</div>
+                    <ul class="list-group list-group-flush text-muted">
+                        <li class="list-group-item">
+                            <strong>2018/05/12</strong> buy beer
+                        </li>
+                        <li class="list-group-item">
+                            <strong>2018/05/13</strong> buy juice
+                        </li>
+                        <li class="list-group-item">
+                            <strong>2018/05/14</strong> buy braches
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- new Journal Feed -->
@@ -140,7 +171,8 @@
                                 <input class="form-control form-control-lg" type="text" placeholder="Name"
                                 <form:input path="journalName"/>
                                 <label id="txt_journalname" class="control-label">Content</label>
-                                <textarea class="form-control form-control-lg" type="text" rows="10" placeholder="What is this Journal about?"
+                                <textarea class="form-control form-control-lg" type="text" rows="10"
+                                          placeholder="What is this Journal about?"
                                 <form:textarea path="content"/>
                             </div>
                             <!-- <input type="submit" value="Submit" class="btn btn-outline-light btn-block"/>
@@ -151,7 +183,8 @@
                         <div class="modal-footer">
                             <div class="form-group">
                                 <div class="text-right">
-                                    <button type="submit" id="btn_submitjournal" class="btn btn-primary">Save</button>
+                                    <button type="submit" id="btn_submitjournal" class="btn btn-primary">Save
+                                    </button>
                                 </div>
                             </div>
                         </div>

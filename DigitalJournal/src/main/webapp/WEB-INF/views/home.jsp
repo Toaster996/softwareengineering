@@ -6,7 +6,8 @@
 <html lang="en">
 
 <head>
-    <fav></fav>
+    <link rel="shortcut icon" type="image/x-icon"  href="/resources/img/favicon.ico"/>
+
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta content="width=device-width, initial-scale=1.0"/>
     <!-- <link rel="stylesheet" href="../../resources/css/font-awesome.min.css">
@@ -34,11 +35,11 @@
     <script src="${main}"></script>
 
 
-    <title>DigitalJournal</title>
+    <title>HOME | DigitalJournal</title>
 </head>
 
 <body id="home">
-<jsp:include page="navbar.jsp"/>
+<jsp:include page="static elements/navbar.jsp"/>
 
 <!-- HOME SECTION -->
 <header id="home-section">
