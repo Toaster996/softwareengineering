@@ -1,6 +1,7 @@
 package de.dhbw.softwareengineering.controller;
 
 import de.dhbw.softwareengineering.model.ContactRequest;
+import de.dhbw.softwareengineering.model.Goal;
 import de.dhbw.softwareengineering.model.Journal;
 import de.dhbw.softwareengineering.model.User;
 import de.dhbw.softwareengineering.model.dao.JournalDAO;
@@ -9,14 +10,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
 
-import static org.apache.commons.lang.StringEscapeUtils.escapeHtml;
 import static de.dhbw.softwareengineering.utilities.Constants.applicationContext;
+import static org.apache.commons.lang.StringEscapeUtils.escapeHtml;
 
 @Controller
 public class JournalController {
@@ -37,6 +42,7 @@ public class JournalController {
         }
 
         m.addAttribute("journals", journals);
+        m.addAttribute("goal", new Goal());
         m.addAttribute("currentTime", System.currentTimeMillis());
         applicationContext.close();
         return "feed";
@@ -93,6 +99,13 @@ public class JournalController {
             return "editjournal";
         }
 
+        return "redirect:/journal";
+    }
+
+
+    @RequestMapping(value = "journal/newgoal", method = RequestMethod.GET)
+    public String openModalNewGoal(Model m, HttpSession session, RedirectAttributes redir) {
+        redir.addFlashAttribute(Constants.STATUS_ATTRIBUTE_NAME, "createGoal");
         return "redirect:/journal";
     }
 

@@ -53,7 +53,7 @@
     <!-- Floating Action Button -->
     <div class="fab blue child btn-floating" data-tooltip="I am B" data-subitem="1">
         <i class="material-icons">date_range</i>
-        <span class="btn-floating fab-tip">Create new Goal</span>
+        <a href="/journal/newgoal" class="btn-floating fab-tip">Create new Goal</a>
     </div>
     <div class="fab blue child btn-floating" data-tooltip="I am A" data-subitem="2" data-toggle="modal"
          data-target=".bd-example-modal-lg">
@@ -150,7 +150,8 @@
         </div>
     </div>
 
-    <!-- new Journal Feed -->
+
+    <!-- Modal to create new Journal -->
     <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
          aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -193,8 +194,54 @@
             </div>
         </div>
     </div>
-</main>
 
+    <c:choose>
+        <c:when test="${status =='createGoal'}">
+            <div class="modal fade" id="mdl_goal_create" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content text-black">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Create a new Goal!</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form:form action="${pageContext.request.contextPath}/createGoal"
+                                       method="POST" modelAttribute="goal">
+                                <div class="form-group">
+                                    <input type="text" id="lbl_name"
+                                           class="form-control form-control-lg"
+                                           placeholder="What is your Goal?" <form:input path="name"/>
+                                </div>
+                                <div class="form-group">
+                                    <input type="date" id="lbl_date"
+                                           class="form-control form-control-lg"
+                                           placeholder="Date" <form:input
+                                        path="date"/>
+                                </div>
+                                <div class="form-group">
+                                    <textarea class="form-control form-control-lg" rows="3" type="text" placeholder="Describe your Goal!"
+                                    <form:textarea path="description"/>
+                                </div>
+                                <input type="submit" value="Save"
+                                       class="btn btn-primary btn-block">
+
+                                <jsp:include page="Forms/alerts.jsp"/>
+                            </form:form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                $('#mdl_goal_create').modal('show');
+            </script>
+        </c:when>
+    </c:choose>
+
+</main>
 <jsp:include page="Forms/modals.jsp"/>
 <!-- MAIN FOOTER -->
 <jsp:include page="footer.jsp"/>
