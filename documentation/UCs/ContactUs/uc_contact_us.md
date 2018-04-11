@@ -29,9 +29,9 @@ The user did not fill in every entry in the form. A message that the Form is emp
 
 ### 2.3 Name too long
 
-The Names are restricted to 50 characters. Longer names will not be accepted.
+The names are restricted to 50 characters. Longer names will not be accepted.
 
-![username_too_long](username_too_long.png)
+![username_too_long](name_too_long.png)
 
 ### 2.4 Email too long
 
@@ -43,13 +43,13 @@ The email has a maximum size of 100 characters. If a user tries to enter a longe
 
 The value entered into email has to have a correct syntax. If it does not a message will be displayed. The user has to reenter this value.
 
-![invalid_email](invalid_email.jpg) 
+![invalid_email](email_invalid.png) 
 
 ### 2.6 Message too long.
 
 The message has a maximum size of 1000 characters. If a user tries to enter a longer email he will be notified, that this is not possible.
 
-![email_already_in_use](email_already_in_use.png)
+![email_already_in_use](message_too_long.png)
 
 
 ## 3. Special Requirements
