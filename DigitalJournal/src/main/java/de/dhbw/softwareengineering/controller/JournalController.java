@@ -15,6 +15,7 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
 
+import static org.apache.commons.lang.StringEscapeUtils.escapeHtml;
 import static de.dhbw.softwareengineering.utilities.Constants.applicationContext;
 
 @Controller
@@ -30,6 +31,10 @@ public class JournalController {
         JournalDAO journalDAO = applicationContext.getBean(JournalDAO.class);
         User user = (User) session.getAttribute("loggedInUser");
         List<Journal> journals = journalDAO.getAllJournals(user.getUsername());
+
+        for(Journal j : journals){
+            j.setContent(escapeHtml(j.getContent()).replaceAll("\n","<br/>"));
+        }
 
         m.addAttribute("journals", journals);
         m.addAttribute("currentTime", System.currentTimeMillis());
@@ -109,7 +114,6 @@ public class JournalController {
         if (loggedInUser.getUsername().equals(oldJournal.getUsername())) {
             oldJournal.setJournalName(newJournal.getJournalName());
             oldJournal.setContent(newJournal.getContent());
-
             applicationContext.refresh();
             JournalDAO journalDAO = applicationContext.getBean(JournalDAO.class);
             journalDAO.updateJournal(oldJournal);
