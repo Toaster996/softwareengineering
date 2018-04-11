@@ -9,6 +9,8 @@ Of course we want the user to be able to delete his account if he no longer plan
 
 ## 2. Flow of Events
 
+![ad_delete_account](ad_delete_account.svg)
+
 ### 2.1 Basic flow
 
 In general the user wants to delete his account. He will enter confirm the dialog and click on the link in the email within 1h. The account will then be completely deleted.
