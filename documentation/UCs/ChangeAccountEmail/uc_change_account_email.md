@@ -16,23 +16,26 @@ The use case describes the procedure when someone wants to alter his email addre
 
 The basic flow of this usecase is that the user visits his profile page to change his email address. He needs to provide his password in order to change his email. After the password was checked and profound as correct an email will be send to both the old and new mail addresses. The user now has to confirm via the links in both mails. After that the old email will be updated to the new one.   
 
-![success](success.png)
+![send_emails](send_emails.png)
+![success](email_changed.JPG)
 
 ### 2.2 Password is wrong
 
 The user gets prompted to enter the correct password if the entered one was incorrect.
 
-### 2.3 Password is empty
+![password_wrong](password_incorrect.png)
 
-The user gets prompted to enter a password if the password field was left empty.
+### 2.3 Field is empty
+
+If a field was left empty the user is required to fill the empty field as well.
+
+![empty_field](field_empty.png)
 
 ### 2.4 New email is invalid
 
 The entered email is not a valid email, so the user gets prompted to enter a valid one.
 
-### 2.5 New email is empty
-
-The user gets prompted to enter a mail in the corresponding field if the field was left empty.
+![email_invalid](email_invalid.PNG)
 
 ## 3. Special Requirements
 
@@ -44,7 +47,7 @@ In order to send a contact request the user needs two valid email addresses. (ol
 
 ### 4.1 The user has to be logged in
 
-To ensure proper privacy of journals the user has to be logged in when altering his account details.
+The user has to be logged in when altering his account details.
 
 ## 5. Postconditions
 
