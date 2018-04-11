@@ -35,7 +35,7 @@ The uses entered his email correctly and receives an email with a link to recove
 
 ![email_sent](email_sent.png)
  
-However if he does not do it within 1h. The request will be deleed an the link is no longer valid.
+However if he does not do it within 1h. The request will be deleted an the link is no longer valid.
 
 ### 2.4 The user typed his email wrong/the email has no account 
 
