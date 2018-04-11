@@ -47,7 +47,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        To register, you have to fill out this form entirely.
+                        To contact us, you have to fill out this form entirely.
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -74,7 +74,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <strong>Your request has been submited</strong> We are looking forward reading your questions.
+                        <strong>Your request has been submitted</strong> We are looking forward reading your questions.
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
