@@ -4,6 +4,24 @@ public class Goal {
     private String name;
     private String date;
     private String description;
+    private String daysLeft;
+    private String id;
+
+    public Goal(){}
+
+    public Goal(String name, String date, String description) {
+        this.name = name;
+        this.date = date;
+        this.description = description;
+    }
+
+    public String getDaysLeft() {
+        return daysLeft;
+    }
+
+    public void setDaysLeft(String daysLeft) {
+        this.daysLeft = daysLeft;
+    }
 
     public String getName() {
         return name;
@@ -27,5 +45,22 @@ public class Goal {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        return "Goal{" +
+                "name='" + name + '\'' +
+                ", date='" + date + '\'' +
+                ", description='" + description + '\'' +
+                '}';
     }
 }

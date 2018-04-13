@@ -34,7 +34,8 @@
     <script src="${bootstrap}"></script>
     <script src="${main}"></script>
 
-
+    <spring:url value="../../resources/img/favicon.ico" var="favPath"/>
+    <link rel='shortcut icon' type='image/x-icon' href="${favPath}"/>
     <title>HOME | DigitalJournal</title>
 </head>
 

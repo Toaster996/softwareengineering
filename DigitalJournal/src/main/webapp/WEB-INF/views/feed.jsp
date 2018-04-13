@@ -133,8 +133,14 @@
                 <div class="card" style="width: 20rem;">
                     <div class="card-block p-3">
                         <h4 class="card-title">Your Goals</h4>
-                        <p class="card-text">Overview of your lastest Goals.</div>
+                        <p class="card-text">Overview of your latest Goals.</div>
                     <ul class="list-group list-group-flush text-muted">
+                        <c:forEach items="${goals}" var="goal">
+                            <li class="list-group-item">
+                                <strong>${goal.date}</strong><a href="/journal/goal/${goal.id}">${goal.description}</a>
+                            </li>
+                        </c:forEach>
+
                         <li class="list-group-item">
                             <strong>2018/05/12</strong> buy beer
                         </li>
@@ -237,6 +243,44 @@
 
             <script>
                 $('#mdl_goal_create').modal('show');
+            </script>
+        </c:when>
+
+        <c:when test="${status =='showGoal'}">
+            <div class="modal fade" id="mdl_goal_show" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content text-black">
+                        <div class="modal-header">
+                            <h5 class="modal-title">${showGoal.name}!</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p class="lead">${showGoal.description}</p>
+                            <hr>
+                            <p>This goal has to be achieved in ${showGoal.daysLeft} days.</p>
+                        </div>
+                        <div class="modal-footer">
+                            <div class="form-group">
+                                <div class="text-right">
+                                    <a href="journal/deletegoal/${showGoal.id}" class="btn btn-danger">Delete</a>
+                                    <button type="button" class="btn btn-primary" id="btn_close_goal">
+                                        Close
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                $('#mdl_goal_show').modal('show');
+                $('#btn_close_goal').click(function(){
+                    $('#mdl_goal_show').modal('hide');
+                })
             </script>
         </c:when>
     </c:choose>

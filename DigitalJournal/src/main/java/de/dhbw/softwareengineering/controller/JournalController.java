@@ -18,6 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 import static de.dhbw.softwareengineering.utilities.Constants.applicationContext;
@@ -37,15 +38,25 @@ public class JournalController {
         User user = (User) session.getAttribute("loggedInUser");
         List<Journal> journals = journalDAO.getAllJournals(user.getUsername());
 
-        for(Journal j : journals){
-            j.setContent(escapeHtml(j.getContent()).replaceAll("\n","<br/>"));
+        for (Journal j : journals) {
+            j.setContent(escapeHtml(j.getContent()).replaceAll("\n", "<br/>"));
         }
-
+        //TODO This List has to be filled with data from the DB
+        List<Goal> goals = getDummyGoals();
+        m.addAttribute("goals", goals);
         m.addAttribute("journals", journals);
         m.addAttribute("goal", new Goal());
         m.addAttribute("currentTime", System.currentTimeMillis());
         applicationContext.close();
         return "feed";
+    }
+
+    private List<Goal> getDummyGoals() {
+        List<Goal> goals = new ArrayList<>();
+        Goal goal = new Goal("Buy beer", "2018/04/12", "I need some beer!");
+        goal.setId("3242342");
+        goals.add(goal);
+        return goals;
     }
 
     @RequestMapping(value = "/newjournal", method = RequestMethod.POST)
@@ -73,9 +84,8 @@ public class JournalController {
         return "redirect:/journal";
     }
 
-    //Cick on Edit Button
     @RequestMapping(value = "/editjournal/{journalId}", method = RequestMethod.GET)
-    public String show(@PathVariable String journalId, Model m, HttpSession session) {
+    public String editJournal(@PathVariable String journalId, Model m, HttpSession session) {
         m.addAttribute("journal", new Journal());
         m.addAttribute(new ContactRequest());
         System.out.println("Journal ID: " + journalId);
@@ -106,6 +116,22 @@ public class JournalController {
     @RequestMapping(value = "journal/newgoal", method = RequestMethod.GET)
     public String openModalNewGoal(Model m, HttpSession session, RedirectAttributes redir) {
         redir.addFlashAttribute(Constants.STATUS_ATTRIBUTE_NAME, "createGoal");
+        return "redirect:/journal";
+    }
+
+    @RequestMapping(value = "journal/newgoal", method = RequestMethod.POST)
+    public String submit(@Valid @ModelAttribute("goal") final Goal goal, final BindingResult result, final ModelMap model, HttpSession session) {
+        //TODO save goal to DB
+        return "redirect:/journal";
+    }
+
+    @RequestMapping(value = "/journal/goal/{goalID}", method = RequestMethod.GET)
+    public String showGoal(@PathVariable String goalID, Model m, HttpSession session, RedirectAttributes redir) {
+        //TODO get goal by id, if logged in user owns it
+        Goal goalByID = new Goal("win against Magnus", "2022/02/33", "I want to win a chessgame against Magnus Carlsen.");
+        goalByID.setDaysLeft("210");
+        redir.addFlashAttribute(Constants.STATUS_ATTRIBUTE_NAME, "showGoal");
+        redir.addFlashAttribute("showGoal", goalByID);
         return "redirect:/journal";
     }
 
@@ -153,7 +179,7 @@ public class JournalController {
     @RequestMapping(value = "/deleteconfirm", method = RequestMethod.GET)
     public String deleteConfirm(Model m, HttpSession session) {
         System.out.println("I ran here");
-       //m.addAttribute("journal", new Journal());
+        //m.addAttribute("journal", new Journal());
         m.addAttribute(new ContactRequest());
 
         if (session.getAttribute("loggedInUser") == null)
@@ -165,7 +191,6 @@ public class JournalController {
         journalDAO.removeJournal(oldJournal);
         applicationContext.close();
         session.removeAttribute("currentJournal");
-
 
         return "redirect:/journal";
     }
