@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <link rel="shortcut icon" type="image/x-icon"  href="/img/favicon.ico"/>
+    <link rel="shortcut icon" type="image/x-icon" href="/img/favicon.ico"/>
 
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta content="width=device-width, initial-scale=1.0"/>
@@ -35,7 +35,8 @@
         <i class="material-icons">date_range</i>
         <a href="/journal/goal/create" class="btn-floating fab-tip">Create new Goal</a>
     </div>
-    <div class="fab blue child btn-floating" data-tooltip="I am A" data-subitem="2" data-toggle="modal" data-target=".bd-example-modal-lg">
+    <div class="fab blue child btn-floating" data-tooltip="I am A" data-subitem="2" data-toggle="modal"
+         data-target=".bd-example-modal-lg">
         <i class="material-icons">mode_edit</i>
         <span class="btn-floating fab-tip">Create new Journal</span>
     </div>
@@ -61,7 +62,8 @@
                                     </button>
                                     <ul class="dropdown-menu">
                                         <li>
-                                            <a th:href="@{'/journal/edit/' + ${journal.journalid}}" th:name="${journal.journalid}"
+                                            <a th:href="@{'/journal/edit/' + ${journal.journalid}}"
+                                               th:name="${journal.journalid}"
                                                class="dropdown-item">Edit</a>
                                         </li>
                                         <li>
@@ -75,7 +77,7 @@
                             </div>
                         </div>
                         <div class="card-footer text-muted">
-                            <p th:text="${#calendars.format(journal.date, 'dd.MM.yyyy HH:mm:ss')}" />
+                            <p th:text="${#calendars.format(journal.date, 'dd.MM.yyyy HH:mm:ss')}"/>
                         </div>
                     </div>
 
@@ -107,7 +109,9 @@
                     <ul class="list-group list-group-flush text-muted">
                         <th:block th:each="goal : ${goals}">
                             <li class="list-group-item">
-                                <strong><span th:text="${#calendars.format(goal.date, 'dd.MM.yyyy')} + ' '"></span></strong><a th:href="@{'/journal/goal/' + ${goal.id}}" th:utext=" ${goal.name}"></a>
+                                <strong><span
+                                        th:text="${#calendars.format(goal.date, 'dd.MM.yyyy')} + ' '"></span></strong><a
+                                    th:href="@{'/journal/goal/' + ${goal.id}}" th:utext=" ${goal.name}"></a>
                             </li>
                         </th:block>
                     </ul>
@@ -132,9 +136,11 @@
                     <div class="modal-body">
                         <div class="form-group">
                             <label id="txt_journalname" class="control-label">Name</label>
-                            <input class="form-control form-control-lg" type="text" placeholder="Name" th:field="*{journalName}"/>
+                            <input class="form-control form-control-lg" type="text" placeholder="Name"
+                                   th:field="*{journalName}"/>
                             <label id="txt_journalcontent" class="control-label">Content</label>
-                            <textarea class="form-control form-control-lg" type="text" rows="10" placeholder="What is this Journal about?" th:field="*{content}"/>
+                            <textarea class="form-control form-control-lg" type="text" rows="10"
+                                      placeholder="What is this Journal about?" th:field="*{content}"/>
                         </div>
                         <!--Alerts -->
                         <div th:replace="forms/alerts:: alerts"></div>
@@ -177,7 +183,8 @@
                                        placeholder="Date" th:field="*{date}"/>
                             </div>
                             <div class="form-group">
-                                <textarea class="form-control form-control-lg" rows="3" type="text" placeholder="Describe your Goal!" th:field="*{description}"/>
+                                <textarea class="form-control form-control-lg" rows="3" type="text"
+                                          placeholder="Describe your Goal!" th:field="*{description}"/>
                             </div>
                             <input type="submit" value="Save" class="btn btn-primary btn-block">
 
@@ -210,27 +217,73 @@
                         <hr>
                         <p th:text="'This goal has to be achieved in ' + *{showGoal.daysLeft} + ' days.'"></p>
                     </div>
-                    <div class="modal-footer">
-                        <div class="form-group">
-                            <div class="text-right">
-                                <form method="POST" th:action="@{'/journal/goal/delete/' + ${showGoal.id}}">
-                                    <a href="javascript:;" class="btn btn-danger" onclick="parentNode.submit();">Delete</a>
-                                </form>
-                                <button type="button" class="btn btn-primary" id="btn_close_goal">
-                                    Close
-                                </button>
+
+                    <div class="form-group">
+                        <form method="POST" th:action="@{'/journal/goal/delete/' + ${showGoal.id}}">
+                            <div class="modal-footer">
+                                <button id="btn_goal_delete" class="btn btn-danger">Delete</button>
+                                <div class="text-right">
+                                    <button class="btn btn-primary" id="btn_close_goal">
+                                        Close
+                                    </button>
+                                    <a type="button" class="btn btn-secondary"
+                                       th:href="@{'/journal/goal/edit/'+ ${showGoal.id}}" id="btn_edit_goal">
+                                        Edit
+                                    </a>
+                                </div>
                             </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
 
         <script>
+            $('#btn_goal_delete').click(function () {
+                parentNode.submit();
+            })
             $('#mdl_goal_show').modal('show');
-            $('#btn_close_goal').click(function(){
+            $('#btn_close_goal').click(function () {
                 $('#mdl_goal_show').modal('hide');
             })
+        </script>
+    </div>
+    <div th:if="${status=='editGoal'}">
+        <div class="modal fade" id="mdl_goal_edit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content text-black">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Edit Goal</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form th:action="@{/journal/goal/edit}" method="POST" th:object="${goal}">
+                            <div class="form-group">
+                                <input type="text"
+                                       class="form-control form-control-lg"
+                                       th:placeholder="${editGoal.name}" th:field="*{name}"/>
+                            </div>
+                            <div class="form-group">
+                                <input type="date"
+                                       class="form-control form-control-lg"
+                                       placeholder="Date" th:field="*{date}"/>
+                            </div>
+                            <div class="form-group">
+                                <textarea class="form-control form-control-lg" rows="3" type="text"
+                                          th:placeholder="${editGoal.description}" th:field="*{description}"></textarea>
+                            </div>
+                            <input type="submit" value="Save" class="btn btn-primary btn-block">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            $('#mdl_goal_edit').modal('show');
         </script>
     </div>
 
