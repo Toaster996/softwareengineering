@@ -10,4 +10,5 @@ public interface JournalRepository extends JpaRepository<Journal, String>{
 
     List<Journal> findAllByUsernameOrderByDateDesc(String username);
 
+    int countByUsername(String username);
 }

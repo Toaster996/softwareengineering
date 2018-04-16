@@ -52,4 +52,8 @@ public class JournalService {
     public void deleteById(String journalId) {
         repository.deleteById(journalId);
     }
+
+    public int countByUsername(String username) {
+        return repository.countByUsername(username);
+    }
 }

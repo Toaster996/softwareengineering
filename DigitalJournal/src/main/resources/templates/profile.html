@@ -18,7 +18,9 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
     <script src="/js/jquery.min.js"></script>
+
     <script src="/js/popper.min.js"></script>
+    <script src="/js/initial.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
     <script src="/res/js/main.js"></script>
     <script src="/res/js/actionbutton.js"></script>
@@ -35,7 +37,12 @@
         <h2 id="heading">Your Profile</h2>
         <div class="row text-dark">
             <div class="col-md-4">
-                <img class="img-rounded" width="330em" height="330em" src="res/img/profile.jpg" alt="Profile">
+                <script type="text/javascript">
+                  $(document).ready(function(){
+                    $('.profile-pic').initial({seed: 80085, charCount: 2, width:46,height:46,fontSize:20,fontWeight:400});
+                  })
+                </script>
+                <img th:data-name="${user.username}" class="profile-pic media-object pull-left rounded-circle" width="330em" height="330em" alt="Profile">
             </div>
 
 
@@ -51,13 +58,13 @@
                                 <div class="form-group text-lg-left">
                                     <p>
                                         <strong>Username:</strong>
-                                        <span style="display:inline-block; width: 2.7em;"></span> John Doe
+                                        <span style="display:inline-block;" th:text="${user.username}"></span>
                                     </p>
                                 </div>
                                 <div class="form-group text-lg-left">
                                     <p>
                                         <strong>Email:</strong>
-                                        <span style="display:inline-block; width: 5em;"></span> johndoe@mail.com
+                                        <span style="display:inline-block;" th:text="${user.email}"></span>
                                         <button class="btn btn-link text-muted" type="button">change</button>
                                     </p>
                                 </div>
@@ -65,7 +72,7 @@
                                 <div class="form-group text-lg-left">
                                     <p>
                                         Already created:
-                                        <strong>42 journals!</strong>
+                                        <strong th:text="${journalCount} + ' journal(s)!'"></strong>
                                     </p>
                                 </div>
 
