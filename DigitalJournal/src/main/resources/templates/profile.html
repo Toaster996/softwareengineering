@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <link rel="shortcut icon" type="image/x-icon"  href="/img/favicon.ico"/>
+
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta content="width=device-width, initial-scale=1.0"/>
+
+    <link href="/css/bootstrap.css" rel="stylesheet"/>
+    <link href="/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="/css/style.css" rel="stylesheet"/>
+    <link href="/res/css/journal.css" rel="stylesheet"/>
+    <link href="/res/css/profile.css" rel="stylesheet"/>
+    <link href="/res/css/actionbutton.css" rel="stylesheet"/>
+    <link href="/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/popper.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/res/js/main.js"></script>
+    <script src="/res/js/actionbutton.js"></script>
+
+    <title>PROFILE | DigitalJournal</title>
+</head>
+
+<body id="home" class="">
+
+<div th:replace="static_elements/navbarLoggedIn :: navbarLoggedIn"/>
+
+<main role="main">
+    <div class="container journal_conatainer">
+        <h2 id="heading">Your Profile</h2>
+        <div class="row text-dark">
+            <div class="col-md-4">
+                <img class="img-rounded" width="330em" height="330em" src="res/img/profile.jpg" alt="Profile">
+            </div>
+
+
+            <div class="col-md-8">
+                <div class="card text-center card-form card-profile">
+                    <div class="card-header bg-primary">
+                        <h3 class="text-white">Your personal information</h3>
+                    </div>
+                    <div class="card-body">
+                        <div id="infocard">
+
+                            <form>
+                                <div class="form-group text-lg-left">
+                                    <p>
+                                        <strong>Username:</strong>
+                                        <span style="display:inline-block; width: 2.7em;"></span> John Doe
+                                    </p>
+                                </div>
+                                <div class="form-group text-lg-left">
+                                    <p>
+                                        <strong>Email:</strong>
+                                        <span style="display:inline-block; width: 5em;"></span> johndoe@mail.com
+                                        <button class="btn btn-link text-muted" type="button">change</button>
+                                    </p>
+                                </div>
+
+                                <div class="form-group text-lg-left">
+                                    <p>
+                                        Already created:
+                                        <strong>42 journals!</strong>
+                                    </p>
+                                </div>
+
+                                <input type="button" value="Delete Account" class="btn btn-danger btn-block btn-border-organge">
+                                <hr>
+                                <div class="form-group text-right">
+                                    <button type="button" class="btn btn-dark btn-block btn-border-organge" id="btn_recover" data-toggle="contactModal" data-target="#recoverModal">Change Password</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<div th:replace="forms/modals :: modals"/>
+<!-- MAIN FOOTER -->
+<div th:replace="footer :: footer"/>
+
+</body>
+
+</html>

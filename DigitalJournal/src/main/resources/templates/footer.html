@@ -1,0 +1,48 @@
+<footer id="main-footer" class="bg-dark" xmlns:th="http://www.thymeleaf.org" th:fragment="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col text-center">
+                <div class="py-4">
+                    <h1 class="h3">DigitalJournal</h1>
+                    <p>Copyright &copy; 2017-18</p>
+                    <button id="btn_contact" class="btn btn-primary" data-toggle="modal" data-target="#contactModal">
+                        Contact Us
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONTACT MODAL -->
+    <div class="modal fade text-dark" id="contactModal">
+        <form th:action="@{/contact}" method="POST" th:object="${contactRequest}">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="contactModalTitle">
+                            Contact Us
+                        </h5>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>Name</label>
+                            <input id = "lbl_contact_name" type="text" class="form-control" th:field="*{name}"/>
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input id = "lbl_contact_email" type="email" class="form-control" th:field="*{email}" />
+                        </div>
+                        <div class="form-group">
+                            <label>Message</label>
+                            <textarea id = "lbl_contact_message" class="form-control" th:field="*{message}"/>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button id = "btn_contact_submit" type="submit" class="btn btn-primary btn-block">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+</footer>

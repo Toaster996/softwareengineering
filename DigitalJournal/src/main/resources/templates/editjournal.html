@@ -1,0 +1,130 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="shortcut icon" type="image/x-icon"  href="/img/favicon.ico"/>
+
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta content="width=device-width, initial-scale=1.0"/>
+
+    <link href="/css/bootstrap.css" rel="stylesheet"/>
+    <link href="/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="/css/style.css" rel="stylesheet"/>
+    <link href="/res/css/journal.css" rel="stylesheet"/>
+    <link href="/res/css/actionbutton.css" rel="stylesheet"/>
+    <link href="/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/popper.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/res/js/main.js"></script>
+    <script src="/res/js/actionbutton.js"></script>
+
+    <title>EDIT | DigitalJournal</title>
+</head>
+
+<body id="home" class="">
+
+<div th:replace="static_elements/navbarLoggedIn :: navbarLoggedIn"/>
+
+<main role="main">
+    <div class="container journal_conatainer">
+
+        <h5 class="display-4">Edit Journals</h5>
+        <div class="row">
+            <div class="col-md-9">
+                <form method="POST" th:action="@{/journal/edit}" th:object="${journal}">
+                    <form>
+                        <div class="form-group">
+                            <label id="txt_journalname" class="control-label">Name</label>
+                            <input class="form-control form-control-lg" type="text" placeholder="" th:field="*{journalName}"/>
+                        </div>
+                        <div class="form-group">
+                            <label id="txt_journalcontent" class="control-label">Content</label>
+                            <textarea class="form-control form-control-lg" rows="15" type="text" placeholder="" th:field="*{content}" />
+                        </div>
+                        <!--Alerts -->
+                        <div th:replace="forms/alerts:: alerts"></div>
+
+                        <div class="form-group">
+                            <div class="text-right">
+                                <a href="/journal/delete" class="btn btn-outline-danger">Delete</a>
+                                <button type="submit" id="btn_submitjournal" class="btn btn-primary">Save</button>
+                            </div>
+                        </div>
+                    </form>
+                </form>
+              <!--  <form>
+                    <div class="form-group">
+                        <label>Name</label>
+                        <input type="text" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Content</label>
+                        <textarea cols="50" rows="10" class="form-control"></textarea>
+                    </div>
+                    <button class="btn btn-primary btn-block mb-5">Submit</button>
+                </form> -->
+            </div>
+
+            <div class="col-md-3 text-dark">
+                <!-- <img src="res/img/profile.jpg" alt="generic profile" class="img-thumbnail img-circles"> -->
+                <div class="card" style="width: 20rem;">
+                    <!-- <img class="card-img-top" src="res/img/generic_friends.jpg" alt="Card image cap"> -->
+                    <div class="card-block p-3">
+                        <h4 class="card-title">Your Friends</h4>
+                        <p class="card-text">Quick access to your best friends.</div>
+                    <ul class="list-group list-group-flush text-muted">
+                        <li class="list-group-item">Kurt Cobain</li>
+                        <li class="list-group-item">Dave Grohl</li>
+                        <li class="list-group-item">Krist Novoselic</li>
+                    </ul>
+                    <!-- <div class="card-block">
+                    <a href="#" class="card-link">Card link</a>
+                    <a href="#" class="card-link">Another link</a>
+                </div> -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+
+<!-- Modal -->
+<div th:if="${delete == 'true'}">
+    <div class="modal fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content text-black">
+                <div class="modal-header">
+                    <h5 class="modal-title">Delete Journal </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Do you really want to delete this journal?
+                </div>
+                <div class="modal-footer">
+                    <form method="POST" th:action="@{/journal/delete}">
+                        <a href="javascript:;" class="btn btn-danger" onclick="parentNode.submit();">Delete</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $('#delete').modal('show');
+    </script>
+</div>
+
+<!-- MAIN FOOTER -->
+<div th:replace="footer :: footer"/>
+
+<script src="js/jquery.min.js"></script>
+<script src="js/popper.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+</body>
+
+</html>

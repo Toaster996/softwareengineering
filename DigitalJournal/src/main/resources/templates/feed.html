@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <link rel="shortcut icon" type="image/x-icon"  href="/img/favicon.ico"/>
+
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta content="width=device-width, initial-scale=1.0"/>
+
+    <link href="/css/bootstrap.css" rel="stylesheet"/>
+    <link href="/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="/css/style.css" rel="stylesheet"/>
+    <link href="/res/css/journal.css" rel="stylesheet"/>
+    <link href="/res/css/actionbutton.css" rel="stylesheet"/>
+    <link href="/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/popper.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/res/js/main.js"></script>
+    <script src="/res/js/actionbutton.js"></script>
+
+    <title>FEED | DigitalJournal</title>
+</head>
+
+<body id="home" class="">
+
+<div th:replace="static_elements/navbarLoggedIn :: navbarLoggedIn"/>
+
+<main role="main">
+    <!-- Floating Action Button -->
+    <div class="fab blue child btn-floating" data-tooltip="I am B" data-subitem="1">
+        <i class="material-icons">date_range</i>
+        <a href="/journal/goal/create" class="btn-floating fab-tip">Create new Goal</a>
+    </div>
+    <div class="fab blue child btn-floating" data-tooltip="I am A" data-subitem="2" data-toggle="modal" data-target=".bd-example-modal-lg">
+        <i class="material-icons">mode_edit</i>
+        <span class="btn-floating fab-tip">Create new Journal</span>
+    </div>
+    <div class="fab" id="masterfab">
+        <i class="material-icons">add</i>
+    </div>
+
+    <div class="container journal_conatainer">
+        <h2 class="pb-2">Your Journals</h2>
+        <div class="row text-dark">
+            <div class="col-md-9">
+                <!-- Card Examples -->
+                <th:block th:each="journal : ${journals}">
+                    <div class="card journal_entry">
+                        <div class="card-block p-3">
+                            <h4 class="card-title" th:utext="${journal.journalName}"/>
+                            <p class="card-text text-muted" th:utext="${journal.content}"/>
+                            <div class="entry_btn">
+                                <div class="dropdown">
+                                    <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                                            data-toggle="dropdown">More
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a th:href="@{'/journal/edit/' + ${journal.journalid}}" th:name="${journal.journalid}"
+                                               class="dropdown-item">Edit</a>
+                                        </li>
+                                        <li>
+                                            <a href="/" class="dropdown-item">Share</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="#">Delete</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer text-muted">
+                            <p th:text="${#calendars.format(journal.date, 'dd.MM.yyyy HH:mm:ss')}" />
+                        </div>
+                    </div>
+
+                </th:block>
+
+                <div th:if="${journals.isEmpty()}" class="text-light mt-3 text-center">
+                    No Journals found!
+                </div>
+            </div>
+
+            <!-- ASIDE -->
+            <div class="col-md-3">
+
+                <div class="card" style="width: 20rem;">
+                    <div class="card-block p-3">
+                        <h4 class="card-title">Your Friends</h4>
+                        <p class="card-text">Quick access to your best friends.</div>
+                    <ul class="list-group list-group-flush text-muted">
+                        <li class="list-group-item">Kurt Cobain</li>
+                        <li class="list-group-item">Dave Grohl</li>
+                        <li class="list-group-item">Krist Novoselic</li>
+                    </ul>
+                </div>
+                <hr>
+                <div class="card" style="width: 20rem;">
+                    <div class="card-block p-3">
+                        <h4 class="card-title">Your Goals</h4>
+                        <p class="card-text">Overview of your latest Goals.</div>
+                    <ul class="list-group list-group-flush text-muted">
+                        <th:block th:each="goal : ${goals}">
+                            <li class="list-group-item">
+                                <strong><span th:text="${#calendars.format(goal.date, 'dd.MM.yyyy')} + ' '"></span></strong><a th:href="@{'/journal/goal/' + ${goal.id}}" th:utext=" ${goal.name}"></a>
+                            </li>
+                        </th:block>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal to create new Journal -->
+    <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content text-dark">
+                <div class="modal-header">
+                    <h5 class="modal-title btn-block" id="exampleModalLabel">Create your new Journal.</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form method="POST" th:action="@{/journal/create}" th:object="${journal}">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label id="txt_journalname" class="control-label">Name</label>
+                            <input class="form-control form-control-lg" type="text" placeholder="Name" th:field="*{journalName}"/>
+                            <label id="txt_journalcontent" class="control-label">Content</label>
+                            <textarea class="form-control form-control-lg" type="text" rows="10" placeholder="What is this Journal about?" th:field="*{content}"/>
+                        </div>
+                        <!--Alerts -->
+                        <div th:replace="forms/alerts:: alerts"></div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <div class="form-group">
+                            <div class="text-right">
+                                <button type="submit" id="btn_submitjournal" class="btn btn-primary">Save
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div th:if="${status=='createGoal'}">
+        <div class="modal fade" id="mdl_goal_create" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content text-black">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Create a new Goal!</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form th:action="@{/journal/goal/create}" method="POST" th:object="${goal}">
+                            <div class="form-group">
+                                <input type="text" id="lbl_name"
+                                       class="form-control form-control-lg"
+                                       placeholder="What is your Goal?" th:field="*{name}"/>
+                            </div>
+                            <div class="form-group">
+                                <input type="date" id="lbl_date"
+                                       class="form-control form-control-lg"
+                                       placeholder="Date" th:field="*{date}"/>
+                            </div>
+                            <div class="form-group">
+                                <textarea class="form-control form-control-lg" rows="3" type="text" placeholder="Describe your Goal!" th:field="*{description}"/>
+                            </div>
+                            <input type="submit" value="Save" class="btn btn-primary btn-block">
+
+                            <!--Alerts -->
+                            <div th:replace="forms/alerts:: alerts"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            $('#mdl_goal_create').modal('show');
+        </script>
+    </div>
+
+    <div th:if="${status=='showGoal'}">
+        <div class="modal fade" id="mdl_goal_show" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content text-black">
+                    <div class="modal-header">
+                        <h5 class="modal-title" th:utext="${showGoal.name} + '!'"></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p class="lead" th:utext="${showGoal.description}"></p>
+                        <hr>
+                        <p th:text="'This goal has to be achieved in ' + *{showGoal.daysLeft} + ' days.'"></p>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="form-group">
+                            <div class="text-right">
+                                <form method="POST" th:action="@{'/journal/goal/delete/' + ${showGoal.id}}">
+                                    <a href="javascript:;" class="btn btn-danger" onclick="parentNode.submit();">Delete</a>
+                                </form>
+                                <button type="button" class="btn btn-primary" id="btn_close_goal">
+                                    Close
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            $('#mdl_goal_show').modal('show');
+            $('#btn_close_goal').click(function(){
+                $('#mdl_goal_show').modal('hide');
+            })
+        </script>
+    </div>
+
+</main>
+<div th:replace="forms/modals :: modals"/>
+<!-- MAIN FOOTER -->
+<div th:replace="footer :: footer"/>
+</body>
+
+</html>
