@@ -41,7 +41,7 @@ The maximum password length is 42. If the user entered a password longer than 42
 
 ![password_too_long](password_too_long.png) 
 
-### 2.6 The passwords do not match
+### 2.10 The passwords do not match
 
 If the entered passwords do not match the user has to reenter them.
 
