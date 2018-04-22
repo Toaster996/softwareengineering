@@ -64,6 +64,13 @@ To ensure proper privacy of journals the user has to be logged in when altering 
 
 The users password will be changed after a successful execution of the process of altering your password. 
 
-## 6. Extension Points
+## 6. Function Points
 
-**n / a**
+To calulate the function points for a specific use case we used the [TINY TOOLS FP Calculator](http://groups.umd.umich.edu/cis/course.des/cis525/js/f00/harvey/FP_Calc.html).
+
+    Score:      9,68 Function Points. 
+    Estimation: -3h 42m.
+
+![domain table](_dct.PNG)
+
+![complexity table](_cat.PNG)

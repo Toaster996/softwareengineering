@@ -66,6 +66,13 @@ In order to send a contact request the user needs a valid email so that the Digi
 
 **n / a** for this usecase
 
-## 6. Extension Points
+## 6. Function Points
 
-**n / a**
+To calulate the function points for a specific use case we used the [TINY TOOLS FP Calculator](http://groups.umd.umich.edu/cis/course.des/cis525/js/f00/harvey/FP_Calc.html).
+
+    Score:      25,52 Function Points. 
+    Time spent: 846min.
+
+![domain table](_dct.PNG)
+
+![complexity table](_cat.PNG)

@@ -87,6 +87,13 @@ The user entered a passwords that do not match.
 
 After successfully changing your password, you can now log in with the new password.
 
-## 6. Extension Points
+## 6. Function Points
 
-**n / a**
+To calulate the function points for a specific use case we used the [TINY TOOLS FP Calculator](http://groups.umd.umich.edu/cis/course.des/cis525/js/f00/harvey/FP_Calc.html).
+
+    Score:      37,84 Function Points. 
+    Time spent: 429min.
+
+![domain table](_dct.PNG)
+
+![complexity table](_cat.PNG)

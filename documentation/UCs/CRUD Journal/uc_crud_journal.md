@@ -65,6 +65,13 @@ After the user saved his edits, the updated data will be displayed in the list o
 
 After confirming the deletion modal, the journal will be permanently removed and no longer displayed in the list overview.
 
-## 6. Extension Points
+## 6. Function Points
 
-**n / a**
+To calulate the function points for a specific use case we used the [TINY TOOLS FP Calculator](http://groups.umd.umich.edu/cis/course.des/cis525/js/f00/harvey/FP_Calc.html).
+
+    Score:      29,92 Function Points. 
+    Time spent: 596min.
+
+![domain table](_dct.PNG)
+
+![complexity table](_cat.PNG)

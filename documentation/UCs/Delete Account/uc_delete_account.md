@@ -43,6 +43,13 @@ In order to delete his account, a user has to be logged in.
 
 After the successful confirmation all information connected to this account will be deleted. 
 
-## 6. Extension Points
+## 6. Function Points
 
-**n / a**
+To calulate the function points for a specific use case we used the [TINY TOOLS FP Calculator](http://groups.umd.umich.edu/cis/course.des/cis525/js/f00/harvey/FP_Calc.html).
+
+    Score:      20,24 Function Points. 
+    Estimation: 2h 29m.
+
+![domain table](_dct.PNG)
+
+![complexity table](_cat.PNG)

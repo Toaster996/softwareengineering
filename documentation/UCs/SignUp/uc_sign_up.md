@@ -99,6 +99,13 @@ As we are dealing with account information during this use case the connection h
 
 After the successful sign up the user will be able to log in with his credentials, as his data is added to the database.
 
-## 6. Extension Points
+## 6. Function Points
 
-**n / a**
+To calulate the function points for a specific use case we used the [TINY TOOLS FP Calculator](http://groups.umd.umich.edu/cis/course.des/cis525/js/f00/harvey/FP_Calc.html).
+
+    Score:      64,24 Function Points. 
+    Time spent: 1559min.
+
+![domain table](_dct.PNG)
+
+![complexity table](_cat.PNG)

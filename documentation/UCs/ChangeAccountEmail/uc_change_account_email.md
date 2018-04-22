@@ -55,6 +55,13 @@ The user has to be logged in when altering his account details.
 
 After changing his email successfully the users old email gets overridden by his/her new email.
 
-## 6. Extension Points
+## 6. Function Points
 
-**n / a**
+To calulate the function points for a specific use case we used the [TINY TOOLS FP Calculator](http://groups.umd.umich.edu/cis/course.des/cis525/js/f00/harvey/FP_Calc.html).
+
+    Score:      27,28 Function Points. 
+    Estimation: 6h 37m.
+
+![domain table](_dct.PNG)
+
+![complexity table](_cat.PNG)
