@@ -23,12 +23,27 @@ public class UserService {
         return repository.existsById(username);
     }
 
-    public User findByEmail(String email) {
-        return repository.findByEmail(email);
-    }
-
     public boolean existByEmail(String email) {
         return repository.existsByEmail(email);
+    }
+
+
+    public User findByName(String username) {
+        Optional<User> userOptional = repository.findById(username);
+        if (userOptional.isPresent()) {
+            return userOptional.get();
+        } else {
+            throw new RuntimeException("No user found with name: " + username);
+        }
+    }
+
+    public User findByEmail(String email) {
+        Optional<User> userOptional = repository.findByEmail(email);
+        if (userOptional.isPresent()) {
+            return userOptional.get();
+        } else {
+            throw new RuntimeException("No user found with email: " + email);
+        }
     }
 
     public User create(RegistrationUser registrationUser) {
@@ -52,16 +67,7 @@ public class UserService {
         }
     }
 
-    public void update(User user) {
-        repository.save(user);
-    }
-
-    public User findByName(String username) {
-        Optional<User> userOptional = repository.findById(username);
-        if (userOptional.isPresent()) {
-            return userOptional.get();
-        } else {
-            throw new RuntimeException("No user found with name: " + username);
-        }
+    public User update(User user) {
+        return repository.save(user);
     }
 }
