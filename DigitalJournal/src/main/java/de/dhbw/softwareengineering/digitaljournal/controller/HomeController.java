@@ -21,12 +21,12 @@ import static de.dhbw.softwareengineering.digitaljournal.util.Constants.*;
 @Controller
 public class HomeController {
 
-
     @GetMapping("/")
     @ResponseStatus(code = HttpStatus.OK)
     public String home(Model model, Principal principal){
-        if (principal != null)
-            return "redirect:journal";
+        if (principal != null){
+            return "forward:/journal";
+        }
 
         model.addAttribute(STATUS_ATTRIBUTE_NAME, "new");
         model.addAttribute("registrationUser", new RegistrationUser());
