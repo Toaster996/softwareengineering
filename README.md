@@ -36,7 +36,7 @@ In order to stop restarting the server by hand every time a change in code happe
 
 #####Live Reload
 
-Install the [Live Reload](http://livereload.com/) plugin in your browser.
+Install the [Live Reload](http://livereload.com/extensions/) plugin in your browser.
 
 Make sure you enable it whenever you want to see live changes!
 
