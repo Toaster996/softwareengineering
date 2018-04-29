@@ -1,5 +1,6 @@
 package de.dhbw.softwareengineering.digitaljournal;
 
+import de.dhbw.softwareengineering.digitaljournal.domain.Journal;
 import de.dhbw.softwareengineering.digitaljournal.domain.User;
 import de.dhbw.softwareengineering.digitaljournal.domain.form.RegistrationUser;
 import org.springframework.http.HttpMethod;
@@ -8,10 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class TestingData {
@@ -39,25 +37,33 @@ public class TestingData {
     }
 
     /*     UserServiceTest     */
+    public static User createUser(boolean verified) {
+        User user = new User();
+        user.setUsername("user");
+        user.setEmail("user@digitaljournal.com");
+        user.setRegistrationDate(System.currentTimeMillis());
+        user.setPassword("$2a$10$j/7dP2Ed2PycrXLQyEi89.y/Y8zRdyAfui3TdUlsjH0Di2WA5VgS6");
+        user.setVerified(verified);
+        return user;
+    }
 
-        public static User createUser(boolean verified) {
-            User user = new User();
-            user.setUsername("user");
-            user.setEmail("user@digitaljournal.com");
-            user.setRegistrationDate(System.currentTimeMillis());
-            user.setPassword("$2a$10$j/7dP2Ed2PycrXLQyEi89.y/Y8zRdyAfui3TdUlsjH0Di2WA5VgS6");
-            user.setVerified(verified);
-            return user;
-        }
+    public static RegistrationUser createRegistrationUser() {
+        RegistrationUser registrationUser = new RegistrationUser();
+        registrationUser.setName("user");
+        registrationUser.setEmail("user@digitaljournal.com");
+        registrationUser.setPassword("password");
+        registrationUser.setPasswordConfirm("password");
+        return registrationUser;
+    }
 
-        public static RegistrationUser createRegistrationUser() {
-            RegistrationUser registrationUser = new RegistrationUser();
-            registrationUser.setName("user");
-            registrationUser.setEmail("user@digitaljournal.com");
-            registrationUser.setPassword("password");
-            registrationUser.setPasswordConfirm("password");
-            return registrationUser;
-        }
-
-    /*    /UserServiceTest     */
+    /*    /JournalServiceTest     */
+    public static Journal createJournal(){
+        Journal journal = new Journal();
+        journal.setJournalid("42");
+        journal.setDate(System.currentTimeMillis());
+        journal.setUsername("user");
+        journal.setContent("Lorem Ipsum");
+        journal.setJournalName("Test Journal");
+        return journal;
+    }
 }

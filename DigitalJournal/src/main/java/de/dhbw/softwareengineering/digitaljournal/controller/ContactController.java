@@ -73,7 +73,6 @@ public class ContactController {
 
         // set status attribute to show a modal
         redir.addFlashAttribute(Constants.STATUS_REQUEST_ATTRIBUTE_NAME, Constants.STATUSCODE_REQUESTSENT);
-
         return "redirect:/";
     }
 

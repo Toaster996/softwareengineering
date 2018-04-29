@@ -112,6 +112,7 @@
                                 <strong><span
                                         th:text="${#calendars.format(goal.date, 'dd.MM.yyyy')} + ' '"></span></strong><a
                                     th:href="@{'/journal/goal/' + ${goal.id}}" th:utext=" ${goal.name}"></a>
+                                <button class="text-right btn btn-success">check</button>
                             </li>
                         </th:block>
                     </ul>

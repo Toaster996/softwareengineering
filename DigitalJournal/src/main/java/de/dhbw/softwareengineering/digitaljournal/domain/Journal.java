@@ -1,6 +1,5 @@
 package de.dhbw.softwareengineering.digitaljournal.domain;
 
-import de.dhbw.softwareengineering.digitaljournal.util.Constants;
 import lombok.Data;
 
 import javax.persistence.Column;
@@ -19,4 +18,14 @@ public class Journal {
     private String content;
     private String username;
     private long date;
+
+    public Journal(){}
+
+    public Journal(String journalid, String journalName, String content, String username, long date) {
+        this.journalid = journalid;
+        this.journalName = journalName;
+        this.content = content;
+        this.username = username;
+        this.date = date;
+    }
 }

@@ -95,4 +95,14 @@ public class GoalController {
 
         return "redirect:/journal";
     }
+
+    @GetMapping("/check/{goalId}")
+    public String checkGoal(@PathVariable String goalId, Model model, RedirectAttributes redir, Principal principal) {
+        Goal goal = goalService.getById(goalId);
+
+        if (goal.getUsername().equals(principal.getName())) {
+           //TODO goalService.checkByID(goalId);
+        }
+        return "redirect:/journal";
+    }
 }
