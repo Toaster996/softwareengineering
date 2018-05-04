@@ -22,29 +22,12 @@ This document is meant for internal use primarily.
 - **tbd**	to be determined
 
 ### 1.5	 References
-- [GitHub](https://github.com/WMerk/VnVProject)
-- [Blog](https://vnvproject.wordpress.com/)
-- [Overall Use case diagram](https://github.com/WMerk/VnVProject/blob/master/doc/use%20cases/SRS.png)
-- [Software Requirements Specification](SRS.MD)
-- [Software Architecture Document](SAD.MD)
-- [Function points](https://github.com/WMerk/vnvDoc/blob/master/doc/FP.pdf)
-- [UC Delete friend](UC_DeleteFriend.MD)
-- [UC Accept friend requests](UC_AcceptFriendRequest.MD)
-- [UC List received friend requests](UC_ListReceivedFriendRequests.MD)
-- [UC List sent friend requests](UC_ListSentFriendRequests.MD)
-- [UC Add friend](UC_AddFriend.MD)
-- [UC ChangePassword](UC_ChangePassword.MD)
-- [UC Create new request](UC_CreateNewRequest.MD)
-- [UC Create new offer](UC_CreateNewOffer.MD)
-- [UC List requests](UC_ListRequests.MD)
-- [UC List offers](UC_ListOffers.MD)
-- [UC Search for offers or requests](UC_SearchOffersRequests.MD)
-- [UC Edit status of offer / request](UC_EditStatus.MD)
-- [UC DeleteAccount](UC_DeleteAccount.MD)
-- [UC EditProfile](UC_EditProfile.MD)
-- [UC Login](UC_Login.MD)
-- [UC Register](UC_Register.MD)
-- [UC Register/Login with Google](UC_RegisterLoginGoogle.MD)
+- [GitHub](https://github.com/Toaster996/softwareengineering)
+- [Blog](https://theexcitingcompany.wordpress.com/)
+- [Overall Use case diagram](https://github.com/Toaster996/softwareengineering/blob/master/documentation/images/UCD.png)
+- [Software Requirements Specification](https://github.com/Toaster996/softwareengineering/blob/master/documentation/documentation.md)
+- [Software Architecture Document](https://github.com/Toaster996/softwareengineering/blob/master/documentation/SoftwareArchitectureDoc.md)
+- [Function points](https://github.com/Toaster996/softwareengineering/blob/master/documentation/function_points.xlsx)
 
 ## 2.	Evaluation Mission and Test Motivation
 ### 2.1	Background
