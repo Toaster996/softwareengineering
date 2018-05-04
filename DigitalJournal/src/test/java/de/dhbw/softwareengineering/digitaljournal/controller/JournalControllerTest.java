@@ -7,15 +7,17 @@ import de.dhbw.softwareengineering.digitaljournal.persistence.GoalRepository;
 import de.dhbw.softwareengineering.digitaljournal.persistence.JournalRepository;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.security.Principal;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class JournalControllerTest {
     private MockMvc mockMvc;
@@ -38,8 +40,18 @@ public class JournalControllerTest {
 
     @Test
     public void root() throws Exception {
-        when(mock(JournalService.class).findAll(mock(Principal.class).getName())).thenReturn(TestingData.findAllJournals(5));
-        TestingData.sendRequestToController(mockMvc, HttpMethod.GET, "/journal", HttpStatus.OK);
+        when(journalService.findAll(any(String.class))).thenReturn(TestingData.findAllJournals(5));
+        mockMvc.perform(get("/journal").principal(mock(Principal.class))).andExpect(status().isOk());
+
+        //TestingData.sendRequestToController(mockMvc, HttpMethod.GET, "/journal", HttpStatus.OK);
+    }
+
+    @Test
+    public void create() throws Exception {
+        mockMvc.perform(post("/journal/create")
+                .flashAttr("journal", TestingData.createJournal())
+                .principal(mock(Principal.class)))
+                .andExpect(status().is3xxRedirection());
     }
 
 
