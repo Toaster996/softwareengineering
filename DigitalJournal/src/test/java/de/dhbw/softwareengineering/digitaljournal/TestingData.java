@@ -2,6 +2,7 @@ package de.dhbw.softwareengineering.digitaljournal;
 
 import de.dhbw.softwareengineering.digitaljournal.domain.Goal;
 import de.dhbw.softwareengineering.digitaljournal.domain.Journal;
+import de.dhbw.softwareengineering.digitaljournal.domain.RegistrationRequest;
 import de.dhbw.softwareengineering.digitaljournal.domain.User;
 import de.dhbw.softwareengineering.digitaljournal.domain.form.RegistrationUser;
 import org.springframework.http.HttpMethod;
@@ -12,6 +13,7 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import static org.mockito.Mockito.mock;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -61,6 +63,15 @@ public class TestingData {
         return registrationUser;
     }
 
+    public static RegistrationUser createEmptyRegistrationUser() {
+        RegistrationUser registrationUser = new RegistrationUser();
+        registrationUser.setName("");
+        registrationUser.setEmail("");
+        registrationUser.setPassword("");
+        registrationUser.setPasswordConfirm("");
+        return registrationUser;
+    }
+
     /*    /JournalServiceTest     */
     public static Journal createJournal(){
         Journal journal = new Journal();
@@ -89,4 +100,15 @@ public class TestingData {
         goal.setUsername("user");
         return goal;
     }
+
+    public static RegistrationRequest createRegistrationRequest(User user) {
+        RegistrationRequest request = new RegistrationRequest();
+                            request.setUsername(user.getUsername());
+                            request.setDate(System.currentTimeMillis());
+                            request.setRegistrationUUID(UUID.randomUUID().toString());
+
+        return request;
+    }
+
+
 }

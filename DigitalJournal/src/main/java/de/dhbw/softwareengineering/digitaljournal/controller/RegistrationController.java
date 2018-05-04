@@ -89,7 +89,6 @@ public class RegistrationController {
 
             User user = userService.create(registrationUser);
             RegistrationRequest request = registrationRequestService.create(registrationUser.getName());
-
             emailService.sendRegistrationMail(user, request);
         }
 
@@ -100,7 +99,6 @@ public class RegistrationController {
     @GetMapping("/confirmemail/{uuid}")
     public String confirmEmail(@PathVariable String uuid, Model model) {
         model.addAttribute("contactRequest",new ContactRequest());
-
         if (registrationRequestService.confirmRequest(uuid, userService)) {
             model.addAttribute(STATUS_RESPONSE_ATTRIBUTE_NAME, String.valueOf(true));
         } else {
