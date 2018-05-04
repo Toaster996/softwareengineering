@@ -96,11 +96,11 @@ public class JournalController {
             model.addAttribute(STATUS_ATTRIBUTE_NAME, STATUSCODE_EMPTYFORM);
         } else if (editedJournal.getJournalName().length() > 100) {
             model.addAttribute(STATUS_ATTRIBUTE_NAME, STATUSCODE_MODAL_TEMP);
-            model.addAttribute(STATUSCODE_MODAL_HEADER, "Journalname to long!");
+            model.addAttribute(STATUSCODE_MODAL_HEADER, "Journalname too long!");
             model.addAttribute(STATUSCODE_MODAL_BODY, "Please enter an shorter Journalname.");
         } else if (editedJournal.getContent().length() > JOURNAL_CONTENT_SIZE) {
             model.addAttribute(STATUS_ATTRIBUTE_NAME, STATUSCODE_MODAL_TEMP);
-            model.addAttribute(STATUSCODE_MODAL_HEADER, "Content to long!");
+            model.addAttribute(STATUSCODE_MODAL_HEADER, "Content too long!");
             model.addAttribute(STATUSCODE_MODAL_BODY, "Please make your content shorter.");
         } else if (session.getAttribute("currentJournal") != null) {
             Journal oldJournal = (Journal) session.getAttribute("currentJournal");

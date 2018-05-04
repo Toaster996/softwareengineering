@@ -35,7 +35,7 @@ public class Constants {
     public static final String STATUSCODE_MODAL_TEMP           = "temp_modal";
     public static final String STATUSCODE_PWCHANGESUCCESS      = "pwchangesuccess";
     public static final String STATUSCODE_MODAL_HEADER         = "temp_modal_header";
-    public static final String STATUSCODE_MODAL_BODY           = "temp_modal_header";
+    public static final String STATUSCODE_MODAL_BODY           = "temp_modal_body";
     public static final String STATUSCODE_REQUESTSENT          = "requestSent";
 
     public static final String BASE_URL = "http://localhost:8080";
