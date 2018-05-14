@@ -4,14 +4,13 @@ import de.dhbw.softwareengineering.digitaljournal.domain.RegistrationRequest;
 import de.dhbw.softwareengineering.digitaljournal.persistence.RegistrationRequestRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 import static de.dhbw.softwareengineering.digitaljournal.util.Constants.HOUR;
 
 @Service
-public class RegistrationRequestService {
+public class RegistrationRequestService extends AbstractService{
 
     private final RegistrationRequestRepository repository;
 

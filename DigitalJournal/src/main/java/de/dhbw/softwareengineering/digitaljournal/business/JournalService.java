@@ -11,7 +11,7 @@ import java.util.Optional;
 import static org.unbescape.html.HtmlEscape.escapeHtml5;
 
 @Service
-public class JournalService {
+public class JournalService extends AbstractService {
 
     private final JournalRepository repository;
 

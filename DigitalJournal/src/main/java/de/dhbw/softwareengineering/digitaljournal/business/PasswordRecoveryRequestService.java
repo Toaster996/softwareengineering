@@ -12,7 +12,7 @@ import java.util.UUID;
 import static de.dhbw.softwareengineering.digitaljournal.util.Constants.HOUR;
 
 @Service
-public class PasswordRecoveryRequestService {
+public class PasswordRecoveryRequestService extends AbstractService{
 
     private final PasswordRecoveryRequestRepository repository;
 

@@ -18,7 +18,7 @@ import static de.dhbw.softwareengineering.digitaljournal.util.Constants.SUPPORT_
 
 @Slf4j
 @Component
-public class EmailService {
+public class EmailService extends AbstractService{
 
     @Value("${spring.mail.username}")
     private String senderAddress;

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class UserService {
+public class UserService extends AbstractService{
 
     private final UserRepository repository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;

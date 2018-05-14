@@ -19,7 +19,7 @@ import static de.dhbw.softwareengineering.digitaljournal.util.Constants.calculat
 import static org.unbescape.html.HtmlEscape.escapeHtml5;
 
 @Service
-public class GoalService {
+public class GoalService extends AbstractService{
 
     private final GoalRepository repository;
 

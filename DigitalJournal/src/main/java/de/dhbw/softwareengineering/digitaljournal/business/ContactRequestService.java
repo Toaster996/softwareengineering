@@ -9,7 +9,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @Service
-public class ContactRequestService {
+public class ContactRequestService extends AbstractService{
 
     private final ContactRequestRepository repository;
 
