@@ -11,7 +11,7 @@ import java.util.Optional;
 import static org.unbescape.html.HtmlEscape.escapeHtml5;
 
 @Service
-public class JournalService extends AbstractService {
+public class JournalService {
 
     private final JournalRepository repository;
 
@@ -23,8 +23,8 @@ public class JournalService extends AbstractService {
         List<Journal> journals = repository.findAllByUsernameOrderByDateDesc(username);
 
         for (Journal j : journals) {
-            j.setContent(escapeHtml5(j.getContent()).replaceAll("\n", "<br/>"));
-            j.setJournalName(escapeHtml5(j.getJournalName()));
+            j.setContent(j.getContent().replaceAll("\n", "<br/>"));
+            j.setJournalName(j.getJournalName());
         }
 
         return journals;
@@ -32,6 +32,8 @@ public class JournalService extends AbstractService {
 
     public Journal save(Journal journal) {
         journal.setJournalid(UUIDGenerator.generateUniqueUUID(repository));
+        journal.setContent(escapeHtml5(journal.getContent()));
+        journal.setJournalName(escapeHtml5(journal.getJournalName()));
         return repository.save(journal);
     }
 

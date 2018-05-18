@@ -35,10 +35,10 @@ public class GoalService extends AbstractService{
 
             Goal goal = new Goal();
                  goal.setId(UUIDGenerator.generateUniqueUUID(repository));
-                 goal.setUsername(principal.getName());
+                 goal.setUsername(escapeHtml5(principal.getName()));
                  goal.setDate(date.getTime());
-                 goal.setName(goalForm.getName());
-                 goal.setDescription(goalForm.getDescription());
+                 goal.setName(escapeHtml5(goalForm.getName()));
+                 goal.setDescription(escapeHtml5(goalForm.getDescription()));
                  goal.setDaysLeft(calculateDaysLeft(System.currentTimeMillis(), date.getTime()));
 
             repository.save(goal);
@@ -65,8 +65,8 @@ public class GoalService extends AbstractService{
 
         for(Goal goal : goals){
             goal.setDaysLeft(calculateDaysLeft(System.currentTimeMillis(), goal.getDate()));
-            goal.setDescription(escapeHtml5(goal.getDescription()).replaceAll("\n", "<br/>"));
-            goal.setName(escapeHtml5(goal.getName()));
+            goal.setDescription(goal.getDescription());
+            goal.setName(goal.getName());
         }
 
         return goals;
