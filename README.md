@@ -16,9 +16,9 @@ Simply add this project as a maven project to your IDE.
 After your _IDE_ has finished fetching all maven dependencies a new Run Configuration should appear. 
 It is called **DigitalJournalApplication**.
 
-###Additional requirements
+### Additional requirements
 
-####Lombok Plugin
+#### Lombok Plugin
 
 Install the Lombok Plugin in your IDE. 
 In IntelliJ go to
@@ -30,11 +30,11 @@ In IntelliJ go to
  * Install it and restart
 
 
-####Hot Swapping Code
+#### Hot Swapping Code
 
 In order to stop restarting the server by hand every time a change in code happens, the following needs to be done.
 
-#####Live Reload
+##### Live Reload
 
 Install the [Live Reload](http://livereload.com/extensions/) plugin in your browser.
 
@@ -42,9 +42,9 @@ Make sure you enable it whenever you want to see live changes!
 
 ![LiveReload](documentation/images/live_reload.png)
 
-#####IDE Configuration
+##### IDE Configuration
 
-**_IntelliJ only!_**
+**_IntelliJ Ultimate only!_**
 
 Go to
   * Help
