@@ -7,13 +7,18 @@ import de.dhbw.softwareengineering.digitaljournal.domain.ContactRequest;
 
 import java.util.List;
 
-public class SendSupportTask implements Task {
+public class SendSupportTask extends Task {
+
+    public SendSupportTask(AbstractService... service) {
+        super(service);
+    }
+
     @Override
-    public void execute(AbstractService... service) {
-        if (service.length == 2)
-            if (service[0] instanceof ContactRequestService && service[1] instanceof EmailService) {
-                ContactRequestService contactRequestService = (ContactRequestService) service[0];
-                EmailService emailService = (EmailService) service[1];
+    public void execute() {
+        if (services.length == 2)
+            if (services[0] instanceof ContactRequestService && services[1] instanceof EmailService) {
+                ContactRequestService contactRequestService = (ContactRequestService) services[0];
+                EmailService emailService = (EmailService) services[1];
                 List<ContactRequest> unsolvedRequests = contactRequestService.findAllUnsolvedRequests();
                 for (ContactRequest contactRequest : unsolvedRequests) {
                     emailService.sendSupportMail(contactRequest);

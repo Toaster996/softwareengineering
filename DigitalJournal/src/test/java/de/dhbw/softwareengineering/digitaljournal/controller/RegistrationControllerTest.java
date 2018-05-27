@@ -159,7 +159,7 @@ public class RegistrationControllerTest {
     }
 
     @Test
-    public void registerUserFailedUsernamelInUse() throws Exception {
+    public void registerUserFailedUsernameInUse() throws Exception {
         RegistrationUser registrationUser = TestingData.createRegistrationUser();
 
         when(userService.existByUsername(registrationUser.getName())).thenReturn(true);

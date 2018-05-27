@@ -3,11 +3,16 @@ package de.dhbw.softwareengineering.digitaljournal.util.Tasks;
 import de.dhbw.softwareengineering.digitaljournal.business.AbstractService;
 import de.dhbw.softwareengineering.digitaljournal.business.PasswordRecoveryRequestService;
 
-public class DeletePWRecoveryTask implements Task {
+public class DeletePWRecoveryTask extends Task {
+
+    public DeletePWRecoveryTask(AbstractService... service) {
+        super(service);
+    }
+
     @Override
-    public void execute(AbstractService... service) {
-        if(service.length == 1 && service[0] instanceof PasswordRecoveryRequestService){
-            PasswordRecoveryRequestService passwordRecoveryRequestService = (PasswordRecoveryRequestService) service[0];
+    public void execute() {
+        if(services.length == 1 && services[0] instanceof PasswordRecoveryRequestService){
+            PasswordRecoveryRequestService passwordRecoveryRequestService = (PasswordRecoveryRequestService) services[0];
             passwordRecoveryRequestService.deleteOldRequests();
         }
     }
