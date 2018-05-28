@@ -14,10 +14,6 @@ before_install:
 script:
   - cd DigitalJournal
   - mvn clean install
-  - mvn sonar:sonar \
-      -Dsonar.organization=philipp7501-github \
-      -Dsonar.host.url=https://sonarcloud.io \
-      -Dsonar.login=7b4cb48b43163b208178907a89fd49fee3c873de
   - sonar-scanner
 
 after_success:
