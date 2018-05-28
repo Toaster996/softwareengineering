@@ -15,4 +15,5 @@ public class Goal {
     private long date;
     private String description;
     private int daysLeft;
+    private boolean checked;
 }

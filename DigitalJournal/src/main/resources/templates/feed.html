@@ -40,6 +40,10 @@
         <i class="material-icons">mode_edit</i>
         <span class="btn-floating fab-tip">Create new Journal</span>
     </div>
+    <div class="fab blue child btn-floating" data-tooltip="I am C" data-subitem="3">
+        <i class="material-icons">perm_identity</i>
+        <a href="/journal/frriend/add" class="btn-floating fab-tip">Add a Friend</a>
+    </div>
     <div class="fab" id="masterfab">
         <i class="material-icons">add</i>
     </div>
@@ -109,13 +113,27 @@
                     <ul class="list-group list-group-flush text-muted">
                         <th:block th:each="goal : ${goals}">
                             <li class="list-group-item">
-                                <strong><span
-                                        th:text="${#calendars.format(goal.date, 'dd.MM.yyyy')} + ' '"></span></strong><a
-                                    th:href="@{'/journal/goal/' + ${goal.id}}" th:utext=" ${goal.name}"></a>
-                                <button class="text-right btn btn-success">check</button>
+                                <div th:switch="${goal.checked}">
+                                    <strong><span
+                                            th:text="${#calendars.format(goal.date, 'dd.MM.yyyy')} + ' '"></span>
+                                    </strong>
+                                    <a th:href="@{'/journal/goal/' + ${goal.id}}" th:utext=" ${goal.name}"></a>
+
+
+                                    <a th:case="false" th:href="@{'/journal/goal/check/' + ${goal.id}}"
+                                       class="btn btn-outline-success text-right">
+                                        <i class="material-icons">done</i>
+                                    </a>
+                                </div>
+
                             </li>
+
                         </th:block>
+                        <li class="list-group-item">
+                            <a href="journal/goal/allgoals">Show all goals!</a>
+                        </li>
                     </ul>
+
                 </div>
             </div>
         </div>

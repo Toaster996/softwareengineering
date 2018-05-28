@@ -13,6 +13,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.List;
 
 import static de.dhbw.softwareengineering.digitaljournal.util.Constants.*;
 
@@ -22,6 +23,8 @@ import static de.dhbw.softwareengineering.digitaljournal.util.Constants.*;
 public class GoalController {
 
     private final GoalService goalService;
+    private static final int NUMBER_OF_LATESTS_GOALS = 4;
+    private int loadedGoals = NUMBER_OF_LATESTS_GOALS;
 
     public GoalController(GoalService goalService) {
         this.goalService = goalService;
@@ -29,7 +32,7 @@ public class GoalController {
 
     @GetMapping(value = "/create")
     public String openModalNewGoal(Model model, RedirectAttributes redir) {
-        model.addAttribute("contactRequest",new ContactRequest());
+        model.addAttribute("contactRequest", new ContactRequest());
 
         redir.addFlashAttribute(STATUS_ATTRIBUTE_NAME, "createGoal");
         return "redirect:/journal";
@@ -37,7 +40,7 @@ public class GoalController {
 
     @PostMapping(value = "/create")
     public String submit(@Valid @ModelAttribute("goal") final CreateGoal goal, final BindingResult result, final Model model, Principal principal) {
-        model.addAttribute("contactRequest",new ContactRequest());
+        model.addAttribute("contactRequest", new ContactRequest());
 
         if (result.hasErrors())
             return "error";
@@ -78,13 +81,14 @@ public class GoalController {
 
     @PostMapping("/edit")
     public String editGoal(@Valid @ModelAttribute("goal") final CreateGoal goal, Model model, Principal principal) {
+        //TODO: missing implementation
         System.out.println(goal.getName());
         return "redirect:/journal";
     }
 
     @GetMapping("/{goalId}")
     public String showGoal(@PathVariable String goalId, Model model, RedirectAttributes redir, Principal principal) {
-        model.addAttribute("contactRequest",new ContactRequest());
+        model.addAttribute("contactRequest", new ContactRequest());
 
         Goal goal = goalService.getById(goalId);
 
@@ -97,12 +101,30 @@ public class GoalController {
     }
 
     @GetMapping("/check/{goalId}")
-    public String checkGoal(@PathVariable String goalId, Model model, RedirectAttributes redir, Principal principal) {
+    public String checkGoal(@PathVariable String goalId, Principal principal) {
         Goal goal = goalService.getById(goalId);
 
         if (goal.getUsername().equals(principal.getName())) {
-           //TODO goalService.checkByID(goalId);
+            goalService.checkByID(goalId);
         }
         return "redirect:/journal";
+    }
+
+    @GetMapping("/allgoals")
+    public String showAllGoals(Principal principal, RedirectAttributes redir) {
+        List<Goal> goals = goalService.findAll(principal.getName());
+        goals = removeNotShownGoals(goals);
+        redir.addFlashAttribute("goals", goals);
+
+        return "redirect:/journal";
+    }
+
+    private List<Goal> removeNotShownGoals(List<Goal> goals) {
+        loadedGoals += NUMBER_OF_LATESTS_GOALS;
+        if (goals.size() > loadedGoals)
+            for (int i = loadedGoals; i < goals.size(); i++) {
+                goals.remove(i);
+            }
+        return goals;
     }
 }

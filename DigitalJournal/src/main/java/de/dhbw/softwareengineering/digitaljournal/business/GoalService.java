@@ -1,7 +1,6 @@
 package de.dhbw.softwareengineering.digitaljournal.business;
 
 import de.dhbw.softwareengineering.digitaljournal.domain.Goal;
-import de.dhbw.softwareengineering.digitaljournal.domain.Journal;
 import de.dhbw.softwareengineering.digitaljournal.domain.form.CreateGoal;
 import de.dhbw.softwareengineering.digitaljournal.persistence.GoalRepository;
 import de.dhbw.softwareengineering.digitaljournal.util.UUIDGenerator;
@@ -22,6 +21,7 @@ import static org.unbescape.html.HtmlEscape.escapeHtml5;
 public class GoalService extends AbstractService{
 
     private final GoalRepository repository;
+    private static final int NUMBER_OF_LATESTS_GOALS = 4;
 
     public GoalService(GoalRepository repository) {
         this.repository = repository;
@@ -34,12 +34,12 @@ public class GoalService extends AbstractService{
             date = formatter.parse(goalForm.getDate());
 
             Goal goal = new Goal();
-                 goal.setId(UUIDGenerator.generateUniqueUUID(repository));
-                 goal.setUsername(escapeHtml5(principal.getName()));
-                 goal.setDate(date.getTime());
-                 goal.setName(escapeHtml5(goalForm.getName()));
-                 goal.setDescription(escapeHtml5(goalForm.getDescription()));
-                 goal.setDaysLeft(calculateDaysLeft(System.currentTimeMillis(), date.getTime()));
+            goal.setId(UUIDGenerator.generateUniqueUUID(repository));
+            goal.setUsername(escapeHtml5(principal.getName()));
+            goal.setDate(date.getTime());
+            goal.setName(escapeHtml5(goalForm.getName()));
+            goal.setDescription(escapeHtml5(goalForm.getDescription()));
+            goal.setDaysLeft(calculateDaysLeft(System.currentTimeMillis(), date.getTime()));
 
             repository.save(goal);
         } catch (ParseException e) {
@@ -52,7 +52,7 @@ public class GoalService extends AbstractService{
 
         if (goalOptional.isPresent()) {
             Goal goal = goalOptional.get();
-                 goal.setDaysLeft(calculateDaysLeft(System.currentTimeMillis(), goal.getDate()));
+            goal.setDaysLeft(calculateDaysLeft(System.currentTimeMillis(), goal.getDate()));
 
             return goal;
         } else {
@@ -72,7 +72,28 @@ public class GoalService extends AbstractService{
         return goals;
     }
 
+    public List<Goal> findLatestsGoals(String name){
+        List<Goal> goals = repository.findAllByUsernameOrderByDateDesc(name);
+        for(int i = NUMBER_OF_LATESTS_GOALS; i < goals.size(); i++){
+            goals.remove(i);
+        }
+
+        for(Goal goal : goals){
+            goal.setDaysLeft(calculateDaysLeft(System.currentTimeMillis(), goal.getDate()));
+            goal.setDescription(goal.getDescription());
+            goal.setName(goal.getName());
+        }
+
+        return goals;
+    }
+
     public void deleteById(String goalId) {
         repository.deleteById(goalId);
+    }
+
+    public void checkByID(String goalID) {
+        Goal goal = this.getById(goalID);
+        goal.setChecked(true);
+        repository.save(goal);
     }
 }

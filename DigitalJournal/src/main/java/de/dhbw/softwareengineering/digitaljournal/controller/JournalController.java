@@ -33,12 +33,14 @@ public class JournalController {
     @GetMapping
     public String showFeed(Model model, Principal principal) {
         List<Journal> journals = journalService.findAll(principal.getName());
-        List<Goal> goals = goalService.findAll(principal.getName());
+        List<Goal> goals = goalService.findLatestsGoals(principal.getName());
 
         model.addAttribute("contactRequest", new ContactRequest());
-        model.addAttribute("goals", goals);
+        if (!model.containsAttribute("goals"))
+            model.addAttribute("goals", goals);
         model.addAttribute("journal", new Journal());
-        model.addAttribute("journals", journals);
+        if (!model.containsAttribute("journals"))
+            model.addAttribute("journals", journals);
         model.addAttribute("goal", new Goal());
 
         return "feed";
