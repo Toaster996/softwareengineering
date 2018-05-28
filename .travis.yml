@@ -13,8 +13,7 @@ before_install:
   - echo "USE mysql;\nUPDATE user SET password=PASSWORD('asdf') WHERE user='root';\nFLUSH PRIVILEGES;\n" | mysql -u root
 script:
   - cd DigitalJournal
-  - mvn clean install
-  - sonar-scanner
+  - mvn clean install sonar:sonar
 
 after_success:
     - bash <(curl -s https://codecov.io/bash)
