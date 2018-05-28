@@ -5,8 +5,7 @@ services:
   - mysql
 before_install:
   - sudo mysql -e 'CREATE DATABASE IF NOT EXISTS digitaljournal;'
-  - sudo mysql -e 'ALTER USER `root` IDENTIFIED BY `asdf`;'
-  - sudo mysql -e 'FLUSH PRIVILEGES;'
+  - echo "USE mysql;\nUPDATE user SET password=PASSWORD('asdf') WHERE user='root';\nFLUSH PRIVILEGES;\n" | mysql -u root
 script:
   - cd DigitalJournal
   - mvn clean install; cobertura:cobertura
