@@ -5,7 +5,7 @@ services:
   - mysql
 addons:
   sonarcloud:
-    organization: "sonarcloud_organization_key" # the key of the org you chose at step #3
+    organization: "digitaljournal" # the key of the org you chose at step #3
     token:
       secure: "kXT4btx0V7BflmTlt8b7XXv92NA92werwHlKI5FHNFTkCCPi4C3j6Mp4fiodoUbt785CFMa1eurxd3gPKW+SEK4u+HS/Nm5AahAs+jO4iPBF9zDmtghFEsCV9txVWaqj5sej5OI6yzMXrQsvfqWEYXKJd/4ea7TyTI7V/dljTSgZzPv4RnNjR9q+BuzfMsKuSxJx0f5r9sMsPO5ufEm8hs23VMLZGUC4aiLDeQgCDkxRdWJjg24HgxHvfvOvlnvoYAi7CGTmpf50GEADRP+nnFq+Rscx9nQDK7naYCERtncq9O1lp5e05zsgcCzznik//rfpcq903CsUNKqT9l089LEOw+D0haGAwduW4cVelh0ZK1iuvnIQbj8oEjEmWVMPvJbhaGIfq5OvZdF9org7jnmzwe0CaSbAQt4oqYaapa5Mu9fMIVyrTN+j4sajafdHXg8fuXDpsK9xZQitH1YqzeQpFGVezb9sASccuR+YkOVvrsU3ZSt993QZLwgWMPkuwn89hZGz59YmDVUKdBcxc8aVhe2UBRpsrab63gX+zbr+YUKRwYyiHrUcZ6DKb2I7LDKAPgz7e20KXAeKVbtrd5XDOo3aDixPR04BCgcjHMEZkZ7S7roRZl3gdnqA6XzwDikLn/PbMcpV67qRUFXIeH3zJ2GxyGIkfp7q704Sy+g="
 before_install:
