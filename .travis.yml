@@ -7,7 +7,7 @@ addons:
   sonarcloud:
     organization: "digitaljournal" # the key of the org you chose at step #3
     token:
-    secure: "fcVAtPiu5TL0IRvOHalG+5gcIMWIwy6VfnHlhYyOBVwT2yWXE5+4t2LZ+e2yMj7sKG8Z2ZxI9+kYvOK4cdfxbvQceirnVQt+gBuqwWYR4dicN2perJYvVgFNWPcvga7Uywigrq9XZk5tnvy0rEgQVcCLl+oIiUK09+kin3U3VPoxImhTl+hD75WV2GxUl7Y28EjbF68nokypfPFDDIQyMN+ZqER3jPIGrVmHIdPqqtL/MfNv3oQ0+KczS7IpluTIY+FeCpE8YTyfMVDnvJe6yoPQdQ0xKrLC2XXkTPLYy29ygS9iawzXxrR05394bf7S5ouqIg2NfcLXlMmpysmVMtq9WZRdSupYpNo1MzRSpNKRZZGDdx4lqv045w1lDj4iUNZxt5VrfJWLJ/AA29qKhVG9Ni/kiyjNeBs8BT3XRFSpbOcFvasJ6DPSkHwcZOlxvuo9MF5MH6+lAQF3/+J37NR/ErDsxsl5Z20zprh0QRFA6VHBUGFX3C3u2SF8JtVh3EepTS1yqjQ3G+IqvObc99ojeRPMwjOkXKsuwa4YWcdlhQQiHleKMFxZZWhlWBUMeFUUIn+CRzSVl5/L7YQJYgCfn86/teUbgEswlGSpz7+yc3AZ4NxdFHzGrDMn157BY8idd1V7ZPokUhKygDbyCbYmvMxDyb2qsmf28rgib94="
+      secure: "fcVAtPiu5TL0IRvOHalG+5gcIMWIwy6VfnHlhYyOBVwT2yWXE5+4t2LZ+e2yMj7sKG8Z2ZxI9+kYvOK4cdfxbvQceirnVQt+gBuqwWYR4dicN2perJYvVgFNWPcvga7Uywigrq9XZk5tnvy0rEgQVcCLl+oIiUK09+kin3U3VPoxImhTl+hD75WV2GxUl7Y28EjbF68nokypfPFDDIQyMN+ZqER3jPIGrVmHIdPqqtL/MfNv3oQ0+KczS7IpluTIY+FeCpE8YTyfMVDnvJe6yoPQdQ0xKrLC2XXkTPLYy29ygS9iawzXxrR05394bf7S5ouqIg2NfcLXlMmpysmVMtq9WZRdSupYpNo1MzRSpNKRZZGDdx4lqv045w1lDj4iUNZxt5VrfJWLJ/AA29qKhVG9Ni/kiyjNeBs8BT3XRFSpbOcFvasJ6DPSkHwcZOlxvuo9MF5MH6+lAQF3/+J37NR/ErDsxsl5Z20zprh0QRFA6VHBUGFX3C3u2SF8JtVh3EepTS1yqjQ3G+IqvObc99ojeRPMwjOkXKsuwa4YWcdlhQQiHleKMFxZZWhlWBUMeFUUIn+CRzSVl5/L7YQJYgCfn86/teUbgEswlGSpz7+yc3AZ4NxdFHzGrDMn157BY8idd1V7ZPokUhKygDbyCbYmvMxDyb2qsmf28rgib94="
 before_install:
   - sudo mysql -e 'CREATE DATABASE IF NOT EXISTS digitaljournal;'
   - echo "USE mysql;\nUPDATE user SET password=PASSWORD('asdf') WHERE user='root';\nFLUSH PRIVILEGES;\n" | mysql -u root
