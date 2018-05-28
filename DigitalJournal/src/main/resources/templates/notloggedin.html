@@ -1,0 +1,45 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="shortcut icon" type="image/x-icon"  href="/img/favicon.ico"/>
+
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta content="width=device-width, initial-scale=1.0"/>
+
+    <link href="/css/bootstrap.css" rel="stylesheet"/>
+    <link href="/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="/css/style.css" rel="stylesheet"/>
+    <link href="/res/css/journal.css" rel="stylesheet"/>
+    <link href="/res/css/actionbutton.css" rel="stylesheet"/>
+    <link href="/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/popper.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/res/js/main.js"></script>
+
+    <title>UNAUTHORIZED | DigitalJournal</title>
+</head>
+
+<body id="home" class="">
+
+<div th:replace="static_elements/navbar :: header" ></div>
+
+<main role="main">
+    <div class="container journal_conatainer">
+        <h2 class="page-header">You're not logged in!</h2>
+        <hr>
+        <h6 class="page-information">Please log in to start your journey with DigitalJournal.</h6>
+        <hr>
+        <a href="/" class="btn btn-primary mb-5">Back to home.</a>
+    </div>
+
+</main>
+
+<!-- MAIN FOOTER -->
+<div th:replace="footer :: footer"/>
+
+</body>
+
+</html>

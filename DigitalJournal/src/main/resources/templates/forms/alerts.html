@@ -1,0 +1,61 @@
+<div  xmlns:th="http://www.thymeleaf.org" th:fragment="alerts">
+    <th:block th:switch="${status}">
+        <div th:case="'pwmissmatch'">
+            <hr>
+            <div class="alert alert-danger alert-dismissable" id="pwmissmatch">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>Password mismatch!</strong> Please retry.
+            </div>
+        </div>
+
+        <div th:case="'emailinvalid'">
+            <hr>
+            <div class="alert alert-danger alert-dismissable" id="emailinvalid">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>Email invalid!</strong> Please retry with an valid Email.
+            </div>
+        </div>
+
+        <div th:case="'pwtooshort'">
+            <hr>
+            <div class="alert alert-danger alert-dismissable" id="pwtooshort">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>Password too short!</strong> Password length must be greater than 6 chars.
+            </div>
+        </div>
+
+
+        <div th:case="'pwtoolong'">
+            <hr>
+            <div class="alert alert-danger alert-dismissable" id="pwtoolong">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>Password too long!</strong> Password length mustn't be longer than 42 chars.
+            </div>
+        </div>
+
+        <div th:case="'nametoolong'">
+            <hr>
+            <div class="alert alert-danger alert-dismissable" id="nametoolong">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>Name too long!</strong> Password length mustn't be longer than 20 chars.
+            </div>
+        </div>
+
+        <div th:case="'emailtoolong'">
+            <hr>
+            <div class="alert alert-danger alert-dismissable" id="emailtoolong">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>Email too long!</strong> Email length mustn't be longer than 100 chars.
+            </div>
+        </div>
+
+        <div th:case="'invalidCredentials'">
+            <hr>
+            <div class="alert alert-danger alert-dismissable" id="invalidCredentials">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>Invalid Credentials!</strong> Please make sure the entered credentials are correct.
+            </div>
+        </div>
+
+    </th:block>
+</div>
