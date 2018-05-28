@@ -3,8 +3,7 @@ jdk: oraclejdk8
 install: true
 script:
   - cd DigitalJournal
-  - ./mvnw clean install
-  - "mvn cobertura:cobertura"
+  - ./mvnw clean install; cobertura:cobertura
 
 after_success:
     - bash <(curl -s https://codecov.io/bash)
