@@ -1,6 +1,11 @@
 language: java
 jdk: oraclejdk8
 install: true
+services:
+  - mysql
+before_install:
+  - mysql -e 'CREATE DATABASE IF NOT EXISTS digitaljournal;'
+  - mysql -e 'SET PASSWORD FOR 'root'@'localhost' = 'asdf';'
 script:
   - cd DigitalJournal
   - mvn clean install; cobertura:cobertura
