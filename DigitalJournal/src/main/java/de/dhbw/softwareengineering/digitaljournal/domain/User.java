@@ -23,16 +23,16 @@ public class User implements Serializable {
     private String username;
     private String email;
     private long registrationDate;
-    transient private String password;
+    private transient String password;
     private boolean verified;
 
     @OneToOne
     @JoinColumn(name = "username")
-    private PasswordRecoveryRequest passwordRecoveryRequest;
+    private transient PasswordRecoveryRequest passwordRecoveryRequest;
 
     @OneToOne
     @JoinColumn(name = "username")
-    private RegistrationRequest registrationRequest;
+    private transient RegistrationRequest registrationRequest;
 
     @OneToMany
     @JoinColumn(name = "username")

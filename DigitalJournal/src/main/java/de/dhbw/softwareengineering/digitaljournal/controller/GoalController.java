@@ -34,10 +34,10 @@ public class GoalController {
 
     @GetMapping(value = "/create")
     public String openModalNewGoal(Model model, RedirectAttributes redir) {
-        model.addAttribute("contactRequest", new ContactRequest());
+        model.addAttribute(Constants.SESSION_CONTACTREQUEST, new ContactRequest());
 
         redir.addFlashAttribute(STATUS_ATTRIBUTE_NAME, "createGoal");
-        return "redirect:/journal";
+        return Constants.REDIRECT_JOURNAl;
     }
 
     @PostMapping(value = "/create")
@@ -54,7 +54,7 @@ public class GoalController {
             goalService.save(goal, principal);
         }
 
-        return "redirect:/journal";
+        return Constants.REDIRECT_JOURNAl;
     }
 
     @PostMapping("/delete/{goalId}")
@@ -65,7 +65,7 @@ public class GoalController {
             goalService.deleteById(goalId);
         }
 
-        return "redirect:/journal";
+        return Constants.REDIRECT_JOURNAl;
     }
 
     @GetMapping("/edit/{goalId}")
@@ -77,14 +77,14 @@ public class GoalController {
             redir.addFlashAttribute("editGoal", goal);
             session.setAttribute("currentGoal", goal);
         }
-        return "redirect:/journal";
+        return Constants.REDIRECT_JOURNAl;
     }
 
     @PostMapping("/edit")
     public String editGoal(@Valid @ModelAttribute("goal") final CreateGoal goal, HttpSession session) {
         Goal oldGoal = (Goal) session.getAttribute("currentGoal");
         goalService.update(oldGoal, goal);
-        return "redirect:/journal";
+        return Constants.REDIRECT_JOURNAl;
     }
 
     @GetMapping("/{goalId}")
@@ -98,7 +98,7 @@ public class GoalController {
             redir.addFlashAttribute("showGoal", goal);
         }
 
-        return "redirect:/journal";
+        return Constants.REDIRECT_JOURNAl;
     }
 
     @GetMapping("/check/{goalId}")
@@ -108,7 +108,7 @@ public class GoalController {
         if (goal.getUsername().equals(principal.getName())) {
             goalService.checkByID(goalId);
         }
-        return "redirect:/journal";
+        return Constants.REDIRECT_JOURNAl;
     }
 
     @GetMapping("/allgoals")
@@ -118,7 +118,7 @@ public class GoalController {
         redir.addFlashAttribute("goals", goals);
         if (goals.size() <= loadedGoals)
             redir.addFlashAttribute(Constants.SHOW_FURTHER_GOALS_BTN, false);
-        return "redirect:/journal";
+        return Constants.REDIRECT_JOURNAl;
     }
 
     private List<Goal> removeNotShownGoals(List<Goal> goals) {

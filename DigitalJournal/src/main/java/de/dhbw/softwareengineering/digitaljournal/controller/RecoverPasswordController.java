@@ -8,6 +8,7 @@ import de.dhbw.softwareengineering.digitaljournal.domain.PasswordRecoveryRequest
 import de.dhbw.softwareengineering.digitaljournal.domain.User;
 import de.dhbw.softwareengineering.digitaljournal.domain.form.LoginUser;
 import de.dhbw.softwareengineering.digitaljournal.domain.form.RegistrationUser;
+import de.dhbw.softwareengineering.digitaljournal.util.Constants;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -50,8 +51,8 @@ public class RecoverPasswordController {
     public String index(@RequestParam("email") String email, Model model) {
         model.addAttribute(STATUS_ATTRIBUTE_NAME, "new");
         model.addAttribute("registrationUser", new RegistrationUser());
-        model.addAttribute("contactRequest",new ContactRequest());
-        model.addAttribute("loginUser", new LoginUser());
+        model.addAttribute(Constants.SESSION_CONTACTREQUEST,new ContactRequest());
+        model.addAttribute(Constants.SESSION_LOGINUSER, new LoginUser());
 
         if(!emailPattern.matcher(email).matches()){
             model.addAttribute("recover", "invalidEmail");
@@ -132,6 +133,6 @@ public class RecoverPasswordController {
             return "error";
         }
 
-        return "redirect:/";
+        return Constants.REDIRECT;
     }
 }

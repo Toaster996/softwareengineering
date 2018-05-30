@@ -27,8 +27,8 @@ public class ContactController {
     }
 
     @PostMapping(value = "/contact")
-    public String submit(@Valid @ModelAttribute("contactRequest") ContactRequest contactRequest, BindingResult result, RedirectAttributes redir, Model model) {
-        model.addAttribute("contactRequest",new ContactRequest());
+    public String submit(@Valid @ModelAttribute(Constants.SESSION_CONTACTREQUEST) ContactRequest contactRequest, BindingResult result, RedirectAttributes redir, Model model) {
+        model.addAttribute(Constants.SESSION_CONTACTREQUEST, new ContactRequest());
 
         // show errorpage if an error occurs
         if (result.hasErrors()) {
@@ -38,34 +38,34 @@ public class ContactController {
         // check if one field is empty
         if (contactRequest.getEmail().isEmpty() || contactRequest.getName().isEmpty() || contactRequest.getMessage().isEmpty()) {
             redir.addFlashAttribute(STATUS_REQUEST_ATTRIBUTE_NAME, STATUSCODE_EMPTYFORM);
-            return "redirect:/";
+            return Constants.REDIRECT;
         }
         // check if email is valid
         if (!emailPattern.matcher(contactRequest.getEmail()).matches()) {
             redir.addFlashAttribute(STATUS_REQUEST_ATTRIBUTE_NAME, STATUSCODE_EMAILINVALID);
-            return "redirect:/";
+            return Constants.REDIRECT;
         }
 
         if (contactRequest.getName().length() > 50) {
             redir.addFlashAttribute(STATUS_REQUEST_ATTRIBUTE_NAME, "temp_modal");
-            redir.addFlashAttribute("temp_modal_header", "Name to long!");
-            redir.addFlashAttribute("temp_modal_body", "Please use a shorter name to contact us.");
-            redir.addFlashAttribute("modal_gen_id", "mdl_name_too_long");
-            return "redirect:/";
+            redir.addFlashAttribute(Constants.FLASHATTRIBUTE_TEMP_MODAL_HEADER, "Name to long!");
+            redir.addFlashAttribute(Constants.FLASHATTRIBUTE_TEMP_MODAL_BODY, "Please use a shorter name to contact us.");
+            redir.addFlashAttribute(Constants.FLASHATTRIBUTE_MODAL_GEN_ID, "mdl_name_too_long");
+            return Constants.REDIRECT;
         }
         if (contactRequest.getEmail().length() > 100) {
             redir.addFlashAttribute(STATUS_REQUEST_ATTRIBUTE_NAME, "temp_modal");
-            redir.addFlashAttribute("temp_modal_header", "Email to long!");
-            redir.addFlashAttribute("temp_modal_body", "Please use a shorter email to contact us.");
-            redir.addFlashAttribute("modal_gen_id", "mdl_email_too_long");
-            return "redirect:/";
+            redir.addFlashAttribute(Constants.FLASHATTRIBUTE_TEMP_MODAL_HEADER, "Email to long!");
+            redir.addFlashAttribute(Constants.FLASHATTRIBUTE_TEMP_MODAL_BODY, "Please use a shorter email to contact us.");
+            redir.addFlashAttribute(Constants.FLASHATTRIBUTE_MODAL_GEN_ID, "mdl_email_too_long");
+            return Constants.REDIRECT;
         }
         if (contactRequest.getMessage().length() > 1000) {
             redir.addFlashAttribute(STATUS_REQUEST_ATTRIBUTE_NAME, "temp_modal");
-            redir.addFlashAttribute("temp_modal_header", "Message to long!");
-            redir.addFlashAttribute("temp_modal_body", "Please use a shorter Message to contact us.");
-            redir.addFlashAttribute("modal_gen_id", "mdl_message_too_long");
-            return "redirect:/";
+            redir.addFlashAttribute(Constants.FLASHATTRIBUTE_TEMP_MODAL_HEADER, "Message to long!");
+            redir.addFlashAttribute(Constants.FLASHATTRIBUTE_TEMP_MODAL_BODY, "Please use a shorter Message to contact us.");
+            redir.addFlashAttribute(Constants.FLASHATTRIBUTE_MODAL_GEN_ID, "mdl_message_too_long");
+            return Constants.REDIRECT;
         }
 
         // add request to database
@@ -73,7 +73,7 @@ public class ContactController {
 
         // set status attribute to show a modal
         redir.addFlashAttribute(Constants.STATUS_REQUEST_ATTRIBUTE_NAME, Constants.STATUSCODE_REQUESTSENT);
-        return "redirect:/";
+        return Constants.REDIRECT;
     }
 
 }

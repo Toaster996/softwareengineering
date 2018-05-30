@@ -13,15 +13,30 @@ public class Constants {
 
     public static final int JOURNAL_CONTENT_SIZE = 2048;
 
+    public static final String REDIRECT         = "redirect:/";
+    public static final String REDIRECT_JOURNAl = "redirect:/journal";
+
     public static final String SESSION_CHANGEPWUSER            = "changePasswordUser";
     public static final String SESSION_LOGGEDINUSER            = "loggedInUser";
     public static final String SESSION_CURRENTJOURNAL          = "currentJournal";
+    public static final String SESSION_CONTACTREQUEST          = "contactRequest";
+    public static final String SESSION_REGISTRATIONUSER        = "registrationUser";
+    public static final String SESSION_LOGINUSER               = "loginUser";
+    public static final String SESSION_GOAL                    = "goal";
+    public static final String SESSION_GOALS                   = "goals";
+    public static final String SESSION_JOURNAL                 = "journal";
+    public static final String SESSION_JOURNALS                = "journals";
+
+
+    public static final String FLASHATTRIBUTE_TEMP_MODAL_HEADER = "temp_modal_header";
+    public static final String FLASHATTRIBUTE_TEMP_MODAL_BODY   = "temp_modal_body";
+    public static final String FLASHATTRIBUTE_MODAL_GEN_ID      = "modal_gen_id";
 
     public static final String STATUS_ATTRIBUTE_NAME           = "status";
     public static final String STATUS_RESPONSE_ATTRIBUTE_NAME  = "response";
     public static final String STATUS_REQUEST_ATTRIBUTE_NAME   = "contactStatus" ;
 
-    public final static String STATUSCODE_ALPHANUMERIC = "alphanumeric";
+    public final static String STATUSCODE_ALPHANUMERIC         = "alphanumeric";
     public static final String STATUSCODE_PWMISSMATCH          = "pwmissmatch";
     public static final String STATUSCODE_USERNAMETOOLONG      = "nametoolong";
     public static final String STATUSCODE_EMAILTOOLONG         = "emailtoolong";

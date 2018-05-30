@@ -4,9 +4,12 @@ import de.dhbw.softwareengineering.digitaljournal.domain.Goal;
 import de.dhbw.softwareengineering.digitaljournal.domain.form.CreateGoal;
 import de.dhbw.softwareengineering.digitaljournal.persistence.GoalRepository;
 import de.dhbw.softwareengineering.digitaljournal.util.UUIDGenerator;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.validation.Valid;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.security.Principal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -20,6 +23,7 @@ import java.util.stream.Collectors;
 import static de.dhbw.softwareengineering.digitaljournal.util.Constants.calculateDaysLeft;
 import static org.unbescape.html.HtmlEscape.escapeHtml5;
 
+@Slf4j
 @Service
 public class GoalService extends AbstractService {
 
@@ -46,7 +50,7 @@ public class GoalService extends AbstractService {
 
             repository.save(goal);
         } catch (ParseException e) {
-            e.printStackTrace();
+            logException(e);
         }
     }
 
@@ -65,7 +69,7 @@ public class GoalService extends AbstractService {
                 oldGoal.setDaysLeft(calculateDaysLeft(System.currentTimeMillis(), date.getTime()));
 
             } catch (ParseException e) {
-                e.printStackTrace();
+                logException(e);
             }
         }
         repository.save(oldGoal);
@@ -144,5 +148,12 @@ public class GoalService extends AbstractService {
             }
         }
         return notify;
+    }
+
+    private void logException(Exception e){
+        log.error(e.getMessage());
+        StringWriter stringWriter = new StringWriter();
+        e.printStackTrace(new PrintWriter(stringWriter));
+        log.error(stringWriter.toString());
     }
 }

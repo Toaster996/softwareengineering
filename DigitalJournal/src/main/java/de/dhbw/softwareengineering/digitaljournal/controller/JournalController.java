@@ -37,20 +37,20 @@ public class JournalController {
         List<Goal> goals = goalService.findLatestsGoals(principal.getName());
         if (!model.containsAttribute(Constants.SHOW_FURTHER_GOALS_BTN))
             model.addAttribute(Constants.SHOW_FURTHER_GOALS_BTN, true);
-        model.addAttribute("contactRequest", new ContactRequest());
-        if (!model.containsAttribute("goals"))
-            model.addAttribute("goals", goals);
-        model.addAttribute("journal", new Journal());
-        if (!model.containsAttribute("journals"))
-            model.addAttribute("journals", journals);
-        model.addAttribute("goal", new Goal());
+        model.addAttribute(Constants.SESSION_CONTACTREQUEST, new ContactRequest());
+        if (!model.containsAttribute(Constants.SESSION_GOALS))
+            model.addAttribute(Constants.SESSION_GOALS, goals);
+        model.addAttribute(Constants.SESSION_JOURNAL, new Journal());
+        if (!model.containsAttribute(Constants.SESSION_JOURNALS))
+            model.addAttribute(Constants.SESSION_JOURNALS, journals);
+        model.addAttribute(Constants.SESSION_GOAL, new Goal());
         model.addAttribute("nofifyGoalExceeded", goalService.hasNotnotifiedGoals(principal.getName()));
         return "feed";
     }
 
     @PostMapping("/create")
-    public String createJournal(@Valid @ModelAttribute("journal") Journal journal, BindingResult result, Model model, Principal principal) {
-        model.addAttribute("contactRequest", new ContactRequest());
+    public String createJournal(@Valid @ModelAttribute(Constants.SESSION_JOURNAL) Journal journal, BindingResult result, Model model, Principal principal) {
+        model.addAttribute(Constants.SESSION_CONTACTREQUEST, new ContactRequest());
 
         if (result.hasErrors())
             return "error";
@@ -71,27 +71,27 @@ public class JournalController {
             journalService.save(journal);
         }
 
-        return "redirect:/journal";
+        return Constants.REDIRECT_JOURNAl;
     }
 
     @GetMapping("/edit/{journalId}")
     public String showEditJournal(@PathVariable String journalId, Model model, Principal principal, HttpSession session) {
-        model.addAttribute("contactRequest", new ContactRequest());
+        model.addAttribute(Constants.SESSION_CONTACTREQUEST, new ContactRequest());
 
         Journal journal = journalService.findById(journalId);
 
         if (journal.getUsername().equals(principal.getName())) {
-            model.addAttribute("journal", journal);
-            session.setAttribute("currentJournal", journal);
+            model.addAttribute(Constants.SESSION_JOURNAL, journal);
+            session.setAttribute(Constants.SESSION_CURRENTJOURNAL, journal);
             return "editjournal";
         }
 
-        return "redirect:/journal";
+        return Constants.REDIRECT_JOURNAl;
     }
 
     @PostMapping("/edit")
-    public String editJournal(@Valid @ModelAttribute("journal") final Journal editedJournal, final BindingResult result, Model model, Principal principal, HttpSession session) {
-        model.addAttribute("contactRequest", new ContactRequest());
+    public String editJournal(@Valid @ModelAttribute(Constants.SESSION_JOURNAL) final Journal editedJournal, final BindingResult result, Model model, Principal principal, HttpSession session) {
+        model.addAttribute(Constants.SESSION_CONTACTREQUEST, new ContactRequest());
 
         if (result.hasErrors())
             return "error";
@@ -106,8 +106,8 @@ public class JournalController {
             model.addAttribute(STATUS_ATTRIBUTE_NAME, STATUSCODE_MODAL_TEMP);
             model.addAttribute(STATUSCODE_MODAL_HEADER, "Content too long!");
             model.addAttribute(STATUSCODE_MODAL_BODY, "Please make your content shorter.");
-        } else if (session.getAttribute("currentJournal") != null) {
-            Journal oldJournal = (Journal) session.getAttribute("currentJournal");
+        } else if (session.getAttribute(Constants.SESSION_CURRENTJOURNAL) != null) {
+            Journal oldJournal = (Journal) session.getAttribute(Constants.SESSION_CURRENTJOURNAL);
 
             if (oldJournal.getUsername().equals(principal.getName())) {
                 editedJournal.setJournalid(oldJournal.getJournalid());
@@ -117,28 +117,28 @@ public class JournalController {
             }
         }
 
-        return "redirect:/journal";
+        return Constants.REDIRECT_JOURNAl;
     }
 
     @GetMapping("/delete")
     public String delete(Model model, HttpSession session) {
-        Journal journal = (Journal) session.getAttribute("currentJournal");
+        Journal journal = (Journal) session.getAttribute(Constants.SESSION_CURRENTJOURNAL);
         model.addAttribute("delete", "true");
-        model.addAttribute("journal", journal);
-        model.addAttribute("contactRequest", new ContactRequest());
+        model.addAttribute(Constants.SESSION_JOURNAL, journal);
+        model.addAttribute(Constants.SESSION_CONTACTREQUEST, new ContactRequest());
 
         return "editjournal";
     }
 
     @PostMapping("/delete")
     public String deleteConfirm(Model model, HttpSession session) {
-        model.addAttribute("contactRequest", new ContactRequest());
+        model.addAttribute(Constants.SESSION_CONTACTREQUEST, new ContactRequest());
 
-        Journal oldJournal = (Journal) session.getAttribute("currentJournal");
+        Journal oldJournal = (Journal) session.getAttribute(Constants.SESSION_CURRENTJOURNAL);
         journalService.deleteById(oldJournal.getJournalid());
-        session.removeAttribute("currentJournal");
+        session.removeAttribute(Constants.SESSION_CURRENTJOURNAL);
 
-        return "redirect:/journal";
+        return Constants.REDIRECT_JOURNAl;
     }
 
 }

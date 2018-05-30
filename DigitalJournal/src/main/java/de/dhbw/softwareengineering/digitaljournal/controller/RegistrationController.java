@@ -7,6 +7,7 @@ import de.dhbw.softwareengineering.digitaljournal.domain.ContactRequest;
 import de.dhbw.softwareengineering.digitaljournal.domain.RegistrationRequest;
 import de.dhbw.softwareengineering.digitaljournal.domain.User;
 import de.dhbw.softwareengineering.digitaljournal.domain.form.RegistrationUser;
+import de.dhbw.softwareengineering.digitaljournal.util.Constants;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -34,7 +35,7 @@ public class RegistrationController {
 
     @PostMapping("/register")
     public String registerUser(@Valid @ModelAttribute("registrationUser") RegistrationUser registrationUser, BindingResult result, Model model) {
-        model.addAttribute("contactRequest", new ContactRequest());
+        model.addAttribute(Constants.SESSION_CONTACTREQUEST, new ContactRequest());
 
         if (result.hasErrors()) {
             return "error";
@@ -87,7 +88,7 @@ public class RegistrationController {
 
     @GetMapping("/confirmemail/{uuid}")
     public String confirmEmail(@PathVariable String uuid, Model model) {
-        model.addAttribute("contactRequest", new ContactRequest());
+        model.addAttribute(Constants.SESSION_CONTACTREQUEST, new ContactRequest());
 
         if (registrationRequestService.confirmRequest(uuid, userService)) {
             model.addAttribute(STATUS_RESPONSE_ATTRIBUTE_NAME, String.valueOf(true));
