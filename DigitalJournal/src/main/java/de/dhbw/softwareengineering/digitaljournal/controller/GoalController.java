@@ -123,10 +123,11 @@ public class GoalController {
 
     private List<Goal> removeNotShownGoals(List<Goal> goals) {
         loadedGoals += NUMBER_OF_LATESTS_GOALS;
-        if (goals.size() > loadedGoals)
-            for (int i = loadedGoals; i < goals.size(); i++) {
-                goals.remove(i);
+        if (goals.size() > loadedGoals) {
+            while(goals.size() > loadedGoals){
+                goals.remove(loadedGoals);
             }
+        }
         return goals;
     }
 }

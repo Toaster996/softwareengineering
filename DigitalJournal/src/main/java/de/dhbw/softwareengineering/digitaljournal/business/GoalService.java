@@ -32,7 +32,7 @@ public class GoalService extends AbstractService {
 
     public void save(@Valid CreateGoal goalForm, Principal principal) {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        Date date = null;
+        Date date;
         try {
             date = formatter.parse(goalForm.getDate());
 
@@ -58,7 +58,7 @@ public class GoalService extends AbstractService {
 
         if (!goal.getDate().equals("")) {
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-            Date date = null;
+            Date date;
             try {
                 date = formatter.parse(goal.getDate());
                 oldGoal.setDate(date.getTime());
@@ -86,22 +86,21 @@ public class GoalService extends AbstractService {
 
     public List<Goal> findAll(String name) {
         List<Goal> goals = repository.findAllByUsernameOrderByDateDesc(name);
+        goals = goals.stream().sorted(Comparator.comparingInt(Goal::getDaysLeft)).collect(Collectors.toList());
 
         for (Goal goal : goals) {
             goal.setDaysLeft(calculateDaysLeft(System.currentTimeMillis(), goal.getDate()));
             goal.setDescription(goal.getDescription());
             goal.setName(goal.getName());
         }
-        goals = goals.stream().sorted(Comparator.comparingInt(Goal::getDaysLeft)).collect(Collectors.toList());
         return goals;
     }
 
     public List<Goal> findLatestsGoals(String name) {
         List<Goal> goals = repository.findAllByUsernameOrderByDateDesc(name);
         goals = goals.stream().sorted(Comparator.comparingInt(Goal::getDaysLeft)).collect(Collectors.toList());
-
-        for (int i = NUMBER_OF_LATESTS_GOALS; i < goals.size(); i++) {
-            goals.remove(i);
+        while(goals.size() > NUMBER_OF_LATESTS_GOALS){
+            goals.remove(NUMBER_OF_LATESTS_GOALS);
         }
 
         for (Goal goal : goals) {
