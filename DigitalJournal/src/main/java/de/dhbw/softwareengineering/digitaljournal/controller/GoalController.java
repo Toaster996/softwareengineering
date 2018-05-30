@@ -81,7 +81,7 @@ public class GoalController {
     }
 
     @PostMapping("/edit")
-    public String editGoal(@Valid @ModelAttribute("goal") final CreateGoal goal, Model model, Principal principal, HttpSession session) {
+    public String editGoal(@Valid @ModelAttribute("goal") final CreateGoal goal, HttpSession session) {
         Goal oldGoal = (Goal) session.getAttribute("currentGoal");
         goalService.update(oldGoal, goal);
         return "redirect:/journal";

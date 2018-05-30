@@ -44,7 +44,7 @@ public class JournalController {
         if (!model.containsAttribute("journals"))
             model.addAttribute("journals", journals);
         model.addAttribute("goal", new Goal());
-
+        model.addAttribute("nofifyGoalExceeded", goalService.hasNotnotifiedGoals(principal.getName()));
         return "feed";
     }
 

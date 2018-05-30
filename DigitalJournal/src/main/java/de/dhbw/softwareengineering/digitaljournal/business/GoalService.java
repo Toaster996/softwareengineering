@@ -133,4 +133,17 @@ public class GoalService extends AbstractService {
         });
         return activeGoals.get();
     }
+
+    public boolean hasNotnotifiedGoals(String name){
+        List<Goal> goals = repository.findAllByUsernameOrderByDateDesc(name);
+        boolean notify = false;
+        for(Goal goal: goals){
+            if(goal.getDaysLeft() < 0 && !goal.isChecked() && !goal.isHasBeenNotified()){
+                goal.setHasBeenNotified(true);
+                repository.save(goal);
+                notify = true;
+            }
+        }
+        return notify;
+    }
 }

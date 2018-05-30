@@ -17,4 +17,5 @@ public class Goal {
     private int daysLeft;
     private boolean checked;
     private boolean is_past; //TODO I'd like to remove this member, but this causes a fatal SQL-Error
+    private boolean hasBeenNotified;
 }
