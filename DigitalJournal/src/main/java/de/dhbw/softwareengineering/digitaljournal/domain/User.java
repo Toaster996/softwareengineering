@@ -8,6 +8,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -16,13 +17,13 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements Serializable {
 
     @Id
     private String username;
     private String email;
     private long registrationDate;
-    private String password;
+    transient private String password;
     private boolean verified;
 
     @OneToOne
@@ -36,6 +37,5 @@ public class User {
     @OneToMany
     @JoinColumn(name = "username")
     private List<Journal> journals;
-
 }
 

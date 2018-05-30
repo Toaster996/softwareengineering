@@ -6,11 +6,13 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
+import java.io.Serializable;
+
 import static de.dhbw.softwareengineering.digitaljournal.util.Constants.JOURNAL_CONTENT_SIZE;
 
 @Data
 @Entity
-public class Journal {
+public class Journal implements Serializable {
     @Id
     private String journalid;
     private String journalName;
