@@ -38,15 +38,15 @@ public class Constants {
     public static final String STATUSCODE_MODAL_BODY           = "temp_modal_body";
     public static final String STATUSCODE_REQUESTSENT          = "requestSent";
 
+    public static final String SHOW_FURTHER_GOALS_BTN = "showNextGoals";
+
     public static final String BASE_URL = "http://localhost:8080";
 
     public static final String SUPPORT_RECIPIENT = "straub.flo@web.de";
 
     public static int calculateDaysLeft(long current, long date){
         long remaining = date - current;
-
         if(remaining < 0) return -1;
-
         return (int) (remaining/1000/60/60/24);
     }
 }

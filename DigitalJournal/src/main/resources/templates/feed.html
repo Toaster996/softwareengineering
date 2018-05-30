@@ -113,25 +113,33 @@
                     <ul class="list-group list-group-flush text-muted">
                         <th:block th:each="goal : ${goals}">
                             <li class="list-group-item">
+
+
                                 <div th:switch="${goal.checked}">
                                     <strong><span
                                             th:text="${#calendars.format(goal.date, 'dd.MM.yyyy')} + ' '"></span>
                                     </strong>
-                                    <a th:href="@{'/journal/goal/' + ${goal.id}}" th:utext=" ${goal.name}"></a>
-
+                                    <a class="text-muted" th:href="@{'/journal/goal/' + ${goal.id}}" th:utext=" ${goal.name}"></a>
 
                                     <a th:case="false" th:href="@{'/journal/goal/check/' + ${goal.id}}"
                                        class="btn btn-outline-success text-right">
-                                        <i class="material-icons">done</i>
+                                        <!-- check, if Goal is in the past -->
+                                        <div th:if="${goal.getDaysLeft() < 0}">
+                                            <i class="material-icons">error</i>
+                                        </div>
+                                        <div th:unless="${goal.getDaysLeft() < 0}">
+                                            <i class="material-icons">done</i>
+                                        </div>
                                     </a>
                                 </div>
-
                             </li>
 
                         </th:block>
-                        <li class="list-group-item">
-                            <a href="journal/goal/allgoals">Show all goals!</a>
-                        </li>
+                        <div th:if="${showNextGoals == true}">
+                            <li class="list-group-item">
+                                <a class="text-muted" href="journal/goal/allgoals">Show all goals!</a>
+                            </li>
+                        </div>
                     </ul>
 
                 </div>

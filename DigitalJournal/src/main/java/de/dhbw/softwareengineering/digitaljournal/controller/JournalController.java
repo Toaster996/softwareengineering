@@ -5,6 +5,7 @@ import de.dhbw.softwareengineering.digitaljournal.business.JournalService;
 import de.dhbw.softwareengineering.digitaljournal.domain.ContactRequest;
 import de.dhbw.softwareengineering.digitaljournal.domain.Goal;
 import de.dhbw.softwareengineering.digitaljournal.domain.Journal;
+import de.dhbw.softwareengineering.digitaljournal.util.Constants;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -34,7 +35,8 @@ public class JournalController {
     public String showFeed(Model model, Principal principal) {
         List<Journal> journals = journalService.findAll(principal.getName());
         List<Goal> goals = goalService.findLatestsGoals(principal.getName());
-
+        if (!model.containsAttribute(Constants.SHOW_FURTHER_GOALS_BTN))
+            model.addAttribute(Constants.SHOW_FURTHER_GOALS_BTN, true);
         model.addAttribute("contactRequest", new ContactRequest());
         if (!model.containsAttribute("goals"))
             model.addAttribute("goals", goals);

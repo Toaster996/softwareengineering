@@ -10,15 +10,18 @@ import javax.validation.Valid;
 import java.security.Principal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 import static de.dhbw.softwareengineering.digitaljournal.util.Constants.calculateDaysLeft;
 import static org.unbescape.html.HtmlEscape.escapeHtml5;
 
 @Service
-public class GoalService extends AbstractService{
+public class GoalService extends AbstractService {
 
     private final GoalRepository repository;
     private static final int NUMBER_OF_LATESTS_GOALS = 4;
@@ -47,6 +50,27 @@ public class GoalService extends AbstractService{
         }
     }
 
+    public void update(Goal oldGoal, CreateGoal goal) {
+        if (!goal.getName().equals(""))
+            oldGoal.setName(escapeHtml5(goal.getName()));
+        if (!goal.getDescription().equals(""))
+            oldGoal.setDescription(escapeHtml5(goal.getDescription()));
+
+        if (!goal.getDate().equals("")) {
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            Date date = null;
+            try {
+                date = formatter.parse(goal.getDate());
+                oldGoal.setDate(date.getTime());
+                oldGoal.setDaysLeft(calculateDaysLeft(System.currentTimeMillis(), date.getTime()));
+
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        repository.save(oldGoal);
+    }
+
     public Goal getById(String goalID) {
         Optional<Goal> goalOptional = repository.findById(goalID);
 
@@ -63,23 +87,26 @@ public class GoalService extends AbstractService{
     public List<Goal> findAll(String name) {
         List<Goal> goals = repository.findAllByUsernameOrderByDateDesc(name);
 
-        for(Goal goal : goals){
+        for (Goal goal : goals) {
             goal.setDaysLeft(calculateDaysLeft(System.currentTimeMillis(), goal.getDate()));
             goal.setDescription(goal.getDescription());
             goal.setName(goal.getName());
         }
-
+        goals = goals.stream().sorted(Comparator.comparingInt(Goal::getDaysLeft)).collect(Collectors.toList());
         return goals;
     }
 
-    public List<Goal> findLatestsGoals(String name){
+    public List<Goal> findLatestsGoals(String name) {
         List<Goal> goals = repository.findAllByUsernameOrderByDateDesc(name);
-        for(int i = NUMBER_OF_LATESTS_GOALS; i < goals.size(); i++){
+        goals = goals.stream().sorted(Comparator.comparingInt(Goal::getDaysLeft)).collect(Collectors.toList());
+
+        for (int i = NUMBER_OF_LATESTS_GOALS; i < goals.size(); i++) {
             goals.remove(i);
         }
 
-        for(Goal goal : goals){
-            goal.setDaysLeft(calculateDaysLeft(System.currentTimeMillis(), goal.getDate()));
+        for (Goal goal : goals) {
+            int daysleft = calculateDaysLeft(System.currentTimeMillis(), goal.getDate());
+            goal.setDaysLeft(daysleft);
             goal.setDescription(goal.getDescription());
             goal.setName(goal.getName());
         }
@@ -95,5 +122,15 @@ public class GoalService extends AbstractService{
         Goal goal = this.getById(goalID);
         goal.setChecked(true);
         repository.save(goal);
+    }
+
+    public int getActiveGoals(String name) {
+        List<Goal> goals = repository.findAllByUsernameOrderByDateDesc(name);
+        AtomicInteger activeGoals = new AtomicInteger();
+        goals.forEach(goal -> {
+            if (goal.getDaysLeft() >= 0 && !goal.isChecked())
+                activeGoals.getAndIncrement();
+        });
+        return activeGoals.get();
     }
 }

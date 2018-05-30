@@ -4,6 +4,7 @@ import de.dhbw.softwareengineering.digitaljournal.business.GoalService;
 import de.dhbw.softwareengineering.digitaljournal.domain.ContactRequest;
 import de.dhbw.softwareengineering.digitaljournal.domain.Goal;
 import de.dhbw.softwareengineering.digitaljournal.domain.form.CreateGoal;
+import de.dhbw.softwareengineering.digitaljournal.util.Constants;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
@@ -40,8 +42,6 @@ public class GoalController {
 
     @PostMapping(value = "/create")
     public String submit(@Valid @ModelAttribute("goal") final CreateGoal goal, final BindingResult result, final Model model, Principal principal) {
-        model.addAttribute("contactRequest", new ContactRequest());
-
         if (result.hasErrors())
             return "error";
         else if (goal.getName().equals("") || goal.getDescription().equals(""))
@@ -69,20 +69,21 @@ public class GoalController {
     }
 
     @GetMapping("/edit/{goalId}")
-    public String editGoal(@PathVariable String goalId, Model model, RedirectAttributes redir, Principal principal) {
+    public String editGoal(@PathVariable String goalId, Model model, RedirectAttributes redir, Principal principal, HttpSession session) {
         Goal goal = goalService.getById(goalId);
 
         if (goal.getUsername().equals(principal.getName())) {
             redir.addFlashAttribute(STATUS_ATTRIBUTE_NAME, "editGoal");
             redir.addFlashAttribute("editGoal", goal);
+            session.setAttribute("currentGoal", goal);
         }
         return "redirect:/journal";
     }
 
     @PostMapping("/edit")
-    public String editGoal(@Valid @ModelAttribute("goal") final CreateGoal goal, Model model, Principal principal) {
-        //TODO: missing implementation
-        System.out.println(goal.getName());
+    public String editGoal(@Valid @ModelAttribute("goal") final CreateGoal goal, Model model, Principal principal, HttpSession session) {
+        Goal oldGoal = (Goal) session.getAttribute("currentGoal");
+        goalService.update(oldGoal, goal);
         return "redirect:/journal";
     }
 
@@ -115,7 +116,8 @@ public class GoalController {
         List<Goal> goals = goalService.findAll(principal.getName());
         goals = removeNotShownGoals(goals);
         redir.addFlashAttribute("goals", goals);
-
+        if (goals.size() <= loadedGoals)
+            redir.addFlashAttribute(Constants.SHOW_FURTHER_GOALS_BTN, false);
         return "redirect:/journal";
     }
 
