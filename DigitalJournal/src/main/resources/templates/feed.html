@@ -42,7 +42,7 @@
     </div>
     <div class="fab blue child btn-floating" data-tooltip="I am C" data-subitem="3">
         <i class="material-icons">perm_identity</i>
-        <a href="/journal/frriend/add" class="btn-floating fab-tip">Add a Friend</a>
+        <a href="/journal/friends/add" class="btn-floating fab-tip">Add a Friend</a>
     </div>
     <div class="fab" id="masterfab">
         <i class="material-icons">add</i>
@@ -103,6 +103,11 @@
                         <li class="list-group-item">Kurt Cobain</li>
                         <li class="list-group-item">Dave Grohl</li>
                         <li class="list-group-item">Krist Novoselic</li>
+                        <th:block th:each="friend : ${friends}">
+                            <li class="list-group-item">
+                                <a class="text-muted" th:utext=" ${friend.friendName}"></a>
+                            </li>
+                        </th:block>
                     </ul>
                 </div>
                 <hr>
@@ -113,8 +118,6 @@
                     <ul class="list-group list-group-flush text-muted">
                         <th:block th:each="goal : ${goals}">
                             <li class="list-group-item">
-
-
                                 <div th:switch="${goal.checked}">
                                     <strong><span
                                             th:text="${#calendars.format(goal.date, 'dd.MM.yyyy')} + ' '"></span>
@@ -252,7 +255,6 @@
             $('#mdl_goal_exceeded').modal('show');
         </script>
     </div>
-    <!---->
 
     <div th:if="${status=='showGoal'}">
         <div class="modal fade" id="mdl_goal_show" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -342,6 +344,40 @@
 
         <script>
             $('#mdl_goal_edit').modal('show');
+        </script>
+    </div>
+
+    <!-- Modal to create new Goal -->
+    <div th:if="${status=='addFriends'}">
+        <div class="modal fade" id="mdl_add_friend" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content text-black">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Add new Friend!</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form th:action="@{/journal/friends/add}" method="POST" th:object="${newFriend}">
+                            <div class="form-group">
+                                <input type="text" id="lbl_name"
+                                       class="form-control form-control-lg"
+                                       placeholder="Name your friend!" th:field="*{username}"/>
+                            </div>
+
+                            <input type="submit" value="Save" class="btn btn-primary btn-block">
+
+                            <!--Alerts -->
+                            <div th:replace="forms/alerts:: alerts"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            $('#mdl_add_friend').modal('show');
         </script>
     </div>
 

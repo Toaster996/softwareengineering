@@ -33,9 +33,7 @@ public class GoalController {
     }
 
     @GetMapping(value = "/create")
-    public String openModalNewGoal(Model model, RedirectAttributes redir) {
-        model.addAttribute(Constants.SESSION_CONTACTREQUEST, new ContactRequest());
-
+    public String openModalNewGoal(RedirectAttributes redir) {
         redir.addFlashAttribute(STATUS_ATTRIBUTE_NAME, "createGoal");
         return Constants.REDIRECT_JOURNAl;
     }

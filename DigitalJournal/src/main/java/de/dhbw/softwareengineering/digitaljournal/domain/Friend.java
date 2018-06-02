@@ -11,6 +11,7 @@ public class Friend {
     @Id
     String id;
     String name;
+    String friendName;
     String userID;
     String relationship;
     int sharedEvents;

@@ -37,6 +37,11 @@ public class UserService extends AbstractService{
         }
     }
 
+    public boolean exists (String username){
+        Optional<User> userOptional = repository.findById(username);
+        return userOptional.isPresent();
+    }
+
     public User findByEmail(String email) {
         Optional<User> userOptional = repository.findByEmail(email);
         if (userOptional.isPresent()) {

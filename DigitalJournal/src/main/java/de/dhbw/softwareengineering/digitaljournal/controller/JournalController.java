@@ -1,8 +1,10 @@
 package de.dhbw.softwareengineering.digitaljournal.controller;
 
+import de.dhbw.softwareengineering.digitaljournal.business.FriendService;
 import de.dhbw.softwareengineering.digitaljournal.business.GoalService;
 import de.dhbw.softwareengineering.digitaljournal.business.JournalService;
 import de.dhbw.softwareengineering.digitaljournal.domain.ContactRequest;
+import de.dhbw.softwareengineering.digitaljournal.domain.Friend;
 import de.dhbw.softwareengineering.digitaljournal.domain.Goal;
 import de.dhbw.softwareengineering.digitaljournal.domain.Journal;
 import de.dhbw.softwareengineering.digitaljournal.util.Constants;
@@ -24,17 +26,21 @@ public class JournalController {
 
     private final JournalService journalService;
     private final GoalService goalService;
+    private final FriendService friendService;
 
 
-    public JournalController(JournalService journalService, GoalService goalService) {
+    public JournalController(JournalService journalService, GoalService goalService, FriendService friendService) {
         this.journalService = journalService;
         this.goalService = goalService;
+        this.friendService = friendService;
     }
 
     @GetMapping
     public String showFeed(Model model, Principal principal) {
         List<Journal> journals = journalService.findAll(principal.getName());
         List<Goal> goals = goalService.findLatestsGoals(principal.getName());
+        List<Friend> friends = friendService.findAll(principal.getName());
+        model.addAttribute("friends", friends);
         if (!model.containsAttribute(Constants.SHOW_FURTHER_GOALS_BTN))
             model.addAttribute(Constants.SHOW_FURTHER_GOALS_BTN, true);
         model.addAttribute(Constants.SESSION_CONTACTREQUEST, new ContactRequest());
