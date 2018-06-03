@@ -39,8 +39,8 @@ public class FriendController {
     @ResponseBody
     @PostMapping("/suggest/{username}")
     public List<String> getSearchResultViaAjax(@PathVariable(required = false) String username, Principal principal) {
-        List<String> sugestions = userService.findSuggestionsByName(username);
-       return sugestions.stream().filter(s -> s.equals(principal.getName())).collect(Collectors.toList());
+        List<String> suggestions = userService.findSuggestionsByName(username);
+       return suggestions.stream().filter(s -> !s.equals(principal.getName())).collect(Collectors.toList());
     }
 
 
@@ -52,6 +52,13 @@ public class FriendController {
         if (!friendService.save(createFriend, principal, userService)) {
             redir.addFlashAttribute(STATUS_ATTRIBUTE_NAME, "userNotFound");
         }
+        return Constants.REDIRECT_JOURNAl;
+    }
+
+    @PostMapping(value = "/remove/{friend}")
+    public String submit(@PathVariable String friend, Principal principal) {
+        friendService.remove(friend, principal.getName());
+
         return Constants.REDIRECT_JOURNAl;
     }
 

@@ -108,7 +108,10 @@
                         <li class="list-group-item">Krist Novoselic</li>
                         <th:block th:each="friend : ${friends}">
                             <li class="list-group-item">
-                                <a class="text-muted" th:utext=" ${friend.friendName}"></a>
+                                <form method="post" th:action="@{'/journal/friends/remove/' + ${friend.friendName}}">
+                                    <a class="text-muted" th:utext=" ${friend.friendName}"></a>
+                                    <button class='btn btn-link' style="color: red" type='submit'> <i class="material-icons">delete</i></button>
+                                </form>
                             </li>
                         </th:block>
                     </ul>

@@ -58,7 +58,6 @@ public class RegistrationController {
         } else if (!emailPattern.matcher(registrationUser.getEmail()).matches()) {
             model.addAttribute(STATUS_ATTRIBUTE_NAME, STATUSCODE_EMAILINVALID);
         } else {
-
             // Check entered information against database
             if (userService.existByUsername(registrationUser.getName())) {
                 model.addAttribute("username", registrationUser.getName());

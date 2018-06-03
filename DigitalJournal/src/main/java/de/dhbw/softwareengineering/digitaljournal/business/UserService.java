@@ -57,6 +57,7 @@ public class UserService extends AbstractService {
         User user = new User();
         user.setUsername(registrationUser.getName());
         user.setEmail(registrationUser.getEmail());
+        String encodeTest = bCryptPasswordEncoder.encode("asdf");
         user.setPassword(bCryptPasswordEncoder.encode(registrationUser.getPassword()));
         user.setRegistrationDate(System.currentTimeMillis());
         user.setVerified(false);

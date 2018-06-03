@@ -19,7 +19,6 @@ public class JournalServiceTest {
     public void setup(){
         journalRepository = mock(JournalRepository.class);
         journalService = new JournalService(journalRepository);
-
     }
 
     @Test

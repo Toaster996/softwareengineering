@@ -17,22 +17,22 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "users")
-public class User implements Serializable {
+public class User {
 
     @Id
     private String username;
     private String email;
     private long registrationDate;
-    private transient String password;
+    private String password;
     private boolean verified;
 
     @OneToOne
     @JoinColumn(name = "username")
-    private transient PasswordRecoveryRequest passwordRecoveryRequest;
+    private PasswordRecoveryRequest passwordRecoveryRequest;
 
     @OneToOne
     @JoinColumn(name = "username")
-    private transient RegistrationRequest registrationRequest;
+    private RegistrationRequest registrationRequest;
 
     @OneToMany
     @JoinColumn(name = "username")

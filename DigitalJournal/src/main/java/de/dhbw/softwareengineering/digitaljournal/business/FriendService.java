@@ -36,4 +36,8 @@ public class FriendService extends AbstractService{
             return false;
         }
     }
+
+    public void remove(String friend, String owner) {
+        friendRepository.deleteFriendByFriendNameEqualsAndNameEquals(friend, owner);
+    }
 }

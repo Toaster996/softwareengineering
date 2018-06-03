@@ -12,7 +12,7 @@ function fire_ajax_submit() {
 
   $("#btn-search").prop("disabled", true);
 
-  if(search != null){
+  if(search != null && search !== ""){
     $.ajax({
       type: "POST",
       contentType: "application/text",
@@ -36,6 +36,7 @@ function fire_ajax_submit() {
         //TODO error handling
       }
     });
+  }else{
+      $('#feedback').html("");
   }
-
 }
