@@ -10,8 +10,6 @@ function fire_ajax_submit() {
 
   var search = $("#friend_name").val();
 
-  console.log("ajajja");
-
   $("#btn-search").prop("disabled", true);
 
   if(search != null){
@@ -26,23 +24,16 @@ function fire_ajax_submit() {
         var json = data;
 
         for(var i = 0; i < json.length; i++){
-          result += json[i] + "<br>";
+          result += "<form action='/journal/friends/add/" + json[i] + "'>" +
+              "<button class='btn btn-link' type='submit'>"  +json[i] + "</button>" +
+              "</form>";
         }
 
-        result += "<br>";
-
+        result += "<hr>";
         $('#feedback').html(result);
       },
       error: function (e) {
-        var result = "";
-        var jsonText = e.responseText;
-        var json = JSON.parse(jsonText);
-
-
-
-        json.forEach(function(obj) { result+=obj.valu; });
-
-        $('#feedback').html(result);
+        //TODO error handling
       }
     });
   }

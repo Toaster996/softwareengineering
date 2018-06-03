@@ -4,7 +4,7 @@
 <head>
     <link rel="shortcut icon" type="image/x-icon" href="/img/favicon.ico"/>
 
-    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf" th:content="${_csrf.token}"/> <!--Enables AJAX-->
     <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta content="width=device-width, initial-scale=1.0"/>
@@ -364,12 +364,12 @@
                     </div>
                     <div class="modal-body">
                         <form th:action="@{/journal/friends/add}" method="POST" th:object="${newFriend}">
-                            <div id="feedback"></div>
                             <div class="form-group">
                                 <input type="text" id="friend_name"
                                        class="form-control form-control-lg"
                                        placeholder="Name your friend!" th:field="*{username}" onkeyup="fire_ajax_submit()" autocomplete="off"/>
                             </div>
+                            <div id="feedback"></div>
                             <input type="submit" value="Save" class="btn btn-primary btn-block">
 
                             <!--Alerts -->
@@ -381,6 +381,28 @@
         </div>
         <script>
             $('#mdl_add_friend').modal('show');
+        </script>
+    </div>
+
+    <div th:if="${status == 'userNotFound'}">
+        <div class="modal fade" id="mdl_user_not_found" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content text-black">
+                    <div class="modal-header">
+                        <h5 class="modal-title">The User you are searching for is not known!</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p class="lead">The user you are searching for is not known. You are welcome to invite this person to use our service.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            $('#mdl_user_not_found').modal('show');
         </script>
     </div>
 

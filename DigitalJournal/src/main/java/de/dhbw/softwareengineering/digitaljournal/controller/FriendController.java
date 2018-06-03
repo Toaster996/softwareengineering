@@ -2,22 +2,16 @@ package de.dhbw.softwareengineering.digitaljournal.controller;
 
 import de.dhbw.softwareengineering.digitaljournal.business.FriendService;
 import de.dhbw.softwareengineering.digitaljournal.business.UserService;
-import de.dhbw.softwareengineering.digitaljournal.domain.User;
 import de.dhbw.softwareengineering.digitaljournal.domain.form.CreateFriend;
-import de.dhbw.softwareengineering.digitaljournal.util.AjaxResponseBody;
 import de.dhbw.softwareengineering.digitaljournal.util.Constants;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -44,17 +38,32 @@ public class FriendController {
 
     @ResponseBody
     @PostMapping("/suggest/{username}")
-    public List<String> getSearchResultViaAjax(@PathVariable(required = false) String username) {
-       return userService.findSuggestionsByName(username);
+    public List<String> getSearchResultViaAjax(@PathVariable(required = false) String username, Principal principal) {
+        List<String> sugestions = userService.findSuggestionsByName(username);
+       return sugestions.stream().filter(s -> s.equals(principal.getName())).collect(Collectors.toList());
     }
 
 
     @PostMapping(value = "/add")
-    public String submit(@Valid @ModelAttribute("friend") final CreateFriend createFriend, final BindingResult result, final Model model, Principal principal) {
+    public String submit(@Valid @ModelAttribute("friend") final CreateFriend createFriend, final BindingResult result, Principal principal, RedirectAttributes redir) {
         if (result.hasErrors())
             return "error";
 
-        friendService.save(createFriend, principal, userService);
+        if (!friendService.save(createFriend, principal, userService)) {
+            redir.addFlashAttribute(STATUS_ATTRIBUTE_NAME, "userNotFound");
+        }
+        return Constants.REDIRECT_JOURNAl;
+    }
+
+    @PostMapping(value = "/add/{username}")
+    public String submitDirect(@PathVariable String username, final BindingResult result, Principal principal, RedirectAttributes redir) {
+        if (result.hasErrors())
+            return "error";
+        CreateFriend createFriend = new CreateFriend();
+        createFriend.setUsername(username);
+        if (!friendService.save(createFriend, principal, userService)) {
+            redir.addFlashAttribute(STATUS_ATTRIBUTE_NAME, "userNotFound");
+        }
         return Constants.REDIRECT_JOURNAl;
     }
 }

@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserService extends AbstractService{
+public class UserService extends AbstractService {
 
     private final UserRepository repository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -39,7 +39,7 @@ public class UserService extends AbstractService{
         }
     }
 
-    public boolean exists (String username){
+    public boolean exists(String username) {
         Optional<User> userOptional = repository.findById(username);
         return userOptional.isPresent();
     }
@@ -80,11 +80,9 @@ public class UserService extends AbstractService{
 
     public List<String> findSuggestionsByName(String username) {
         List<String> names = new ArrayList<>();
-        if(username != null){
-            List<User> suggestions = repository.findAllByUsernameLike(username+"%");
-            for(User user : suggestions){
-                names.add(user.getUsername());
-            }
+        List<User> suggestions = repository.findAllByUsernameLike(username + "%");
+        for (User user : suggestions) {
+            names.add(user.getUsername());
         }
         return names;
     }

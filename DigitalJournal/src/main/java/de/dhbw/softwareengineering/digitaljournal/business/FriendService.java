@@ -22,17 +22,18 @@ public class FriendService extends AbstractService{
         return friends;
     }
 
-    public void save(CreateFriend createFriend, Principal principal, UserService userService){
+    public boolean save(CreateFriend createFriend, Principal principal, UserService userService){
         ///TODO XSS
         Friend friend = new Friend();
         String friendName = createFriend.getUsername();
-        if(userService.exists(friendName)) {
+        if(userService.exists(friendName) || principal.getName().equals(friendName)) {
             friend.setId(UUIDGenerator.generateUniqueUUID(friendRepository));
             friend.setName(principal.getName());
             friend.setFriendName(createFriend.getUsername());
             friendRepository.save(friend);
+            return true;
         } else {
-            //TODO notify, that this user does not exist
+            return false;
         }
     }
 }
