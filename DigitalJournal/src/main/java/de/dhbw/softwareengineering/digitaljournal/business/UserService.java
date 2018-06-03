@@ -6,6 +6,8 @@ import de.dhbw.softwareengineering.digitaljournal.persistence.UserRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -74,5 +76,16 @@ public class UserService extends AbstractService{
 
     public User update(User user) {
         return repository.save(user);
+    }
+
+    public List<String> findSuggestionsByName(String username) {
+        List<String> names = new ArrayList<>();
+        if(username != null){
+            List<User> suggestions = repository.findAllByUsernameLike(username+"%");
+            for(User user : suggestions){
+                names.add(user.getUsername());
+            }
+        }
+        return names;
     }
 }
