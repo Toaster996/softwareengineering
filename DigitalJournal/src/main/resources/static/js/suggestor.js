@@ -6,12 +6,14 @@ $(function () {
   });
 });
 
+function completeSuggestion(suggestion) {
+    $('#friend_name').val(suggestion);
+    $('#btn_add_friend').click();
+}
+
 function fire_ajax_submit() {
-
   var search = $("#friend_name").val();
-
   $("#btn-search").prop("disabled", true);
-
   if(search != null && search !== ""){
     $.ajax({
       type: "POST",
@@ -24,8 +26,8 @@ function fire_ajax_submit() {
         var json = data;
 
         for(var i = 0; i < json.length; i++){
-          result += "<form action='/journal/friends/add/" + json[i] + "'>" +
-              "<button class='btn btn-link' type='submit'>"  +json[i] + "</button>" +
+          result += "<form>" +
+              "<button class='btn btn-link btn_sug' onclick='completeSuggestion(\""+json[i]+"\")' type='button' id='btn_sug_" + i + "'>"  +json[i] + "</button>" +
               "</form>";
         }
 

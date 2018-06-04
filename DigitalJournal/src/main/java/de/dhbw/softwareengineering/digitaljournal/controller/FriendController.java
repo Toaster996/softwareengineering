@@ -61,16 +61,4 @@ public class FriendController {
 
         return Constants.REDIRECT_JOURNAl;
     }
-
-    @PostMapping(value = "/add/{username}")
-    public String submitDirect(@PathVariable String username, final BindingResult result, Principal principal, RedirectAttributes redir) {
-        if (result.hasErrors())
-            return "error";
-        CreateFriend createFriend = new CreateFriend();
-        createFriend.setUsername(username);
-        if (!friendService.save(createFriend, principal, userService)) {
-            redir.addFlashAttribute(STATUS_ATTRIBUTE_NAME, "userNotFound");
-        }
-        return Constants.REDIRECT_JOURNAl;
-    }
 }
