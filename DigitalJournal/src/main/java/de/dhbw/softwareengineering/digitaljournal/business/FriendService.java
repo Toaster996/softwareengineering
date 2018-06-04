@@ -26,7 +26,7 @@ public class FriendService extends AbstractService{
         ///TODO XSS
         Friend friend = new Friend();
         String friendName = createFriend.getUsername();
-        if(userService.exists(friendName) || principal.getName().equals(friendName)) {
+        if(userService.exists(friendName) && !principal.getName().equals(friendName) && !hasFriend(principal.getName(), friendName)) {
             friend.setId(UUIDGenerator.generateUniqueUUID(friendRepository));
             friend.setName(principal.getName());
             friend.setFriendName(createFriend.getUsername());
@@ -35,6 +35,10 @@ public class FriendService extends AbstractService{
         } else {
             return false;
         }
+    }
+
+    public boolean hasFriend(String username, String friendname){
+        return friendRepository.existsByNameEqualsAndAndFriendNameEquals(username, friendname);
     }
 
     public void remove(String friend, String owner) {

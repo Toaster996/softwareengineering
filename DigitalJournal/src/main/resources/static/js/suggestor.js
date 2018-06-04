@@ -31,7 +31,9 @@ function fire_ajax_submit() {
               "</form>";
         }
 
-        result += "<hr>";
+        if(json.length > 0)
+          result += "<hr>";
+
         $('#feedback').html(result);
       },
       error: function (e) {

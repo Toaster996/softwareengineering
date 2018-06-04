@@ -40,7 +40,7 @@ public class FriendController {
     @PostMapping("/suggest/{username}")
     public List<String> getSearchResultViaAjax(@PathVariable(required = false) String username, Principal principal) {
         List<String> suggestions = userService.findSuggestionsByName(username);
-       return suggestions.stream().filter(s -> !s.equals(principal.getName())).collect(Collectors.toList());
+        return suggestions.stream().filter(s -> !s.equals(principal.getName()) && !friendService.hasFriend(principal.getName(), s)).collect(Collectors.toList());
     }
 
 
