@@ -7,13 +7,9 @@ import javax.persistence.Id;
 
 @Data
 @Entity
-public class Friend {
+public class SharedJournal {
+    //TODO ID
     @Id
-    String id;
-    String name;
-    String friendName;
-    String userID;
-    String relationship;
-    int sharedEvents;
-    boolean isApproved;
+    String journalName;
+    String coAuthor;
 }

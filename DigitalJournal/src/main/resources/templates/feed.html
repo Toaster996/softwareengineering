@@ -74,7 +74,9 @@
                                                class="dropdown-item">Edit</a>
                                         </li>
                                         <li>
-                                            <a href="/" class="dropdown-item">Share</a>
+                                            <a th:href="@{'/journal/share/' + ${journal.journalid}}"
+                                               th:name="${journal.journalid}"
+                                               class="dropdown-item">Share</a>
                                         </li>
                                         <li>
                                             <a class="dropdown-item" href="#">Delete</a>
@@ -110,7 +112,7 @@
                             <li class="list-group-item">
                                 <form method="post" th:action="@{'/journal/friends/remove/' + ${friend.friendName}}">
                                     <a class="text-muted" th:utext=" ${friend.friendName}"></a>
-                                    <button class='btn btn-link' style="color: red" type='submit'> <i class="material-icons">delete</i></button>
+                                    <button class='btn btn-outline-danger' type='submit'> <i class="material-icons">delete_outline</i></button>
                                 </form>
                             </li>
                         </th:block>
@@ -175,6 +177,7 @@
                             <label id="txt_journalname" class="control-label">Name</label>
                             <input class="form-control form-control-lg" type="text" placeholder="Name"
                                    th:field="*{journalName}"/>
+                            <br>
                             <label id="txt_journalcontent" class="control-label">Content</label>
                             <textarea class="form-control form-control-lg" type="text" rows="10"
                                       placeholder="What is this Journal about?" th:field="*{content}"/>
@@ -195,6 +198,41 @@
             </div>
         </div>
     </div>
+
+
+    <!-- Modal to share a Journal-->
+    <div th:if="${status == 'shareJournal'}">
+        <div class="modal fade" id="mdl_journal_share" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content text-black">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Share your Journals !</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p class="lead">Share your best memory's with the people you experienced them with.</p>
+                        <br>
+                        <div class="dropdown">
+                            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Choose a Friend
+                                <span class="caret"></span></button>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">HTML</a></li>
+                                <li><a href="#">CSS</a></li>
+                                <li><a href="#">JavaScript</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            $('#mdl_journal_share').modal('show');
+        </script>
+    </div>
+
 
     <!-- Modal to create new Goal -->
     <div th:if="${status=='createGoal'}">
@@ -262,6 +300,7 @@
         </script>
     </div>
 
+    <!-- Modal to show details of a Goal -->
     <div th:if="${status=='showGoal'}">
         <div class="modal fade" id="mdl_goal_show" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
              aria-hidden="true">

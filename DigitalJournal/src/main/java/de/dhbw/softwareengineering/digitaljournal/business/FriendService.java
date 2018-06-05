@@ -7,6 +7,7 @@ import de.dhbw.softwareengineering.digitaljournal.util.UUIDGenerator;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -18,8 +19,17 @@ public class FriendService extends AbstractService{
     }
 
     public List<Friend> findAll(String name){
-        List<Friend> friends = friendRepository.findAllByName(name);
-        return friends;
+        return friendRepository.findAllByName(name);
+    }
+
+    public List<Friend> getAllApproved(String name){
+        List<Friend> allFriends = friendRepository.findAllByName(name);
+        List<Friend> approvedFriends = new ArrayList<>();
+        for(Friend friend : allFriends){
+            if(friend.isApproved())
+                approvedFriends.add(friend);
+        }
+        return approvedFriends;
     }
 
     public boolean save(CreateFriend createFriend, Principal principal, UserService userService){
@@ -30,11 +40,23 @@ public class FriendService extends AbstractService{
             friend.setId(UUIDGenerator.generateUniqueUUID(friendRepository));
             friend.setName(principal.getName());
             friend.setFriendName(createFriend.getUsername());
+            List<Friend> friendFriends = friendRepository.findAllByName(friendName);
+            for(Friend friendFriend : friendFriends){
+                if(friendFriend.getFriendName().equals(principal.getName())){
+                    updateFriendFriend(friendFriend);
+                    friend.setApproved(true);
+                }
+            }
             friendRepository.save(friend);
             return true;
         } else {
             return false;
         }
+    }
+
+    private void updateFriendFriend(Friend friendFriend) {
+        friendFriend.setApproved(true);
+        friendRepository.save(friendFriend);
     }
 
     public boolean hasFriend(String username, String friendname){

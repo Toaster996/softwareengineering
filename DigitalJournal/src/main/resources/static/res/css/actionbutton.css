@@ -28,6 +28,10 @@
 
 }
 
+.btn-floating:hover {
+    text-decoration: none;
+    color : white;
+}
 .fab span {
     vertical-align : middle;
 }

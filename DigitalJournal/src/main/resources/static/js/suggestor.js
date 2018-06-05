@@ -27,7 +27,7 @@ function fire_ajax_submit() {
 
         for(var i = 0; i < json.length; i++){
           result += "<form>" +
-              "<button class='btn btn-link btn_sug' onclick='completeSuggestion(\""+json[i]+"\")' type='button' id='btn_sug_" + i + "'>"  +json[i] + "</button>" +
+              "<button class='btn btn-link btn_sug text-muted' onclick='completeSuggestion(\""+json[i]+"\")' type='button' id='btn_sug_" + i + "'>"  +json[i] + "</button>" +
               "</form>";
         }
 
