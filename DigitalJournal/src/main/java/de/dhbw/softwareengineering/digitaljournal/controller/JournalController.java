@@ -4,10 +4,7 @@ import de.dhbw.softwareengineering.digitaljournal.business.FriendService;
 import de.dhbw.softwareengineering.digitaljournal.business.GoalService;
 import de.dhbw.softwareengineering.digitaljournal.business.JournalService;
 import de.dhbw.softwareengineering.digitaljournal.business.SharedJournalService;
-import de.dhbw.softwareengineering.digitaljournal.domain.ContactRequest;
-import de.dhbw.softwareengineering.digitaljournal.domain.Friend;
-import de.dhbw.softwareengineering.digitaljournal.domain.Goal;
-import de.dhbw.softwareengineering.digitaljournal.domain.Journal;
+import de.dhbw.softwareengineering.digitaljournal.domain.*;
 import de.dhbw.softwareengineering.digitaljournal.util.Constants;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,7 +15,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static de.dhbw.softwareengineering.digitaljournal.util.Constants.*;
 
@@ -47,7 +47,11 @@ public class JournalController {
         List<Journal> journals = journalService.findAll(principal.getName());
         List<Goal> goals = goalService.findLatestsGoals(principal.getName());
         List<Friend> friends = friendService.findAll(principal.getName());
-        sharedJournals(principal, journals);
+        addSharedJournals(principal, journals);
+        journals = sortJournals(journals);
+        List<Friend> approvedFriends = friendService.getAllApproved(principal.getName());
+        model.addAttribute("shareFriends", approvedFriends);
+
         model.addAttribute("friends", friends);
         if (!model.containsAttribute(Constants.SHOW_FURTHER_GOALS_BTN))
             model.addAttribute(Constants.SHOW_FURTHER_GOALS_BTN, true);
@@ -62,8 +66,19 @@ public class JournalController {
         return "feed";
     }
 
-    private void sharedJournals(Principal principal, List<Journal> journals) {
+    private List<Journal> sortJournals(List<Journal> journals) {
+        journals = journals.stream().sorted(Comparator.comparingLong(Journal::getDate)).collect(Collectors.toList());
+        Collections.reverse(journals);
+        return journals;
+    }
 
+    private void addSharedJournals(Principal principal, List<Journal> journals) {
+        List<SharedJournal> sharedJournals = sharedJournalService.findAllSharedJournals(principal.getName());
+        for(SharedJournal sharedJournal : sharedJournals) {
+            Journal journal = journalService.findById(sharedJournal.getJournalName());
+            journal.setShared(true);
+            journals.add(journal);
+        }
     }
 
     @PostMapping("/create")
@@ -175,6 +190,14 @@ public class JournalController {
 
         session.setAttribute("shareJournalID", journalId);
         redir.addFlashAttribute(STATUS_ATTRIBUTE_NAME, "shareJournal");
+        return Constants.REDIRECT_JOURNAl;
+    }
+
+    @GetMapping("/share/add/{CoAuthor}")
+    public String addCoAuthor(@PathVariable("CoAuthor") String coAuthor, HttpSession session, RedirectAttributes redir) {
+        String  journalID = (String) session.getAttribute("shareJournalID");
+        SharedJournal sharedJournal = new SharedJournal(journalID, coAuthor);
+        sharedJournalService.save(sharedJournal);
         return Constants.REDIRECT_JOURNAl;
     }
 

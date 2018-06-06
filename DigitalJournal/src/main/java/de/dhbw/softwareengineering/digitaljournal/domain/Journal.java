@@ -20,6 +20,7 @@ public class Journal implements Serializable {
     private String content;
     private String username;
     private long date;
+    private boolean isShared;
 
     public Journal(){}
 

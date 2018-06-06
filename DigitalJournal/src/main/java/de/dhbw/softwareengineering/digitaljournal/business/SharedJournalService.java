@@ -18,5 +18,9 @@ public class SharedJournalService extends AbstractService{
         return sharedJournalRepository.findAllByCoAuthor(name);
     }
 
+    public void save(SharedJournal sharedJournal){
+        sharedJournalRepository.save(sharedJournal);
+    }
+
 
 }

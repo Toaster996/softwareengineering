@@ -86,7 +86,11 @@
                             </div>
                         </div>
                         <div class="card-footer text-muted">
-                            <p th:text="${#calendars.format(journal.date, 'dd.MM.yyyy HH:mm:ss')}"/>
+                            <div  th:text="${#calendars.format(journal.date, 'dd.MM.yyyy HH:mm:ss')}" class="float-left"/>
+                            <div th:if="${journal.isShared() == true}" class="float-right"><i class="material-icons">
+                                group
+                            </i></div>
+                            <div class="clearfix"></div>
                         </div>
                     </div>
 
@@ -145,8 +149,8 @@
                                     </a>
                                 </div>
                             </li>
-
                         </th:block>
+
                         <div th:if="${showNextGoals == true}">
                             <li class="list-group-item">
                                 <a class="text-muted" href="journal/goal/allgoals">Show all goals!</a>
@@ -213,15 +217,15 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <p class="lead">Share your best memory's with the people you experienced them with.</p>
+                        <p>Share your best memory's with the people you experienced them with.</p>
                         <br>
                         <div class="dropdown">
                             <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Choose a Friend
                                 <span class="caret"></span></button>
                             <ul class="dropdown-menu">
-                                <li><a href="#">HTML</a></li>
-                                <li><a href="#">CSS</a></li>
-                                <li><a href="#">JavaScript</a></li>
+                                <th:block th:each="shareFriend : ${shareFriends}">
+                                    <li><a class="dropdown-item" th:href="@{'journal/share/add/' + ${shareFriend.friendName}}" th:utext="${shareFriend.friendName}"></a></li>
+                                </th:block>
                             </ul>
                         </div>
                     </div>
