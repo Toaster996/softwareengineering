@@ -115,8 +115,14 @@
                         <th:block th:each="friend : ${friends}">
                             <li class="list-group-item">
                                 <form method="post" th:action="@{'/journal/friends/remove/' + ${friend.friendName}}">
-                                    <a class="text-muted" th:utext=" ${friend.friendName}"></a>
-                                    <button class='btn btn-outline-danger' type='submit'> <i class="material-icons">delete_outline</i></button>
+                                    <a class="text-muted float-left" th:utext=" ${friend.friendName}"></a>
+                                    <button class='btn btn-outline-danger float-right' type='submit'> <i class="material-icons">delete_outline</i></button>
+                                    <th:block th:if="${friend.isApproved()}">
+                                        <i class="material-icons">
+                                            check_circle_outline
+                                        </i>
+                                    </th:block>
+                                    <div class="clearfix"></div>
                                 </form>
                             </li>
                         </th:block>
@@ -138,15 +144,16 @@
                                        th:utext=" ${goal.name}"></a>
 
                                     <a th:case="false" th:href="@{'/journal/goal/check/' + ${goal.id}}"
-                                       class="btn btn-outline-success text-right">
+                                       class="btn btn-outline-success text-right float-right">
                                         <!-- check, if Goal is in the past -->
-                                        <div th:if="${goal.getDaysLeft() < 0}">
+                                        <div class="float-right" th:if="${goal.getDaysLeft() < 0}">
                                             <i class="material-icons">error</i>
                                         </div>
-                                        <div th:unless="${goal.getDaysLeft() < 0}">
+                                        <div class="float-right"  th:unless="${goal.getDaysLeft() < 0}">
                                             <i class="material-icons">done</i>
                                         </div>
                                     </a>
+                                    <div class="clearfix"></div>
                                 </div>
                             </li>
                         </th:block>
