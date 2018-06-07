@@ -126,7 +126,7 @@ n/a
 tbd
 
 ### 3.10 Licensing Requirements
-The whole project is licenced under Apache 2.0.
+The whole project is licenced under MIT.
 
 ### 3.11 Legal, Copyright, and Other Notices
 n/a
