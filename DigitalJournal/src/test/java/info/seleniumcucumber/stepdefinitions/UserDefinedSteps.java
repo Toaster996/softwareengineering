@@ -2,7 +2,7 @@ package info.seleniumcucumber.stepdefinitions;
 
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Then;
-import de.dhbw.softwareengeneering.test.TestUtil;
+import de.dhbw.softwareengineering.digitaljournal.TestUtil;
 import env.DriverUtil;
 import info.seleniumcucumber.methods.BaseTest;
 import info.seleniumcucumber.methods.TestCaseFailed;
