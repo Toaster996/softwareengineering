@@ -2,14 +2,24 @@ package de.dhbw.softwareengineering.digitaljournal.controller;
 
 import de.dhbw.softwareengineering.digitaljournal.business.FriendService;
 import de.dhbw.softwareengineering.digitaljournal.business.GoalService;
+import de.dhbw.softwareengineering.digitaljournal.business.ImageService;
 import de.dhbw.softwareengineering.digitaljournal.business.JournalService;
 import de.dhbw.softwareengineering.digitaljournal.business.SharedJournalService;
-import de.dhbw.softwareengineering.digitaljournal.domain.*;
+import de.dhbw.softwareengineering.digitaljournal.domain.ContactRequest;
+import de.dhbw.softwareengineering.digitaljournal.domain.Friend;
+import de.dhbw.softwareengineering.digitaljournal.domain.Goal;
+import de.dhbw.softwareengineering.digitaljournal.domain.Journal;
+import de.dhbw.softwareengineering.digitaljournal.domain.SharedJournal;
 import de.dhbw.softwareengineering.digitaljournal.util.Constants;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
@@ -20,7 +30,12 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static de.dhbw.softwareengineering.digitaljournal.util.Constants.*;
+import static de.dhbw.softwareengineering.digitaljournal.util.Constants.JOURNAL_CONTENT_SIZE;
+import static de.dhbw.softwareengineering.digitaljournal.util.Constants.STATUSCODE_EMPTYFORM;
+import static de.dhbw.softwareengineering.digitaljournal.util.Constants.STATUSCODE_MODAL_BODY;
+import static de.dhbw.softwareengineering.digitaljournal.util.Constants.STATUSCODE_MODAL_HEADER;
+import static de.dhbw.softwareengineering.digitaljournal.util.Constants.STATUSCODE_MODAL_TEMP;
+import static de.dhbw.softwareengineering.digitaljournal.util.Constants.STATUS_ATTRIBUTE_NAME;
 
 @Controller
 @RequestMapping("/journal")
@@ -29,21 +44,23 @@ public class JournalController {
     private final JournalService journalService;
     private final GoalService goalService;
     private final FriendService friendService;
+    private final ImageService imageService;
     private final SharedJournalService sharedJournalService;
-
 
     public JournalController(JournalService journalService,
                              GoalService goalService,
                              FriendService friendService,
+                             ImageService imageService,
                              SharedJournalService sharedJournalService) {
         this.journalService = journalService;
         this.goalService = goalService;
         this.friendService = friendService;
+        this.imageService = imageService;
         this.sharedJournalService = sharedJournalService;
     }
 
     @GetMapping
-    public String showFeed(Model model, Principal principal) {
+    public String showFeed(Model model, HttpSession session, Principal principal) {
         List<Journal> journals = journalService.findAll(principal.getName());
         List<Goal> goals = goalService.findLatestsGoals(principal.getName());
         List<Friend> friends = friendService.findAll(principal.getName());
@@ -51,6 +68,11 @@ public class JournalController {
         journals = sortJournals(journals);
         List<Friend> approvedFriends = friendService.getAllApproved(principal.getName());
         model.addAttribute("shareFriends", approvedFriends);
+
+        // Always clear images
+        if (session.getAttribute(Constants.SESSION_IMAGES) != null) {
+            session.removeAttribute(Constants.SESSION_IMAGES);
+        }
 
         model.addAttribute("friends", friends);
         if (!model.containsAttribute(Constants.SHOW_FURTHER_GOALS_BTN))
@@ -74,7 +96,7 @@ public class JournalController {
 
     private void addSharedJournals(Principal principal, List<Journal> journals) {
         List<SharedJournal> sharedJournals = sharedJournalService.findAllSharedJournals(principal.getName());
-        for(SharedJournal sharedJournal : sharedJournals) {
+        for (SharedJournal sharedJournal : sharedJournals) {
             Journal journal = journalService.findById(sharedJournal.getJournalName());
             journal.setShared(true);
             journals.add(journal);
@@ -82,10 +104,7 @@ public class JournalController {
     }
 
     @PostMapping("/create")
-    public String createJournal(@Valid @ModelAttribute(Constants.SESSION_JOURNAL) Journal journal,
-                                BindingResult result,
-                                Model model,
-                                Principal principal) {
+    public String createJournal(@Valid @ModelAttribute(Constants.SESSION_JOURNAL) Journal journal, HttpSession session, BindingResult result, Model model, Principal principal) {
         model.addAttribute(Constants.SESSION_CONTACTREQUEST, new ContactRequest());
 
         if (result.hasErrors())
@@ -104,7 +123,17 @@ public class JournalController {
         } else {
             journal.setUsername(principal.getName());
             journal.setDate(System.currentTimeMillis());
-            journalService.save(journal);
+            String journalId = journalService.save(journal).getJournalid();
+
+            // Save images
+            Object sessionAttribute = session.getAttribute(Constants.SESSION_IMAGES);
+
+            if (sessionAttribute != null && sessionAttribute instanceof List) {
+                List<byte[]> images = (List<byte[]>) sessionAttribute;
+                for (byte[] image : images) {
+                    imageService.saveImage(image, journalId);
+                }
+            }
         }
 
         return Constants.REDIRECT_JOURNAl;
@@ -185,7 +214,7 @@ public class JournalController {
     @GetMapping("/share/{journalId}")
     public String showShareModal(@PathVariable String journalId, HttpSession session, RedirectAttributes redir) {
         Journal journal = journalService.findById(journalId);
-        if(journal == null)
+        if (journal == null)
             return Constants.REDIRECT_JOURNAl;
 
         session.setAttribute("shareJournalID", journalId);
@@ -195,7 +224,7 @@ public class JournalController {
 
     @GetMapping("/share/add/{CoAuthor}")
     public String addCoAuthor(@PathVariable("CoAuthor") String coAuthor, HttpSession session, RedirectAttributes redir) {
-        String  journalID = (String) session.getAttribute("shareJournalID");
+        String journalID = (String) session.getAttribute("shareJournalID");
         SharedJournal sharedJournal = new SharedJournal(journalID, coAuthor);
         sharedJournalService.save(sharedJournal);
         return Constants.REDIRECT_JOURNAl;

@@ -1,4 +1,4 @@
-package de.dhbw.softwareengineering.digitaljournal.util.Tasks;
+package de.dhbw.softwareengineering.digitaljournal.util.tasks;
 
 import de.dhbw.softwareengineering.digitaljournal.business.AbstractService;
 import de.dhbw.softwareengineering.digitaljournal.business.ContactRequestService;
@@ -7,7 +7,7 @@ import de.dhbw.softwareengineering.digitaljournal.domain.ContactRequest;
 
 import java.util.List;
 
-public class SendSupportTask extends Task {
+public class SendSupportTask extends de.dhbw.softwareengineering.digitaljournal.util.tasks.Task {
 
     public SendSupportTask(AbstractService... service) {
         super(service);

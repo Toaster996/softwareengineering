@@ -12,6 +12,8 @@
     <link href="/css/bootstrap.css" rel="stylesheet"/>
     <link href="/css/bootstrap.min.css" rel="stylesheet"/>
     <link href="/css/style.css" rel="stylesheet"/>
+    <link href="/css/dropzone.css" rel="stylesheet"/>
+    <link href="/css/imageviewer.css" rel="stylesheet"/>
     <link href="/res/css/journal.css" rel="stylesheet"/>
     <link href="/res/css/actionbutton.css" rel="stylesheet"/>
     <link href="/css/font-awesome.min.css" rel="stylesheet"/>
@@ -22,13 +24,45 @@
     <script src="/js/popper.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
     <script src="/js/suggestor.js"></script>
+    <script src="/js/dropzone.js"></script>
     <script src="/res/js/main.js"></script>
     <script src="/res/js/actionbutton.js"></script>
 
     <title>FEED | DigitalJournal</title>
 </head>
-
 <body id="home" class="">
+
+<script>
+    function initImage(id) {
+        // Get the modal
+        var modal = document.getElementById('modal_'+id);
+
+        // Get the image and insert it inside the modal - use its "alt" text as a caption
+        var img0 = document.getElementById('img0_'+id);
+        var img1 = document.getElementById('img1_'+id);
+        var modalImg = document.getElementById("model_content_"+id);
+        var captionText = document.getElementById("caption_"+id);
+
+        img0.onclick = function(){
+            modal.style.display = "block";
+            modalImg.src = this.src;
+            captionText.innerHTML = this.alt;
+        }
+
+        if(img1){
+            img1.onclick = function(){
+                modal.style.display = "block";
+                modalImg.src = this.src;
+                captionText.innerHTML = this.alt;
+            }
+        }
+
+        // When the user clicks on <span> (x), close the modal
+        modal.onclick = function() {
+            modal.style.display = "none";
+        }
+    }
+</script>
 
 <div th:replace="static_elements/navbarLoggedIn :: navbarLoggedIn"/>
 
@@ -84,7 +118,27 @@
                                     </ul>
                                 </div>
                             </div>
+                            <hr>
+                            <div class="container">
+                                <div class="centered text-center">
+                                    <script type="text/javascript" th:inline="javascript">
+                                            $(document).ready(function(){
+                                                initImage([[${journal.journalid}]]);
+                                            })
+                                    </script>
+
+                                    <th:block th:each="image,iterStat  : ${journal.images}">
+                                        <img th:id="'img'+${iterStat.index}+'_' + ${journal.journalid}" th:src="'/file/image/' + ${journal.journalid}+'/'+${iterStat.index}" class="img-thumbnail img-view" style="margin: 5px" width="300" height="200">
+                                    </th:block>
+
+                                    <div th:id="'modal_' + ${journal.journalid}" class="modal-img">
+                                        <img class="modal-content-img" th:id="'model_content_' + ${journal.journalid}">
+                                        <div th:id="'caption_' + ${journal.journalid}"></div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+
                         <div class="card-footer text-muted">
                             <div  th:text="${#calendars.format(journal.date, 'dd.MM.yyyy HH:mm:ss')}" class="float-left"/>
                             <div th:if="${journal.isShared() == true}" class="float-right"><i class="material-icons">
@@ -182,8 +236,8 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form method="POST" th:action="@{/journal/create}" th:object="${journal}">
-                    <div class="modal-body">
+                <div class="modal-body">
+                    <form method="POST" class="dropzone needsclick dz-clickable" th:action="@{/journal/create}" th:object="${journal}" autocomplete="off" id="create-journal-form"  enctype="multipart/form-data">
                         <div class="form-group">
                             <label id="txt_journalname" class="control-label">Name</label>
                             <input class="form-control form-control-lg" type="text" placeholder="Name"
@@ -192,20 +246,24 @@
                             <label id="txt_journalcontent" class="control-label">Content</label>
                             <textarea class="form-control form-control-lg" type="text" rows="10"
                                       placeholder="What is this Journal about?" th:field="*{content}"/>
+
+                            <div class="dz-message needsclick form-control form-control-lg">
+                                Drop images here or click to upload them.<br>
+                            </div>
                         </div>
                         <!--Alerts -->
                         <div th:replace="forms/alerts:: alerts"></div>
-                    </div>
+                    </form>
+                </div>
 
-                    <div class="modal-footer">
-                        <div class="form-group">
-                            <div class="text-right">
-                                <button type="submit" id="btn_submitjournal" class="btn btn-primary">Save
-                                </button>
-                            </div>
+                <div class="modal-footer">
+                    <div class="form-group">
+                        <div class="text-right">
+                            <button type="submit" id="btn_submitjournal" class="btn btn-primary" form="create-journal-form">Save
+                            </button>
                         </div>
                     </div>
-                </form>
+                </div>
             </div>
         </div>
     </div>

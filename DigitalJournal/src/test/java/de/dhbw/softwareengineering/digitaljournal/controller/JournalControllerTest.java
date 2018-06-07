@@ -3,6 +3,7 @@ package de.dhbw.softwareengineering.digitaljournal.controller;
 import de.dhbw.softwareengineering.digitaljournal.TestingData;
 import de.dhbw.softwareengineering.digitaljournal.business.FriendService;
 import de.dhbw.softwareengineering.digitaljournal.business.GoalService;
+import de.dhbw.softwareengineering.digitaljournal.business.ImageService;
 import de.dhbw.softwareengineering.digitaljournal.business.JournalService;
 import de.dhbw.softwareengineering.digitaljournal.business.SharedJournalService;
 import de.dhbw.softwareengineering.digitaljournal.domain.Journal;
@@ -32,17 +33,21 @@ public class JournalControllerTest {
     private MockMvc mockMvc;
     private JournalService journalService;
     private GoalService goalService;
+    private FriendService friendService;
+    private ImageService imageService;
     private SharedJournalService sharedJournalService;
-    private de.dhbw.softwareengineering.digitaljournal.business.FriendService friendService;
 
     @Before
     public void setup() {
-        journalService = mock(JournalService.class);
-        goalService = mock(GoalService.class);
-        friendService = mock(FriendService.class);
+        journalService  = mock(JournalService.class);
+        goalService     = mock(GoalService.class);
+        friendService   = mock(FriendService.class);
+        imageService    = mock(ImageService.class);
         sharedJournalService = mock(SharedJournalService.class);
-        JournalController journalControllerMock = new JournalController(journalService, goalService, friendService, sharedJournalService);
-        mockMvc = MockMvcBuilders.standaloneSetup(journalControllerMock).build();
+
+        JournalController journalControllerMock = new JournalController(journalService, goalService, friendService, imageService, sharedJournalService);
+
+        mockMvc         = MockMvcBuilders.standaloneSetup(journalControllerMock).build();
     }
 
     @Test

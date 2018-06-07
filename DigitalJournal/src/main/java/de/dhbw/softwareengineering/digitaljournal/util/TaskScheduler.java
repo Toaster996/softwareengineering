@@ -4,10 +4,10 @@ import de.dhbw.softwareengineering.digitaljournal.business.ContactRequestService
 import de.dhbw.softwareengineering.digitaljournal.business.EmailService;
 import de.dhbw.softwareengineering.digitaljournal.business.PasswordRecoveryRequestService;
 import de.dhbw.softwareengineering.digitaljournal.business.RegistrationRequestService;
-import de.dhbw.softwareengineering.digitaljournal.util.Tasks.DeletePWRecoveryTask;
-import de.dhbw.softwareengineering.digitaljournal.util.Tasks.DeleteRegistrationRequestTask;
-import de.dhbw.softwareengineering.digitaljournal.util.Tasks.SendSupportTask;
-import de.dhbw.softwareengineering.digitaljournal.util.Tasks.Task;
+import de.dhbw.softwareengineering.digitaljournal.util.tasks.DeletePWRecoveryTask;
+import de.dhbw.softwareengineering.digitaljournal.util.tasks.DeleteRegistrationRequestTask;
+import de.dhbw.softwareengineering.digitaljournal.util.tasks.SendSupportTask;
+import de.dhbw.softwareengineering.digitaljournal.util.tasks.Task;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;

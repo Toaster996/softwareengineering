@@ -58,6 +58,7 @@ public class Constants {
     public static final String BASE_URL = "http://localhost:8080";
 
     public static final String SUPPORT_RECIPIENT = "straub.flo@web.de";
+    public static final String SESSION_IMAGES = "images";
 
     public static int calculateDaysLeft(long current, long date){
         long remaining = date - current;

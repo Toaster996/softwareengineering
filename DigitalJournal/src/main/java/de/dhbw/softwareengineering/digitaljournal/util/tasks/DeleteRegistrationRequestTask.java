@@ -1,4 +1,4 @@
-package de.dhbw.softwareengineering.digitaljournal.util.Tasks;
+package de.dhbw.softwareengineering.digitaljournal.util.tasks;
 
 import de.dhbw.softwareengineering.digitaljournal.business.AbstractService;
 import de.dhbw.softwareengineering.digitaljournal.business.RegistrationRequestService;
