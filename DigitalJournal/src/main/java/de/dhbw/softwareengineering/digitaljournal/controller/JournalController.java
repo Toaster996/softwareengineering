@@ -1,41 +1,24 @@
 package de.dhbw.softwareengineering.digitaljournal.controller;
 
-import de.dhbw.softwareengineering.digitaljournal.business.FriendService;
-import de.dhbw.softwareengineering.digitaljournal.business.GoalService;
-import de.dhbw.softwareengineering.digitaljournal.business.ImageService;
-import de.dhbw.softwareengineering.digitaljournal.business.JournalService;
-import de.dhbw.softwareengineering.digitaljournal.business.SharedJournalService;
-import de.dhbw.softwareengineering.digitaljournal.domain.ContactRequest;
-import de.dhbw.softwareengineering.digitaljournal.domain.Friend;
-import de.dhbw.softwareengineering.digitaljournal.domain.Goal;
-import de.dhbw.softwareengineering.digitaljournal.domain.Journal;
-import de.dhbw.softwareengineering.digitaljournal.domain.SharedJournal;
+import de.dhbw.softwareengineering.digitaljournal.business.*;
+import de.dhbw.softwareengineering.digitaljournal.domain.*;
 import de.dhbw.softwareengineering.digitaljournal.util.Constants;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static de.dhbw.softwareengineering.digitaljournal.util.Constants.JOURNAL_CONTENT_SIZE;
-import static de.dhbw.softwareengineering.digitaljournal.util.Constants.STATUSCODE_EMPTYFORM;
-import static de.dhbw.softwareengineering.digitaljournal.util.Constants.STATUSCODE_MODAL_BODY;
-import static de.dhbw.softwareengineering.digitaljournal.util.Constants.STATUSCODE_MODAL_HEADER;
-import static de.dhbw.softwareengineering.digitaljournal.util.Constants.STATUSCODE_MODAL_TEMP;
-import static de.dhbw.softwareengineering.digitaljournal.util.Constants.STATUS_ATTRIBUTE_NAME;
+import static de.dhbw.softwareengineering.digitaljournal.util.Constants.*;
 
 @Controller
 @RequestMapping("/journal")
@@ -66,6 +49,7 @@ public class JournalController {
         List<Friend> friends = friendService.findAll(principal.getName());
         addSharedJournals(principal, journals);
         journals = sortJournals(journals);
+
         List<Friend> approvedFriends = friendService.getAllApproved(principal.getName());
         model.addAttribute("shareFriends", approvedFriends);
 
@@ -95,7 +79,7 @@ public class JournalController {
     }
 
     private void addSharedJournals(Principal principal, List<Journal> journals) {
-        List<SharedJournal> sharedJournals = sharedJournalService.findAllSharedJournals(principal.getName());
+        List<SharedJournal> sharedJournals = sharedJournalService.findAllSharedJournalsByName(principal.getName());
         for (SharedJournal sharedJournal : sharedJournals) {
             Journal journal = journalService.findById(sharedJournal.getJournalName());
             journal.setShared(true);
@@ -212,22 +196,46 @@ public class JournalController {
     }
 
     @GetMapping("/share/{journalId}")
-    public String showShareModal(@PathVariable String journalId, HttpSession session, RedirectAttributes redir) {
+    public String showShareModal(@PathVariable String journalId, HttpSession session, RedirectAttributes redir, Principal principal) {
         Journal journal = journalService.findById(journalId);
         if (journal == null)
             return Constants.REDIRECT_JOURNAl;
 
+        final List<String> coAuthors = allreadySharedUsers(journalId);
+        redir.addFlashAttribute("coAuthors", coAuthors);
+        boolean isSharedBefore = false;
+        if (coAuthors.size() > 0)
+            isSharedBefore = true;
+        redir.addFlashAttribute("isSharedBefore", isSharedBefore);
+
+        final List<Friend> possibleShareFriends = friendService.getAllApproved(principal.getName());
+        List<String> shareFriendsName = possibleShareFriends.stream()
+                .filter(f -> !coAuthors.contains(f.getFriendName()))
+                .map(Friend::getFriendName)
+                .collect(Collectors.toList());
+
+        redir.addFlashAttribute("shareableFriends", shareFriendsName);
         session.setAttribute("shareJournalID", journalId);
         redir.addFlashAttribute(STATUS_ATTRIBUTE_NAME, "shareJournal");
         return Constants.REDIRECT_JOURNAl;
     }
 
     @GetMapping("/share/add/{CoAuthor}")
-    public String addCoAuthor(@PathVariable("CoAuthor") String coAuthor, HttpSession session, RedirectAttributes redir) {
+    public String addCoAuthor(@PathVariable("CoAuthor") String coAuthor, HttpSession session) {
         String journalID = (String) session.getAttribute("shareJournalID");
         SharedJournal sharedJournal = new SharedJournal(journalID, coAuthor);
         sharedJournalService.save(sharedJournal);
+        session.removeAttribute("shareJournalID");
         return Constants.REDIRECT_JOURNAl;
+    }
+
+    private List<String> allreadySharedUsers(String journalId) {
+        List<SharedJournal> shareEntrysForJournal = sharedJournalService.findAllByJournalID(journalId);
+        List<String> alreadySharedUsers = new ArrayList<>();
+        for (SharedJournal sharedJournal : shareEntrysForJournal) {
+            alreadySharedUsers.add(sharedJournal.getCoAuthor());
+        }
+        return alreadySharedUsers;
     }
 
 }

@@ -118,7 +118,6 @@
                                     </ul>
                                 </div>
                             </div>
-                            <hr>
                             <div class="container">
                                 <div class="centered text-center">
                                     <script type="text/javascript" th:inline="javascript">
@@ -157,7 +156,6 @@
 
             <!-- ASIDE -->
             <div class="col-md-3">
-
                 <div class="card" style="width: 20rem;">
                     <div class="card-block p-3">
                         <h4 class="card-title">Your Friends</h4>
@@ -218,7 +216,6 @@
                             </li>
                         </div>
                     </ul>
-
                 </div>
             </div>
         </div>
@@ -284,12 +281,21 @@
                     <div class="modal-body">
                         <p>Share your best memory's with the people you experienced them with.</p>
                         <br>
+                        <div th:if="${isSharedBefore == true}">
+                            <p>You shared this journal with:</p>
+                            <ul class="list-group">
+                                <th:block th:each="author : ${coAuthors}">
+                                    <li class="list-group-item" th:utext="${author}"></li>
+                                </th:block>
+                            </ul>
+                            <br>
+                        </div>
                         <div class="dropdown">
                             <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Choose a Friend
                                 <span class="caret"></span></button>
                             <ul class="dropdown-menu">
-                                <th:block th:each="shareFriend : ${shareFriends}">
-                                    <li><a class="dropdown-item" th:href="@{'journal/share/add/' + ${shareFriend.friendName}}" th:utext="${shareFriend.friendName}"></a></li>
+                                <th:block th:each="shareableFriend : ${shareableFriends}">
+                                    <li><a class="dropdown-item" th:href="@{'journal/share/add/' + ${shareableFriend}}" th:utext="${shareableFriend}"></a></li>
                                 </th:block>
                             </ul>
                         </div>
