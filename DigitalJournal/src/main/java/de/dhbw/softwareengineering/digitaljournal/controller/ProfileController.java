@@ -120,9 +120,8 @@ public class ProfileController {
 
                 if(request != null){
                     emailService.sendMailChangeMail(user, request);
+                    model.addAttribute(STATUS_ATTRIBUTE_NAME, STATUSCODE_SUCCESS);
                 }
-
-                model.addAttribute(STATUS_ATTRIBUTE_NAME, STATUSCODE_SUCCESS);
             } else {
                 model.addAttribute(STATUS_ATTRIBUTE_NAME, STATUSCODE_EMAILALREADYINUSE);
             }
@@ -182,6 +181,7 @@ public class ProfileController {
 
     private void setModelAttribs(Model model, User user) {
         model.addAttribute(Constants.SESSION_CONTACTREQUEST, new ContactRequest());
+        model.addAttribute("emailchangerequest", changeMailRequestService.hasRequest(user));
         model.addAttribute("deleterequest", deleteAccountRequestService.hasDeletionRequest(user));
         model.addAttribute("user", user);
         model.addAttribute("journalCount", journalService.countByUsername(user.getUsername()));

@@ -6,12 +6,16 @@ import de.dhbw.softwareengineering.digitaljournal.domain.DeleteAccountRequest;
 import de.dhbw.softwareengineering.digitaljournal.domain.PasswordRecoveryRequest;
 import de.dhbw.softwareengineering.digitaljournal.domain.RegistrationRequest;
 import de.dhbw.softwareengineering.digitaljournal.domain.User;
+import de.dhbw.softwareengineering.digitaljournal.util.Constants;
+import de.dhbw.softwareengineering.digitaljournal.util.MailContentBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
@@ -26,11 +30,13 @@ public class EmailService extends AbstractService{
     private String senderAddress;
 
     private final JavaMailSender emailSender;
+    private final MailContentBuilder mailContentBuilder;
     private final ContactRequestService contactRequestService;
 
     @Autowired
-    public EmailService(JavaMailSender emailSender, ContactRequestService contactRequestService) {
+    public EmailService(JavaMailSender emailSender, MailContentBuilder mailContentBuilder, ContactRequestService contactRequestService) {
         this.emailSender = emailSender;
+        this.mailContentBuilder = mailContentBuilder;
         this.contactRequestService = contactRequestService;
     }
 
@@ -38,26 +44,26 @@ public class EmailService extends AbstractService{
     public void sendRegistrationMail(User user, RegistrationRequest request) {
         log.info("Sending registration mail to " + user.getEmail());
 
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(user.getEmail());
-        message.setSubject("Digital Journal | Registration");
-        message.setText("Dear " + user.getUsername() + ",\n\nTo activate your account click on the following link: "+BASE_URL + "/confirmemail/" + request.getRegistrationUUID());
-        message.setFrom(senderAddress);
+        String title         = "Digital Journal | Registration";
+        String top           = "To activate your account click on Activate.";
+        String action_target = BASE_URL + "/confirmemail/" + request.getRegistrationUUID();
+        String action_name   = "Activate";
+        String bottom        = "That's all! You can now log in to DigitalJournal with your credentials.";
 
-        emailSender.send(message);
+        prepareAndSend(title, user.getUsername(), top, action_name, action_target, bottom, user.getEmail(), true);
     }
 
     @Async
     public void sendPasswordRecoveryMail(User user, PasswordRecoveryRequest request) {
         log.info("Sending password recovery mail to " + user.getEmail());
 
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(user.getEmail());
-        message.setSubject("Digital Journal | Change your password");
-        message.setText("Dear " + user.getUsername() + ",\n\nTo reset your password click on the following link: "+BASE_URL + "/recover/" + request.getRecoveryUUID()+"\n\nIf you have not requested a recovery ignore this email.");
-        message.setFrom(senderAddress);
+        String title         = "Digital Journal | Recover your password";
+        String top           = "To reset your password click on Recover.";
+        String action_target = BASE_URL + "/recover/" + request.getRecoveryUUID();
+        String action_name   = "Recover";
+        String bottom        = "If you have not requested an password recovery, please ignore this message.";
 
-        emailSender.send(message);
+        prepareAndSend(title, user.getUsername(), top, action_name, action_target, bottom, user.getEmail(), true);
     }
 
     @Async
@@ -82,33 +88,46 @@ public class EmailService extends AbstractService{
     public void sendDeleteAccountMail(User user, DeleteAccountRequest request) {
         log.info("Sending delete account request to " + user.getEmail());
 
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(user.getEmail());
-        message.setSubject("Digital Journal | Delete your account");
-        message.setText("Dear " + user.getUsername() + ",\n\nWe are sad to see you go :-(\n\nBy clicking to the following link you can delete your account and everything associated with it: "+BASE_URL + "/profile/delete/" + request.getRequestid()+"\n\nIf you have not requested a deletion ignore this email.");
-        message.setFrom(senderAddress);
+        String title         = "Digital Journal | Delete your account";
+        String top           = "We are sad to see you go :-( If you still want to delete your account click on Delete. This will happen instantly. Keep in mind that this is not reversible.";
+        String action_target = BASE_URL + "/profile/delete/" + request.getRequestid();
+        String action_name   = "Delete";
+        String bottom        = "If you have not requested an account deletion, please ignore this message.";
 
-        emailSender.send(message);
+        prepareAndSend(title, user.getUsername(), top, action_name, action_target, bottom, user.getEmail(), true);
     }
 
     @Async
     public void sendMailChangeMail(User user, ChangeMailRequest request) {
         log.info("Sending change mail requests to " + user.getEmail() + " and " + request.getNewmail());
 
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(user.getEmail());
-        message.setSubject("Digital Journal | Change your email");
-        message.setText("Dear " + user.getUsername() + ",\n\nPlease click the following link to change your email address to ["+request.getNewmail()+"] : "+BASE_URL + "/profile/mail/confirm/" + request.getOldmailid()+"\n\nIf you have not requested a change ignore this email.");
-        message.setFrom(senderAddress);
+        String title         = "Digital Journal | Change your email";
+        String top           = "to confirm the change of your email address please click Confirm.";
+        String action_target = BASE_URL + "/profile/mail/confirm/";
+        String action_name   = "Confirm";
+        String bottom        = "If you have not requested an email change, please ignore this message.";
 
-        emailSender.send(message);
+        prepareAndSend(title, user.getUsername(),top+" This will allow us to change this mail address in our records to the newly requested one " + request.getNewmail(), action_name, action_target + request.getOldmailid(), bottom, user.getEmail(), true);
+        prepareAndSend(title, user.getUsername(),top+" Performing that will update your old email address to this one.", action_name, action_target + request.getNewmailid(), bottom, request.getNewmail(), true);
+    }
 
-        message = new SimpleMailMessage();
-        message.setTo(request.getNewmail());
-        message.setSubject("Digital Journal | Change your email");
-        message.setText("Dear " + user.getUsername() + ",\n\nPlease click the following link to change your email address from ["+user.getEmail()+"] to this one: "+BASE_URL + "/profile/mail/confirm/" + request.getNewmailid()+"\n\nIf you have not requested a change ignore this email.");
-        message.setFrom(senderAddress);
+    public void prepareAndSend(String subject, String name, String top, String action_name, String action_target, String bottom, String recipient, boolean hasAction) {
+        MimeMessagePreparator message = mimeMessage -> {
+            MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
+            messageHelper.setFrom(senderAddress);
+            messageHelper.setValidateAddresses(true);
+            messageHelper.setTo(recipient);
+            messageHelper.setSubject(subject);
 
-        emailSender.send(message);
+            String content = mailContentBuilder.build(subject, name, top, action_target, action_name, bottom, hasAction);
+            messageHelper.setText(content, true);
+        };
+
+        try {
+            emailSender.send(message);
+        } catch (MailException e) {
+            System.out.println(e.getMessage());
+        }
+
     }
 }

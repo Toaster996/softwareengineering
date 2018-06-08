@@ -36,15 +36,14 @@
     <div class="container journal_conatainer">
         <h2 id="heading">Your Profile</h2>
         <div class="row text-dark">
-            <!--<div class="col-md-4">-->
-                <!--<script type="text/javascript">-->
-                  <!--$(document).ready(function(){-->
-                    <!--$('.profile-pic').initial({seed: 80085, pad:10, charCount: 2, width:300,height:300,fontSize:80,fontWeight:400});-->
-                  <!--})-->
-                <!--</script>-->
-                <!--<img th:data-name="${user.username}" class="profile-pic media-object rounded-circle" style="padding: 10px; display: block; margin: 0 auto" width="300" height="300" alt="Profile">-->
-            <!--</div>-->
-            <div class="col-md-2"></div>
+            <div class="col-md-4">
+                <script type="text/javascript">
+                  $(document).ready(function(){
+                    $('.profile-pic').initial({seed: 80085, pad:10, charCount: 2, width:300,height:300,fontSize:80,fontWeight:400});
+                  })
+                </script>
+                <img th:data-name="${user.username}" class="profile-pic media-object rounded-circle" style="padding: 10px; display: block; margin: 0 auto" width="300" height="300" alt="Profile">
+            </div>
             <div class="col-md-8">
                 <div class="card text-center card-form card-profile">
                     <div class="card-header bg-primary">
@@ -60,9 +59,12 @@
                             </div>
                             <div class="form-group text-lg-left">
                                 <p>
-                                    <strong>Email:</strong>
-                                    <span style="display:inline-block;" th:text="${user.email}"></span>
-                                    <button class="btn btn-link text-muted" type="button" data-toggle="modal" data-target=".modal-change-mail">change</button>
+                                    <div th:switch="${emailchangerequest}">
+                                        <strong>Email:</strong>
+                                        <span style="display:inline-block;" th:text="${user.email}"></span>
+                                        <button th:case="false" class="btn btn-link text-muted" type="button" data-toggle="modal" data-target=".modal-change-mail">change</button>
+                                        <strong th:case="true">(Email change request sent!)</strong>
+                                    </div>
                                 </p>
                             </div>
 
@@ -100,7 +102,6 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-2"></div>
 
             <!-- Modal to change password -->
             <div class="modal fade modal-change-password" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">

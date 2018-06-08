@@ -90,8 +90,6 @@ public class RecoverPasswordController {
         } else {
             User user = userService.findByName(passwordRecoveryRequest.getUsername());
 
-            if(!model.containsAttribute("status"))
-                model.addAttribute("status", "success");
             session.setAttribute("uuid", uuid);
             session.setAttribute("changePasswordUser", user);
             model.addAttribute("username", user.getUsername());

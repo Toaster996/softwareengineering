@@ -96,4 +96,8 @@ public class ChangeMailRequestService extends AbstractService{
     public void delete(String username) {
         repository.deleteById(username);
     }
+
+    public boolean hasRequest(User user) {
+        return repository.existsById(user.getUsername());
+    }
 }
