@@ -62,7 +62,7 @@
                                 <p>
                                     <strong>Email:</strong>
                                     <span style="display:inline-block;" th:text="${user.email}"></span>
-                                    <button class="btn btn-link text-muted" type="button">change</button>
+                                    <button class="btn btn-link text-muted" type="button" data-toggle="modal" data-target=".modal-change-mail">change</button>
                                 </p>
                             </div>
 
@@ -157,6 +157,36 @@
                                     <br>
                                 </div>
                                 <input type="submit" value="Delete" class="btn btn-danger btn-block">
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal to delete account-->
+            <div class="modal fade modal-change-mail" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content text-dark">
+                        <div class="modal-header">
+                            <h5 class="modal-title btn-block">Change your email</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+
+                        <div class="modal-body">
+                            <form method="POST"  th:action="@{/profile/mail/change}">
+                                <div class="form-group">
+                                    <p>If you want to change your email address just enter a new mail and hit the <b>button</b> at the bottom.</p>
+                                    <p>We will then send an email to your old and your new email address. In each of this mails an confirmation link will be shown. Click on each of them to finish the change process.</p>
+                                    <p><i>We recommend clicking on the mail in the <b>new mail address inbox</b> first, just to ensure no typo was made while entering the new mail address ;-)</i></p>
+                                    <br>
+                                    <label class="control-label">New Email</label>
+                                    <input class="form-control form-control-lg" type="email" placeholder="new email"
+                                           name="new_mail"/>
+                                </div>
+                                <input type="submit" value="Change" class="btn btn-primary btn-block">
                             </form>
                         </div>
 

@@ -1,0 +1,93 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="shortcut icon" type="image/x-icon"  href="/img/favicon.ico"/>
+
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta content="width=device-width, initial-scale=1.0"/>
+
+    <link href="/css/bootstrap.css" rel="stylesheet"/>
+    <link href="/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="/css/style.css" rel="stylesheet"/>
+    <link href="/res/css/journal.css" rel="stylesheet"/>
+    <link href="/res/css/actionbutton.css" rel="stylesheet"/>
+    <link href="/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/popper.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/res/js/main.js"></script>
+
+    <title>MAIL CHANGE | DigitalJournal</title>
+</head>
+
+<body id="home" class="">
+
+<div th:replace="static_elements/navbar :: header" ></div>
+
+<main role="main">
+    <div class="container journal_conatainer">
+        <h2 class="page-header">Mail Change Progress</h2>
+        <br>
+        <br>
+        <div th:switch="${confirmed}">
+            <div th:case="false">
+                <h4>Your mail change process is not finished yet!</h4>
+                <br>
+            </div>
+            <div th:case="true">
+                <h4 th:text="'Congratulations! You changed your mail address to ' + ${newmail} + '!'"></h4>
+                <br>
+            </div>
+        </div>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Mail address</th>
+                <th>Verified</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>Old Email Address</td>
+                <div th:switch="${oldmailid}">
+                    <td th:case="true" ><i class="material-icons">check_circle</i></td>
+                    <td th:case="false"><i class="material-icons">highlight_off</i></td>
+                </div>
+            </tr>
+            <tr>
+                <td>New Email Address</td>
+                <div th:switch="${newmailid}">
+                    <td th:case="true" ><i class="material-icons">check_circle</i></td>
+                    <td th:case="false"><i class="material-icons">highlight_off</i></td>
+                </div>
+            </tr>
+            </tbody>
+        </table>
+        <br>
+        <br>
+        <a href="/" class="btn btn-primary mb-5">Go back.</a>
+    </div>
+
+</main>
+
+<footer id="main-footer" class="bg-dark">
+    <div class="container">
+        <div class="row">
+            <div class="col text-center">
+                <div class="py-4">
+                    <h1 class="h3">DigitalJournal</h1>
+                    <p>Copyright &copy; 2017-18</p>
+                    <button id="btn_contact" class="btn btn-primary" data-toggle="modal" data-target="#contactModal">
+                        Contact Us
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+</body>
+
+</html>

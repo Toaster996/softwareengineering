@@ -1,5 +1,6 @@
 package de.dhbw.softwareengineering.digitaljournal.business;
 
+import de.dhbw.softwareengineering.digitaljournal.domain.ChangeMailRequest;
 import de.dhbw.softwareengineering.digitaljournal.domain.ContactRequest;
 import de.dhbw.softwareengineering.digitaljournal.domain.DeleteAccountRequest;
 import de.dhbw.softwareengineering.digitaljournal.domain.PasswordRecoveryRequest;
@@ -85,6 +86,27 @@ public class EmailService extends AbstractService{
         message.setTo(user.getEmail());
         message.setSubject("Digital Journal | Delete your account");
         message.setText("Dear " + user.getUsername() + ",\n\nWe are sad to see you go :-(\n\nBy clicking to the following link you can delete your account and everything associated with it: "+BASE_URL + "/profile/delete/" + request.getRequestid()+"\n\nIf you have not requested a deletion ignore this email.");
+        message.setFrom(senderAddress);
+
+        emailSender.send(message);
+    }
+
+    @Async
+    public void sendMailChangeMail(User user, ChangeMailRequest request) {
+        log.info("Sending change mail requests to " + user.getEmail() + " and " + request.getNewmail());
+
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(user.getEmail());
+        message.setSubject("Digital Journal | Change your email");
+        message.setText("Dear " + user.getUsername() + ",\n\nPlease click the following link to change your email address to ["+request.getNewmail()+"] : "+BASE_URL + "/profile/mail/confirm/" + request.getOldmailid()+"\n\nIf you have not requested a change ignore this email.");
+        message.setFrom(senderAddress);
+
+        emailSender.send(message);
+
+        message = new SimpleMailMessage();
+        message.setTo(request.getNewmail());
+        message.setSubject("Digital Journal | Change your email");
+        message.setText("Dear " + user.getUsername() + ",\n\nPlease click the following link to change your email address from ["+user.getEmail()+"] to this one: "+BASE_URL + "/profile/mail/confirm/" + request.getNewmailid()+"\n\nIf you have not requested a change ignore this email.");
         message.setFrom(senderAddress);
 
         emailSender.send(message);
