@@ -10,6 +10,7 @@ import javax.persistence.Id;
 public class SharedJournal {
     //TODO ID
     @Id
+    String id;
     String journalName;
     String coAuthor;
 
