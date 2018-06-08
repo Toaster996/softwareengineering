@@ -24,6 +24,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 
 import static de.dhbw.softwareengineering.digitaljournal.util.Constants.REDIRECT;
+import static de.dhbw.softwareengineering.digitaljournal.util.Constants.STATUSCODE_EMAILALREADYINUSE;
+import static de.dhbw.softwareengineering.digitaljournal.util.Constants.STATUSCODE_EMAILTOOLONG;
 import static de.dhbw.softwareengineering.digitaljournal.util.Constants.STATUSCODE_INVALID_CREDENTIALS;
 import static de.dhbw.softwareengineering.digitaljournal.util.Constants.STATUSCODE_PWMISSMATCH;
 import static de.dhbw.softwareengineering.digitaljournal.util.Constants.STATUSCODE_PWTOOLONG;
@@ -108,17 +110,26 @@ public class ProfileController {
     public String changeMail(Model model, @RequestParam("new_mail") String new_mail, Principal principal) {
         User user = userService.findByName(principal.getName());
 
-        if(Constants.emailPattern.matcher(new_mail).matches()){
-            ChangeMailRequest request = changeMailRequestService.create(user, new_mail);
+        if(new_mail == null){
+           model.addAttribute(STATUS_ATTRIBUTE_NAME, Constants.STATUSCODE_EMAILINVALID);
+        } else if (new_mail.length() > 100) {
+           model.addAttribute(STATUS_ATTRIBUTE_NAME, STATUSCODE_EMAILTOOLONG);
+        } else if(Constants.emailPattern.matcher(new_mail).matches()){
+            if(!userService.existByEmail(new_mail)){
+                ChangeMailRequest request = changeMailRequestService.create(user, new_mail);
 
-            if(request != null){
-                emailService.sendMailChangeMail(user, request);
+                if(request != null){
+                    emailService.sendMailChangeMail(user, request);
+                }
+
+                model.addAttribute(STATUS_ATTRIBUTE_NAME, STATUSCODE_SUCCESS);
+            } else {
+                model.addAttribute(STATUS_ATTRIBUTE_NAME, STATUSCODE_EMAILALREADYINUSE);
             }
-
-            model.addAttribute(STATUS_ATTRIBUTE_NAME, STATUSCODE_SUCCESS);
         } else {
             model.addAttribute(STATUS_ATTRIBUTE_NAME, Constants.STATUSCODE_EMAILINVALID);
         }
+
         setModelAttribs(model, user);
 
         return "profile";

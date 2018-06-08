@@ -12,7 +12,15 @@
             <hr>
             <div class="alert alert-danger alert-dismissable" id="emailinvalid">
                 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                <strong>Email invalid!</strong> Please retry with an valid Email.
+                <strong>Email invalid!</strong> Please retry with a valid email.
+            </div>
+        </div>
+
+        <div th:case="'usedemail'">
+            <hr>
+            <div class="alert alert-danger alert-dismissable" id="usedemail">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>Email already in use!</strong> Please retry with an other email.
             </div>
         </div>
 
