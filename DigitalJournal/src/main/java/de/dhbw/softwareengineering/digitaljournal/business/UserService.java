@@ -1,5 +1,6 @@
 package de.dhbw.softwareengineering.digitaljournal.business;
 
+import de.dhbw.softwareengineering.digitaljournal.domain.DeleteAccountRequest;
 import de.dhbw.softwareengineering.digitaljournal.domain.User;
 import de.dhbw.softwareengineering.digitaljournal.domain.form.RegistrationUser;
 import de.dhbw.softwareengineering.digitaljournal.persistence.UserRepository;
@@ -14,10 +15,16 @@ import java.util.Optional;
 public class UserService extends AbstractService {
 
     private final UserRepository repository;
+    private final JournalService journalService;
+    private final FriendService friendService;
+    private final GoalService goalService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public UserService(UserRepository repository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public UserService(UserRepository repository, JournalService journalService, FriendService friendService, GoalService goalService, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.repository = repository;
+        this.journalService = journalService;
+        this.friendService = friendService;
+        this.goalService = goalService;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
@@ -86,5 +93,13 @@ public class UserService extends AbstractService {
             names.add(user.getUsername());
         }
         return names;
+    }
+
+    public void deleteAccount(DeleteAccountRequest request) {
+        String username = request.getUsername();
+        goalService.deleteAllFromUser(username);
+        journalService.deleteAllFromUser(username);
+        friendService.deleteAllFromUser(username);
+        repository.deleteById(username);
     }
 }

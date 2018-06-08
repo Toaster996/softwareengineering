@@ -80,8 +80,17 @@
                                 </p>
                             </div>
 
-                            <input type="button" value="Delete Account" class="btn btn-danger btn-block btn-border-organge">
                             <hr>
+
+                            <div th:switch="${deleterequest}">
+                                <div th:case="false">
+                                    <input type="button" value="Delete Account" class="btn btn-danger btn-block btn-border-organge"  data-toggle="modal" data-target=".modal-delete-account">
+                                </div>
+                                <p th:case="true">You have requested a deletion of your account! An email should be in your inbox.</p>
+                            </div>
+
+                            <hr>
+
                             <div class="form-group text-right">
                                 <button type="button" class="btn btn-dark btn-block btn-border-organge" id="btn_recover" data-toggle="modal" data-target=".modal-change-password">Change Password</button>
                             </div>
@@ -120,18 +129,37 @@
                                            name="password_confirm"/>
                                     <br>
                                 </div>
+
+                                <input type="submit" value="Change" class="btn btn-primary btn-block">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal to delete account-->
+            <div class="modal fade modal-delete-account" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content text-dark">
+                        <div class="modal-header">
+                            <h5 class="modal-title btn-block">Delete your account</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+
+                        <div class="modal-body">
+                            <form method="POST"  th:action="@{/profile/deleteaccount}" id="delete-account-form">
+                                <div class="form-group">
+                                    <h4>Sad to see you go :-(</h4>
+                                    <br>
+                                    <p>By clicking on the <b>Delete</b> button we will send you an email containing a link to delete your account and everything associated with it.</p>
+                                    <br>
+                                </div>
+                                <input type="submit" value="Delete" class="btn btn-danger btn-block">
                             </form>
                         </div>
 
-                        <div class="modal-footer">
-                            <div class="form-group">
-                                <div class="text-right">
-                                    <button type="submit" class="btn btn-primary" form="change-password-form">
-                                        Change password
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>

@@ -1,6 +1,7 @@
 package de.dhbw.softwareengineering.digitaljournal.business;
 
 import de.dhbw.softwareengineering.digitaljournal.domain.ContactRequest;
+import de.dhbw.softwareengineering.digitaljournal.domain.DeleteAccountRequest;
 import de.dhbw.softwareengineering.digitaljournal.domain.PasswordRecoveryRequest;
 import de.dhbw.softwareengineering.digitaljournal.domain.RegistrationRequest;
 import de.dhbw.softwareengineering.digitaljournal.domain.User;
@@ -74,5 +75,18 @@ public class EmailService extends AbstractService{
         }catch (MailException e){
             log.error(e.getMessage());
         }
+    }
+
+    @Async
+    public void sendDeleteAccountMail(User user, DeleteAccountRequest request) {
+        log.info("Sending delete account request to " + user.getEmail());
+
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(user.getEmail());
+        message.setSubject("Digital Journal | Delete your account");
+        message.setText("Dear " + user.getUsername() + ",\n\nWe are sad to see you go :-(\n\nBy clicking to the following link you can delete your account and everything associated with it: "+BASE_URL + "/profile/delete/" + request.getRequestid()+"\n\nIf you have not requested a deletion ignore this email.");
+        message.setFrom(senderAddress);
+
+        emailSender.send(message);
     }
 }

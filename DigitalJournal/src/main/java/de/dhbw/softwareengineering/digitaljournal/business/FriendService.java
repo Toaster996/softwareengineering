@@ -66,4 +66,9 @@ public class FriendService extends AbstractService{
     public void remove(String friend, String owner) {
         friendRepository.deleteFriendByFriendNameEqualsAndNameEquals(friend, owner);
     }
+
+    public void deleteAllFromUser(String username) {
+        friendRepository.deleteAllByFriendName(username);
+        friendRepository.deleteAllByName(username);
+    }
 }

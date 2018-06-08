@@ -14,9 +14,11 @@ import static org.unbescape.html.HtmlEscape.escapeHtml5;
 public class JournalService extends AbstractService{
 
     private final JournalRepository repository;
+    private final ImageService imageService;
 
-    public JournalService(JournalRepository repository) {
+    public JournalService(JournalRepository repository, ImageService imageService) {
         this.repository = repository;
+        this.imageService = imageService;
     }
 
     public List<Journal> findAll(String username) {
@@ -52,10 +54,18 @@ public class JournalService extends AbstractService{
     }
 
     public void deleteById(String journalId) {
+        imageService.deleteAllByJournalId(journalId);
         repository.deleteById(journalId);
     }
 
     public int countByUsername(String username) {
         return repository.countByUsername(username);
+    }
+
+    public void deleteAllFromUser(String username) {
+        List<Journal> journals = repository.findAllByUsernameOrderByDateDesc(username);
+        for(Journal j : journals){
+            deleteById(j.getJournalid());
+        }
     }
 }

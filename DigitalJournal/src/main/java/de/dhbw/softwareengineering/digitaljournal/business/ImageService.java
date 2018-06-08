@@ -35,4 +35,8 @@ public class ImageService extends AbstractService {
 
         return images.get(image).getImage();
     }
+
+    public void deleteAllByJournalId(String journalId) {
+        repository.deleteAllByJournalid(journalId);
+    }
 }

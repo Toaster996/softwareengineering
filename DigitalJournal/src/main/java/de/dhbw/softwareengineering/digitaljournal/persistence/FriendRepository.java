@@ -12,5 +12,11 @@ public interface FriendRepository extends JpaRepository<Friend, String> {
     @Transactional
     void deleteFriendByFriendNameEqualsAndNameEquals(String friend, String owner);
 
+    @Transactional
+    void deleteAllByFriendName(String friendname);
+
+    @Transactional
+    void deleteAllByName(String friendname);
+
     boolean existsByNameEqualsAndAndFriendNameEquals(String username, String friendname);
 }

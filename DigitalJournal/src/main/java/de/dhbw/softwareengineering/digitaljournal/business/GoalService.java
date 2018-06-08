@@ -156,4 +156,8 @@ public class GoalService extends AbstractService {
         e.printStackTrace(new PrintWriter(stringWriter));
         log.error(stringWriter.toString());
     }
+
+    public void deleteAllFromUser(String username) {
+        repository.deleteAllByUsername(username);
+    }
 }

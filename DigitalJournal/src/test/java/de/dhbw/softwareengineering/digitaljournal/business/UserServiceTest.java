@@ -1,6 +1,7 @@
 package de.dhbw.softwareengineering.digitaljournal.business;
 
 import de.dhbw.softwareengineering.digitaljournal.TestingData;
+import de.dhbw.softwareengineering.digitaljournal.domain.Goal;
 import de.dhbw.softwareengineering.digitaljournal.domain.User;
 import de.dhbw.softwareengineering.digitaljournal.domain.form.RegistrationUser;
 import de.dhbw.softwareengineering.digitaljournal.persistence.UserRepository;
@@ -15,19 +16,26 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.mockingDetails;
 import static org.mockito.Mockito.when;
 
 public class UserServiceTest {
 
     private UserService userService;
     private UserRepository userRepository;
+    private JournalService journalService;
+    private FriendService friendService;
+    private GoalService goalService;
     private BCryptPasswordEncoder passwordEncoder;
 
     @Before
     public void setUp() {
-        userRepository = mock(UserRepository.class);
+        userRepository  = mock(UserRepository.class);
         passwordEncoder = mock(BCryptPasswordEncoder.class);
-        userService = new UserService(userRepository, passwordEncoder);
+        journalService  = mock(JournalService.class);
+        friendService   = mock(FriendService.class);
+        goalService     = mock(GoalService.class);
+        userService = new UserService(userRepository, journalService, friendService, goalService, passwordEncoder);
     }
 
     @Test
