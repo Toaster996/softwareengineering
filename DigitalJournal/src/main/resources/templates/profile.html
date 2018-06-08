@@ -36,16 +36,15 @@
     <div class="container journal_conatainer">
         <h2 id="heading">Your Profile</h2>
         <div class="row text-dark">
-            <div class="col-md-4">
-                <script type="text/javascript">
-                  $(document).ready(function(){
-                    $('.profile-pic').initial({seed: 80085, charCount: 2, width:46,height:46,fontSize:20,fontWeight:400});
-                  })
-                </script>
-                <img th:data-name="${user.username}" class="profile-pic media-object pull-left rounded-circle" width="330em" height="330em" alt="Profile">
-            </div>
-
-
+            <!--<div class="col-md-4">-->
+                <!--<script type="text/javascript">-->
+                  <!--$(document).ready(function(){-->
+                    <!--$('.profile-pic').initial({seed: 80085, pad:10, charCount: 2, width:300,height:300,fontSize:80,fontWeight:400});-->
+                  <!--})-->
+                <!--</script>-->
+                <!--<img th:data-name="${user.username}" class="profile-pic media-object rounded-circle" style="padding: 10px; display: block; margin: 0 auto" width="300" height="300" alt="Profile">-->
+            <!--</div>-->
+            <div class="col-md-2"></div>
             <div class="col-md-8">
                 <div class="card text-center card-form card-profile">
                     <div class="card-header bg-primary">
@@ -53,46 +52,90 @@
                     </div>
                     <div class="card-body">
                         <div id="infocard">
+                            <div class="form-group text-lg-left">
+                                <p>
+                                    <strong>Username:</strong>
+                                    <span style="display:inline-block;" th:text="${user.username}"></span>
+                                </p>
+                            </div>
+                            <div class="form-group text-lg-left">
+                                <p>
+                                    <strong>Email:</strong>
+                                    <span style="display:inline-block;" th:text="${user.email}"></span>
+                                    <button class="btn btn-link text-muted" type="button">change</button>
+                                </p>
+                            </div>
 
-                            <form>
-                                <div class="form-group text-lg-left">
-                                    <p>
-                                        <strong>Username:</strong>
-                                        <span style="display:inline-block;" th:text="${user.username}"></span>
-                                    </p>
-                                </div>
-                                <div class="form-group text-lg-left">
-                                    <p>
-                                        <strong>Email:</strong>
-                                        <span style="display:inline-block;" th:text="${user.email}"></span>
-                                        <button class="btn btn-link text-muted" type="button">change</button>
-                                    </p>
-                                </div>
+                            <div class="form-group text-lg-left">
+                                <p>
+                                    Already created:
+                                    <strong th:text="${journalCount} + ' journal(s)!'"></strong>
+                                </p>
+                            </div>
 
-                                <div class="form-group text-lg-left">
-                                    <p>
-                                        Already created:
-                                        <strong th:text="${journalCount} + ' journal(s)!'"></strong>
-                                    </p>
-                                </div>
+                            <div class="form-group text-lg-left">
+                                <p>
+                                    Active goals:
+                                    <strong th:text="${activeGoals} + ' goals!'"></strong>
+                                </p>
+                            </div>
 
-                                <div class="form-group text-lg-left">
-                                    <p>
-                                        Active goals:
-                                        <strong th:text="${activeGoals} + ' goals!'"></strong>
-                                    </p>
-                                </div>
-
-                                <input type="button" value="Delete Account" class="btn btn-danger btn-block btn-border-organge">
-                                <hr>
-                                <div class="form-group text-right">
-                                    <button type="button" class="btn btn-dark btn-block btn-border-organge" id="btn_recover" data-toggle="contactModal" data-target="#recoverModal">Change Password</button>
-                                </div>
-                            </form>
+                            <input type="button" value="Delete Account" class="btn btn-danger btn-block btn-border-organge">
+                            <hr>
+                            <div class="form-group text-right">
+                                <button type="button" class="btn btn-dark btn-block btn-border-organge" id="btn_recover" data-toggle="modal" data-target=".modal-change-password">Change Password</button>
+                            </div>
+                            <!--Alerts -->
+                            <div th:replace="forms/alerts:: alerts"></div>
                         </div>
                     </div>
                 </div>
             </div>
+            <div class="col-md-2"></div>
+
+            <!-- Modal to change password -->
+            <div class="modal fade modal-change-password" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content text-dark">
+                        <div class="modal-header">
+                            <h5 class="modal-title btn-block" id="exampleModalLabel">Change your password</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+
+                        <div class="modal-body">
+                            <form method="POST"  th:action="@{/profile/changepassword}" id="change-password-form">
+                                <div class="form-group">
+                                    <label class="control-label">Old password</label>
+                                    <input class="form-control form-control-lg" type="password" placeholder="old password"
+                                           name="old_password"/>
+                                    <br>
+                                    <label class="control-label">New password</label>
+                                    <input class="form-control form-control-lg" type="password" placeholder="new password"
+                                           name="password"/>
+                                    <br>
+                                    <label class="control-label">Repeat new password</label>
+                                    <input class="form-control form-control-lg" type="password" placeholder="repeat new password"
+                                           name="password_confirm"/>
+                                    <br>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="modal-footer">
+                            <div class="form-group">
+                                <div class="text-right">
+                                    <button type="submit" class="btn btn-primary" form="change-password-form">
+                                        Change password
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 </main>

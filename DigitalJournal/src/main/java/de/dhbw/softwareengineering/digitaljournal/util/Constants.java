@@ -17,7 +17,6 @@ public class Constants {
     public static final String REDIRECT_JOURNAl = "redirect:/journal";
 
     public static final String SESSION_CHANGEPWUSER            = "changePasswordUser";
-    public static final String SESSION_LOGGEDINUSER            = "loggedInUser";
     public static final String SESSION_CURRENTJOURNAL          = "currentJournal";
     public static final String SESSION_CONTACTREQUEST          = "contactRequest";
     public static final String SESSION_REGISTRATIONUSER        = "registrationUser";
@@ -52,6 +51,8 @@ public class Constants {
     public static final String STATUSCODE_MODAL_HEADER         = "temp_modal_header";
     public static final String STATUSCODE_MODAL_BODY           = "temp_modal_body";
     public static final String STATUSCODE_REQUESTSENT          = "requestSent";
+    public static final String STATUSCODE_INVALID_CREDENTIALS  = "invalidCredentials";
+    public static final String STATUSCODE_SUCCESS               = "success";
 
     public static final String SHOW_FURTHER_GOALS_BTN = "showNextGoals";
 
