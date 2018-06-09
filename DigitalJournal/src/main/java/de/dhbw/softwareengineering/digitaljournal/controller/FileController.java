@@ -27,12 +27,12 @@ public class FileController {
     }
 
     @PostMapping("/image")
-    public String uploadImage(@RequestParam("file") MultipartFile file, HttpSession session){
+    public String uploadImage(@RequestParam("file") MultipartFile file, HttpSession session) {
         List<byte[]> images = new ArrayList<>();
 
         Object sessionAttribute = session.getAttribute(Constants.SESSION_IMAGES);
 
-        if(sessionAttribute != null){
+        if (sessionAttribute != null) {
             images = (List<byte[]>) sessionAttribute;
         }
 
@@ -48,7 +48,7 @@ public class FileController {
             System.out.println("Image expected, actual: [" + type + "]");
         }
 
-        if(images.size() > 0){
+        if (images.size() > 0) {
             session.setAttribute(Constants.SESSION_IMAGES, images);
         }
 
@@ -58,7 +58,7 @@ public class FileController {
     @GetMapping("/image/{journalId}/{image}")
     @ResponseBody
     public byte[] helloWorld(@PathVariable String journalId, @PathVariable int image) {
-        return imageService.getImageByJournalId(journalId,image);
+        return imageService.getImageByJournalId(journalId, image);
     }
 
 }

@@ -110,15 +110,15 @@ public class ProfileController {
     public String changeMail(Model model, @RequestParam("new_mail") String new_mail, Principal principal) {
         User user = userService.findByName(principal.getName());
 
-        if(new_mail == null){
-           model.addAttribute(STATUS_ATTRIBUTE_NAME, Constants.STATUSCODE_EMAILINVALID);
+        if (new_mail == null) {
+            model.addAttribute(STATUS_ATTRIBUTE_NAME, Constants.STATUSCODE_EMAILINVALID);
         } else if (new_mail.length() > 100) {
-           model.addAttribute(STATUS_ATTRIBUTE_NAME, STATUSCODE_EMAILTOOLONG);
-        } else if(Constants.emailPattern.matcher(new_mail).matches()){
-            if(!userService.existByEmail(new_mail)){
+            model.addAttribute(STATUS_ATTRIBUTE_NAME, STATUSCODE_EMAILTOOLONG);
+        } else if (Constants.emailPattern.matcher(new_mail).matches()) {
+            if (!userService.existByEmail(new_mail)) {
                 ChangeMailRequest request = changeMailRequestService.create(user, new_mail);
 
-                if(request != null){
+                if (request != null) {
                     emailService.sendMailChangeMail(user, request);
                     model.addAttribute(STATUS_ATTRIBUTE_NAME, STATUSCODE_SUCCESS);
                 }
@@ -135,14 +135,14 @@ public class ProfileController {
     }
 
     @GetMapping("/profile/mail/confirm/{id}")
-    public String changeMail(Model model, @PathVariable String id){
+    public String changeMail(Model model, @PathVariable String id) {
         String username = changeMailRequestService.confirm(id);
 
-        if(username != null){
-            String newmail  = changeMailRequestService.getNewMail(username);
+        if (username != null) {
+            String newmail = changeMailRequestService.getNewMail(username);
 
             boolean[] confirmation = changeMailRequestService.isConfirmed(username);
-            if(newmail != null && confirmation[0] && confirmation[1]){
+            if (newmail != null && confirmation[0] && confirmation[1]) {
                 User user = userService.findByName(username);
                 user.setEmail(newmail);
 
@@ -157,7 +157,7 @@ public class ProfileController {
 
             model.addAttribute("newmailid", confirmation[1]);
         } else {
-          return REDIRECT;
+            return REDIRECT;
         }
 
         return "mailchangeprogress";

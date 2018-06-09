@@ -14,8 +14,6 @@ public class SharedJournal {
     String journalName;
     String coAuthor;
 
-    public SharedJournal(){}
-
     public SharedJournal(String journalName, String coAuthor) {
         this.journalName = journalName;
         this.coAuthor = coAuthor;

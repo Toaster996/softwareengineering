@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-public interface GoalRepository extends JpaRepository<Goal, String>{
+public interface GoalRepository extends JpaRepository<Goal, String> {
 
     List<Goal> findAllByUsernameOrderByDateDesc(String name);
 

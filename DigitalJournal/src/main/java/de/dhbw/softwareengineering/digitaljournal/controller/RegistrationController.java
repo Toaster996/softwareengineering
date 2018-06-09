@@ -18,7 +18,21 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
 
-import static de.dhbw.softwareengineering.digitaljournal.util.Constants.*;
+import static de.dhbw.softwareengineering.digitaljournal.util.Constants.STATUSCODE_ALPHANUMERIC;
+import static de.dhbw.softwareengineering.digitaljournal.util.Constants.STATUSCODE_EMAILALREADYINUSE;
+import static de.dhbw.softwareengineering.digitaljournal.util.Constants.STATUSCODE_EMAILINVALID;
+import static de.dhbw.softwareengineering.digitaljournal.util.Constants.STATUSCODE_EMAILTOOLONG;
+import static de.dhbw.softwareengineering.digitaljournal.util.Constants.STATUSCODE_EMPTYFORM;
+import static de.dhbw.softwareengineering.digitaljournal.util.Constants.STATUSCODE_PWMISSMATCH;
+import static de.dhbw.softwareengineering.digitaljournal.util.Constants.STATUSCODE_PWTOOLONG;
+import static de.dhbw.softwareengineering.digitaljournal.util.Constants.STATUSCODE_PWTOOSHORT;
+import static de.dhbw.softwareengineering.digitaljournal.util.Constants.STATUSCODE_SUCREG;
+import static de.dhbw.softwareengineering.digitaljournal.util.Constants.STATUSCODE_USERNAMEALREADYINUSE;
+import static de.dhbw.softwareengineering.digitaljournal.util.Constants.STATUSCODE_USERNAMETOOLONG;
+import static de.dhbw.softwareengineering.digitaljournal.util.Constants.STATUS_ATTRIBUTE_NAME;
+import static de.dhbw.softwareengineering.digitaljournal.util.Constants.STATUS_RESPONSE_ATTRIBUTE_NAME;
+import static de.dhbw.softwareengineering.digitaljournal.util.Constants.emailPattern;
+import static de.dhbw.softwareengineering.digitaljournal.util.Constants.usernamePattern;
 
 @Controller
 public class RegistrationController {

@@ -60,12 +60,15 @@ public class JournalControllerTest {
 
     @Test
     public void create() throws Exception {
+        Journal journal = TestingData.createJournal();
+        when(journalService.save(any(Journal.class))).thenReturn(journal);
+
         mockMvc.perform(post("/journal/create")
-                .flashAttr("journal", TestingData.createJournal())
+                .flashAttr("journal", journal)
                 .principal(mock(Principal.class)))
                 .andExpect(status().is3xxRedirection());
 
-        Journal journal = TestingData.createJournal();
+
         journal.setJournalName(TO_LONG_NAME);
         mockMvc.perform(post("/journal/create")
                 .flashAttr("journal", journal)

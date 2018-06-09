@@ -11,7 +11,7 @@ import java.util.Optional;
 import static org.unbescape.html.HtmlEscape.escapeHtml5;
 
 @Service
-public class JournalService extends AbstractService{
+public class JournalService implements AbstractService {
 
     private final JournalRepository repository;
     private final ImageService imageService;
@@ -46,9 +46,9 @@ public class JournalService extends AbstractService{
     public Journal findById(String journalId) {
         Optional<Journal> journalOptional = repository.findById(journalId);
 
-        if(journalOptional.isPresent()){
+        if (journalOptional.isPresent()) {
             return journalOptional.get();
-        }else {
+        } else {
             throw new RuntimeException("No journal found with Id: " + journalId);
         }
     }
@@ -64,7 +64,7 @@ public class JournalService extends AbstractService{
 
     public void deleteAllFromUser(String username) {
         List<Journal> journals = repository.findAllByUsernameOrderByDateDesc(username);
-        for(Journal j : journals){
+        for (Journal j : journals) {
             deleteById(j.getJournalid());
         }
     }

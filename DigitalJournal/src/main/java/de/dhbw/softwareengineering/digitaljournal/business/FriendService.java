@@ -11,38 +11,38 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class FriendService extends AbstractService{
+public class FriendService implements AbstractService {
     private final FriendRepository friendRepository;
 
     public FriendService(FriendRepository friendRepository) {
         this.friendRepository = friendRepository;
     }
 
-    public List<Friend> findAll(String name){
+    public List<Friend> findAll(String name) {
         return friendRepository.findAllByName(name);
     }
 
-    public List<Friend> getAllApproved(String name){
+    public List<Friend> getAllApproved(String name) {
         List<Friend> allFriends = friendRepository.findAllByName(name);
         List<Friend> approvedFriends = new ArrayList<>();
-        for(Friend friend : allFriends){
-            if(friend.isApproved())
+        for (Friend friend : allFriends) {
+            if (friend.isApproved())
                 approvedFriends.add(friend);
         }
         return approvedFriends;
     }
 
-    public boolean save(CreateFriend createFriend, Principal principal, UserService userService){
+    public boolean save(CreateFriend createFriend, Principal principal, UserService userService) {
         ///TODO XSS
         Friend friend = new Friend();
         String friendName = createFriend.getUsername();
-        if(userService.exists(friendName) && !principal.getName().equals(friendName) && !hasFriend(principal.getName(), friendName)) {
+        if (userService.exists(friendName) && !principal.getName().equals(friendName) && !hasFriend(principal.getName(), friendName)) {
             friend.setId(UUIDGenerator.generateUniqueUUID(friendRepository));
             friend.setName(principal.getName());
             friend.setFriendName(createFriend.getUsername());
             List<Friend> friendFriends = friendRepository.findAllByName(friendName);
-            for(Friend friendFriend : friendFriends){
-                if(friendFriend.getFriendName().equals(principal.getName())){
+            for (Friend friendFriend : friendFriends) {
+                if (friendFriend.getFriendName().equals(principal.getName())) {
                     updateFriendFriend(friendFriend);
                     friend.setApproved(true);
                 }
@@ -59,7 +59,7 @@ public class FriendService extends AbstractService{
         friendRepository.save(friendFriend);
     }
 
-    public boolean hasFriend(String username, String friendname){
+    public boolean hasFriend(String username, String friendname) {
         return friendRepository.existsByNameEqualsAndAndFriendNameEquals(username, friendname);
     }
 

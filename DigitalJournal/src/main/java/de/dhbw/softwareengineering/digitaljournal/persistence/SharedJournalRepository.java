@@ -7,5 +7,6 @@ import java.util.List;
 
 public interface SharedJournalRepository extends JpaRepository<SharedJournal, String> {
     List<SharedJournal> findAllByCoAuthor(String coAuthor);
+
     List<SharedJournal> findAllByJournalName(String journalID);
 }

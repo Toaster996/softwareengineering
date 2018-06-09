@@ -10,7 +10,7 @@ import java.util.UUID;
 import static de.dhbw.softwareengineering.digitaljournal.util.Constants.HOUR;
 
 @Service
-public class RegistrationRequestService extends AbstractService{
+public class RegistrationRequestService implements AbstractService {
 
     private final RegistrationRequestRepository repository;
 
@@ -20,9 +20,9 @@ public class RegistrationRequestService extends AbstractService{
 
     public RegistrationRequest create(String username) {
         RegistrationRequest request = new RegistrationRequest();
-                            request.setUsername(username);
-                            request.setRegistrationUUID(UUID.randomUUID().toString());
-                            request.setDate(System.currentTimeMillis());
+        request.setUsername(username);
+        request.setRegistrationUUID(UUID.randomUUID().toString());
+        request.setDate(System.currentTimeMillis());
 
         return repository.save(request);
     }
@@ -30,11 +30,11 @@ public class RegistrationRequestService extends AbstractService{
     public boolean confirmRequest(String uuid, UserService userService) {
         Optional<RegistrationRequest> request = repository.findByRegistrationUUID(uuid);
 
-        if(request.isPresent()){
+        if (request.isPresent()) {
             userService.verify(request.get().getUsername());
             repository.delete(request.get());
             return true;
-        }else{
+        } else {
             return false;
         }
     }

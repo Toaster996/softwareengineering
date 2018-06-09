@@ -12,7 +12,7 @@ import java.util.UUID;
 import static de.dhbw.softwareengineering.digitaljournal.util.Constants.HOUR;
 
 @Service
-public class PasswordRecoveryRequestService extends AbstractService{
+public class PasswordRecoveryRequestService implements AbstractService {
 
     private final PasswordRecoveryRequestRepository repository;
 
@@ -27,9 +27,9 @@ public class PasswordRecoveryRequestService extends AbstractService{
 
     public PasswordRecoveryRequest create(User user) {
         PasswordRecoveryRequest recoveryRequest = new PasswordRecoveryRequest();
-                                recoveryRequest.setUsername(user.getUsername());
-                                recoveryRequest.setRecoveryUUID(UUID.randomUUID().toString());
-                                recoveryRequest.setCreationDate(System.currentTimeMillis());
+        recoveryRequest.setUsername(user.getUsername());
+        recoveryRequest.setRecoveryUUID(UUID.randomUUID().toString());
+        recoveryRequest.setCreationDate(System.currentTimeMillis());
 
         return repository.save(recoveryRequest);
     }
@@ -37,9 +37,9 @@ public class PasswordRecoveryRequestService extends AbstractService{
     public PasswordRecoveryRequest findByUUID(String uuid) {
         Optional<PasswordRecoveryRequest> request = repository.findById(uuid);
 
-        if(request.isPresent()){
+        if (request.isPresent()) {
             return request.get();
-        }else {
+        } else {
             throw new RuntimeException("No recovery request found with ID: " + uuid);
         }
     }

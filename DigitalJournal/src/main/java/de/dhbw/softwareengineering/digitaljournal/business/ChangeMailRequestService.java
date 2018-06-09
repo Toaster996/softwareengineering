@@ -1,11 +1,8 @@
 package de.dhbw.softwareengineering.digitaljournal.business;
 
 import de.dhbw.softwareengineering.digitaljournal.domain.ChangeMailRequest;
-import de.dhbw.softwareengineering.digitaljournal.domain.DeleteAccountRequest;
 import de.dhbw.softwareengineering.digitaljournal.domain.User;
 import de.dhbw.softwareengineering.digitaljournal.persistence.ChangeMailRequestRepository;
-import de.dhbw.softwareengineering.digitaljournal.persistence.DeleteAccountRequestRepository;
-import de.dhbw.softwareengineering.digitaljournal.util.UUIDGenerator;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -14,7 +11,7 @@ import java.util.UUID;
 import static de.dhbw.softwareengineering.digitaljournal.util.Constants.HOUR;
 
 @Service
-public class ChangeMailRequestService extends AbstractService{
+public class ChangeMailRequestService implements AbstractService {
 
     private final ChangeMailRequestRepository repository;
 
@@ -23,23 +20,23 @@ public class ChangeMailRequestService extends AbstractService{
     }
 
     public ChangeMailRequest create(User user, String newmail) {
-        if(repository.existsById(user.getUsername()))
+        if (repository.existsById(user.getUsername()))
             return null;
 
         ChangeMailRequest request = new ChangeMailRequest();
-                          request.setUsername(user.getUsername());
-                          request.setDate(System.currentTimeMillis());
-                          request.setNewmail(newmail);
-                          request.setNewmailid(UUID.randomUUID().toString());
-                          request.setOldmailid(UUID.randomUUID().toString());
+        request.setUsername(user.getUsername());
+        request.setDate(System.currentTimeMillis());
+        request.setNewmail(newmail);
+        request.setNewmailid(UUID.randomUUID().toString());
+        request.setOldmailid(UUID.randomUUID().toString());
 
         return repository.save(request);
     }
 
-    private String confirmOldMail(String oldmailid){
+    private String confirmOldMail(String oldmailid) {
         Optional<ChangeMailRequest> request = repository.findByOldmailid(oldmailid);
 
-        if(request.isPresent()){
+        if (request.isPresent()) {
             request.get().setOldconfirmed(true);
             repository.save(request.get());
             return request.get().getUsername();
@@ -48,10 +45,10 @@ public class ChangeMailRequestService extends AbstractService{
         return null;
     }
 
-    private String confirmNewMail(String newmailid){
+    private String confirmNewMail(String newmailid) {
         Optional<ChangeMailRequest> request = repository.findByNewmailid(newmailid);
 
-        if(request.isPresent()){
+        if (request.isPresent()) {
             request.get().setNewconfirmed(true);
             repository.save(request.get());
             return request.get().getUsername();
@@ -60,12 +57,12 @@ public class ChangeMailRequestService extends AbstractService{
         return null;
     }
 
-    public boolean[] isConfirmed(String username){
+    public boolean[] isConfirmed(String username) {
         Optional<ChangeMailRequest> request = repository.findById(username);
 
-        if(!request.isPresent()){
-            return new boolean[]{false,false};
-        } else{
+        if (!request.isPresent()) {
+            return new boolean[]{false, false};
+        } else {
             ChangeMailRequest mailRequest = request.get();
             return new boolean[]{mailRequest.isOldconfirmed(), mailRequest.isNewconfirmed()};
         }
@@ -77,7 +74,7 @@ public class ChangeMailRequestService extends AbstractService{
 
     public String confirm(String id) {
         String username = confirmOldMail(id);
-        if(username == null){
+        if (username == null) {
             username = confirmNewMail(id);
         }
 
@@ -86,7 +83,7 @@ public class ChangeMailRequestService extends AbstractService{
 
     public String getNewMail(String username) {
         Optional<ChangeMailRequest> request = repository.findById(username);
-        if(request.isPresent()){
+        if (request.isPresent()) {
             return request.get().getNewmail();
         }
 

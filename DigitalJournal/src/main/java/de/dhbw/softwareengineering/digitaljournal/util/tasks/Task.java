@@ -4,9 +4,9 @@ import de.dhbw.softwareengineering.digitaljournal.business.AbstractService;
 
 public abstract class Task {
 
-    protected AbstractService[] services;
+    AbstractService[] services;
 
-    public Task(AbstractService... service){
+    Task(AbstractService... service) {
         this.services = service;
     }
 

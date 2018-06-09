@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class ImageService extends AbstractService {
+public class ImageService implements AbstractService {
 
     private final UploadImageRepository repository;
 

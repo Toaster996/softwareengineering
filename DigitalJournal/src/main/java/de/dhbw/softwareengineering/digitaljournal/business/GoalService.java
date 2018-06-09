@@ -25,7 +25,7 @@ import static org.unbescape.html.HtmlEscape.escapeHtml5;
 
 @Slf4j
 @Service
-public class GoalService extends AbstractService {
+public class GoalService implements AbstractService {
 
     private final GoalRepository repository;
     private static final int NUMBER_OF_LATESTS_GOALS = 4;
@@ -103,7 +103,7 @@ public class GoalService extends AbstractService {
     public List<Goal> findLatestsGoals(String name) {
         List<Goal> goals = repository.findAllByUsernameOrderByDateDesc(name);
         goals = goals.stream().sorted(Comparator.comparingInt(Goal::getDaysLeft)).collect(Collectors.toList());
-        while(goals.size() > NUMBER_OF_LATESTS_GOALS){
+        while (goals.size() > NUMBER_OF_LATESTS_GOALS) {
             goals.remove(NUMBER_OF_LATESTS_GOALS);
         }
 
@@ -137,11 +137,11 @@ public class GoalService extends AbstractService {
         return activeGoals.get();
     }
 
-    public boolean hasNotnotifiedGoals(String name){
+    public boolean hasNotnotifiedGoals(String name) {
         List<Goal> goals = repository.findAllByUsernameOrderByDateDesc(name);
         boolean notify = false;
-        for(Goal goal: goals){
-            if(goal.getDaysLeft() < 0 && !goal.isChecked() && !goal.isHasBeenNotified()){
+        for (Goal goal : goals) {
+            if (goal.getDaysLeft() < 0 && !goal.isChecked() && !goal.isHasBeenNotified()) {
                 goal.setHasBeenNotified(true);
                 repository.save(goal);
                 notify = true;
@@ -150,7 +150,7 @@ public class GoalService extends AbstractService {
         return notify;
     }
 
-    private void logException(Exception e){
+    private void logException(Exception e) {
         log.error(e.getMessage());
         StringWriter stringWriter = new StringWriter();
         e.printStackTrace(new PrintWriter(stringWriter));

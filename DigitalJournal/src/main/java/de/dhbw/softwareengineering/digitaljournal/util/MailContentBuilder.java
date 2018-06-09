@@ -15,7 +15,7 @@ public class MailContentBuilder {
         this.templateEngine = templateEngine;
     }
 
-    public String build(String title, String name,String top, String action_target, String action_name, String bottom, boolean action) {
+    public String build(String title, String name, String top, String action_target, String action_name, String bottom, boolean action) {
         Context context = new Context();
         context.setVariable("has_action", action);
         context.setVariable("title", title);

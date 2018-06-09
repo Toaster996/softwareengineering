@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserService extends AbstractService {
+public class UserService implements AbstractService {
 
     private final UserRepository repository;
     private final JournalService journalService;

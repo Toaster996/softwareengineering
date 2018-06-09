@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
-public interface RegistrationRequestRepository extends JpaRepository<RegistrationRequest, String>{
+public interface RegistrationRequestRepository extends JpaRepository<RegistrationRequest, String> {
 
     Optional<RegistrationRequest> findByRegistrationUUID(String registrationUUID);
 

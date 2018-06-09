@@ -51,10 +51,10 @@ public class RecoverPasswordController {
     public String index(@RequestParam("email") String email, Model model) {
         model.addAttribute(STATUS_ATTRIBUTE_NAME, "new");
         model.addAttribute("registrationUser", new RegistrationUser());
-        model.addAttribute(Constants.SESSION_CONTACTREQUEST,new ContactRequest());
+        model.addAttribute(Constants.SESSION_CONTACTREQUEST, new ContactRequest());
         model.addAttribute(Constants.SESSION_LOGINUSER, new LoginUser());
 
-        if(!emailPattern.matcher(email).matches()){
+        if (!emailPattern.matcher(email).matches()) {
             model.addAttribute("recover", "invalidEmail");
             return "home";
         }
@@ -80,7 +80,7 @@ public class RecoverPasswordController {
 
     @GetMapping(value = "/{uuid}")
     public String index(@PathVariable String uuid, Model model, HttpSession session) {
-        model.addAttribute("contactRequest",new ContactRequest());
+        model.addAttribute("contactRequest", new ContactRequest());
 
         PasswordRecoveryRequest passwordRecoveryRequest = passwordRecoveryRequestService.findByUUID(uuid);
 
@@ -100,7 +100,7 @@ public class RecoverPasswordController {
 
     @PostMapping("/change")
     public String changePassword(@RequestParam("password") String password, @RequestParam("password_confirm") String password_confirm, ModelMap model, HttpSession session, RedirectAttributes redir) {
-        model.addAttribute("contactRequest",new ContactRequest());
+        model.addAttribute("contactRequest", new ContactRequest());
 
         // security checks
         if (password.isEmpty() || password_confirm.isEmpty()) {
@@ -112,9 +112,9 @@ public class RecoverPasswordController {
         } else if (password.length() > 42) {
             redir.addFlashAttribute(STATUS_ATTRIBUTE_NAME, STATUSCODE_PWTOOLONG);
         }
-        if(redir.containsAttribute(STATUS_ATTRIBUTE_NAME)){
+        if (redir.containsAttribute(STATUS_ATTRIBUTE_NAME)) {
             String uuid = (String) session.getAttribute("uuid");
-            return "redirect:/recover/"+ uuid;
+            return "redirect:/recover/" + uuid;
         }
 
         // get user

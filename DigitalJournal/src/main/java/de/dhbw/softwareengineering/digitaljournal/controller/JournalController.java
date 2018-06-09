@@ -1,12 +1,24 @@
 package de.dhbw.softwareengineering.digitaljournal.controller;
 
-import de.dhbw.softwareengineering.digitaljournal.business.*;
-import de.dhbw.softwareengineering.digitaljournal.domain.*;
+import de.dhbw.softwareengineering.digitaljournal.business.FriendService;
+import de.dhbw.softwareengineering.digitaljournal.business.GoalService;
+import de.dhbw.softwareengineering.digitaljournal.business.ImageService;
+import de.dhbw.softwareengineering.digitaljournal.business.JournalService;
+import de.dhbw.softwareengineering.digitaljournal.business.SharedJournalService;
+import de.dhbw.softwareengineering.digitaljournal.domain.ContactRequest;
+import de.dhbw.softwareengineering.digitaljournal.domain.Friend;
+import de.dhbw.softwareengineering.digitaljournal.domain.Goal;
+import de.dhbw.softwareengineering.digitaljournal.domain.Journal;
+import de.dhbw.softwareengineering.digitaljournal.domain.SharedJournal;
 import de.dhbw.softwareengineering.digitaljournal.util.Constants;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
@@ -18,7 +30,12 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static de.dhbw.softwareengineering.digitaljournal.util.Constants.*;
+import static de.dhbw.softwareengineering.digitaljournal.util.Constants.JOURNAL_CONTENT_SIZE;
+import static de.dhbw.softwareengineering.digitaljournal.util.Constants.STATUSCODE_EMPTYFORM;
+import static de.dhbw.softwareengineering.digitaljournal.util.Constants.STATUSCODE_MODAL_BODY;
+import static de.dhbw.softwareengineering.digitaljournal.util.Constants.STATUSCODE_MODAL_HEADER;
+import static de.dhbw.softwareengineering.digitaljournal.util.Constants.STATUSCODE_MODAL_TEMP;
+import static de.dhbw.softwareengineering.digitaljournal.util.Constants.STATUS_ATTRIBUTE_NAME;
 
 @Controller
 @RequestMapping("/journal")
