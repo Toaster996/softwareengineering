@@ -10,12 +10,12 @@
 
 <body id="home" class="">
 <main role="main">
-    <div th:switch="${has_action}" class="container journal_conatainer">
+    <div class="container journal_conatainer">
         <h2 class="page-header">Digital Journal</h2>
         <p th:text="'Dear ' + ${name} + ','"></p>
-        <p th:text="${message_top}"/>
-        <a th:case="true" th:href="${action_target}" class="btn btn-primary mb-5" th:text="${action_name}"></a>
-        <p th:text="${message_bottom}"></p>
+        <p th:text="${messageTop}"></p>
+        <a  th:href="${actionTarget}" class="btn btn-primary mb-5" th:text="${actionName}"></a>
+        <p th:text="${messageBottom}"></p>
         <p>Sincerely yours,<br/>The DigitalJournal Team</p>
         <br>
         <br>

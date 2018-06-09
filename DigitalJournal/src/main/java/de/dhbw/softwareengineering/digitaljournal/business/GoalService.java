@@ -4,6 +4,7 @@ import de.dhbw.softwareengineering.digitaljournal.domain.Goal;
 import de.dhbw.softwareengineering.digitaljournal.domain.form.CreateGoal;
 import de.dhbw.softwareengineering.digitaljournal.persistence.GoalRepository;
 import de.dhbw.softwareengineering.digitaljournal.util.UUIDGenerator;
+import de.dhbw.softwareengineering.digitaljournal.util.exceptions.GoalNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -84,7 +85,7 @@ public class GoalService implements AbstractService {
 
             return goal;
         } else {
-            throw new RuntimeException("No goal found with Id: " + goalID);
+            throw new GoalNotFoundException(goalID);
         }
     }
 

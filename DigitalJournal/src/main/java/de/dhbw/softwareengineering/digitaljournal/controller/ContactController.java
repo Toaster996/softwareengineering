@@ -14,6 +14,7 @@ import javax.validation.Valid;
 
 import static de.dhbw.softwareengineering.digitaljournal.util.Constants.STATUSCODE_EMAILINVALID;
 import static de.dhbw.softwareengineering.digitaljournal.util.Constants.STATUSCODE_EMPTYFORM;
+import static de.dhbw.softwareengineering.digitaljournal.util.Constants.STATUSCODE_MODAL_TEMP;
 import static de.dhbw.softwareengineering.digitaljournal.util.Constants.STATUS_REQUEST_ATTRIBUTE_NAME;
 import static de.dhbw.softwareengineering.digitaljournal.util.Constants.emailPattern;
 
@@ -47,21 +48,21 @@ public class ContactController {
         }
 
         if (contactRequest.getName().length() > 50) {
-            redir.addFlashAttribute(STATUS_REQUEST_ATTRIBUTE_NAME, "temp_modal");
+            redir.addFlashAttribute(STATUS_REQUEST_ATTRIBUTE_NAME, STATUSCODE_MODAL_TEMP);
             redir.addFlashAttribute(Constants.FLASHATTRIBUTE_TEMP_MODAL_HEADER, "Name to long!");
             redir.addFlashAttribute(Constants.FLASHATTRIBUTE_TEMP_MODAL_BODY, "Please use a shorter name to contact us.");
             redir.addFlashAttribute(Constants.FLASHATTRIBUTE_MODAL_GEN_ID, "mdl_name_too_long");
             return Constants.REDIRECT;
         }
         if (contactRequest.getEmail().length() > 100) {
-            redir.addFlashAttribute(STATUS_REQUEST_ATTRIBUTE_NAME, "temp_modal");
+            redir.addFlashAttribute(STATUS_REQUEST_ATTRIBUTE_NAME, STATUSCODE_MODAL_TEMP);
             redir.addFlashAttribute(Constants.FLASHATTRIBUTE_TEMP_MODAL_HEADER, "Email to long!");
             redir.addFlashAttribute(Constants.FLASHATTRIBUTE_TEMP_MODAL_BODY, "Please use a shorter email to contact us.");
             redir.addFlashAttribute(Constants.FLASHATTRIBUTE_MODAL_GEN_ID, "mdl_email_too_long");
             return Constants.REDIRECT;
         }
         if (contactRequest.getMessage().length() > 1000) {
-            redir.addFlashAttribute(STATUS_REQUEST_ATTRIBUTE_NAME, "temp_modal");
+            redir.addFlashAttribute(STATUS_REQUEST_ATTRIBUTE_NAME, STATUSCODE_MODAL_TEMP);
             redir.addFlashAttribute(Constants.FLASHATTRIBUTE_TEMP_MODAL_HEADER, "Message to long!");
             redir.addFlashAttribute(Constants.FLASHATTRIBUTE_TEMP_MODAL_BODY, "Please use a shorter Message to contact us.");
             redir.addFlashAttribute(Constants.FLASHATTRIBUTE_MODAL_GEN_ID, "mdl_message_too_long");

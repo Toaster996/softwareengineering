@@ -4,6 +4,7 @@ import de.dhbw.softwareengineering.digitaljournal.domain.DeleteAccountRequest;
 import de.dhbw.softwareengineering.digitaljournal.domain.User;
 import de.dhbw.softwareengineering.digitaljournal.persistence.DeleteAccountRequestRepository;
 import de.dhbw.softwareengineering.digitaljournal.util.UUIDGenerator;
+import de.dhbw.softwareengineering.digitaljournal.util.exceptions.DeleteAccountRequestException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -34,7 +35,7 @@ public class DeleteAccountRequestService implements AbstractService {
         if (request.isPresent()) {
             return request.get();
         } else {
-            throw new RuntimeException("No delete request found with ID: " + uuid);
+            throw new DeleteAccountRequestException(uuid);
         }
     }
 

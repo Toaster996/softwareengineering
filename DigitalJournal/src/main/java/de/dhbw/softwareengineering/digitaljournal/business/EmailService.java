@@ -45,11 +45,11 @@ public class EmailService implements AbstractService {
 
         String title = "Digital Journal | Registration";
         String top = "To activate your account click on Activate.";
-        String action_target = BASE_URL + "/confirmemail/" + request.getRegistrationUUID();
-        String action_name = "Activate";
+        String actionTarget = BASE_URL + "/confirmemail/" + request.getRegistrationUUID();
+        String actionName = "Activate";
         String bottom = "That's all! You can now log in to DigitalJournal with your credentials.";
 
-        prepareAndSend(title, user.getUsername(), top, action_name, action_target, bottom, user.getEmail(), true);
+        prepareAndSend(title, user.getUsername(), top, actionName, actionTarget, bottom, user.getEmail());
     }
 
     @Async
@@ -58,11 +58,11 @@ public class EmailService implements AbstractService {
 
         String title = "Digital Journal | Recover your password";
         String top = "To reset your password click on Recover.";
-        String action_target = BASE_URL + "/recover/" + request.getRecoveryUUID();
-        String action_name = "Recover";
+        String actionTarget = BASE_URL + "/recover/" + request.getRecoveryUUID();
+        String actionName = "Recover";
         String bottom = "If you have not requested an password recovery, please ignore this message.";
 
-        prepareAndSend(title, user.getUsername(), top, action_name, action_target, bottom, user.getEmail(), true);
+        prepareAndSend(title, user.getUsername(), top, actionName, actionTarget, bottom, user.getEmail());
     }
 
     @Async
@@ -89,11 +89,11 @@ public class EmailService implements AbstractService {
 
         String title = "Digital Journal | Delete your account";
         String top = "We are sad to see you go :-( If you still want to delete your account click on Delete. This will happen instantly. Keep in mind that this is not reversible.";
-        String action_target = BASE_URL + "/profile/delete/" + request.getRequestid();
-        String action_name = "Delete";
+        String actionTarget = BASE_URL + "/profile/delete/" + request.getRequestid();
+        String actionName = "Delete";
         String bottom = "If you have not requested an account deletion, please ignore this message.";
 
-        prepareAndSend(title, user.getUsername(), top, action_name, action_target, bottom, user.getEmail(), true);
+        prepareAndSend(title, user.getUsername(), top, actionName, actionTarget, bottom, user.getEmail());
     }
 
     @Async
@@ -102,15 +102,15 @@ public class EmailService implements AbstractService {
 
         String title = "Digital Journal | Change your email";
         String top = "to confirm the change of your email address please click Confirm.";
-        String action_target = BASE_URL + "/profile/mail/confirm/";
-        String action_name = "Confirm";
+        String actionTarget = BASE_URL + "/profile/mail/confirm/";
+        String actionName = "Confirm";
         String bottom = "If you have not requested an email change, please ignore this message.";
 
-        prepareAndSend(title, user.getUsername(), top + " This will allow us to change this mail address in our records to the newly requested one " + request.getNewmail(), action_name, action_target + request.getOldmailid(), bottom, user.getEmail(), true);
-        prepareAndSend(title, user.getUsername(), top + " Performing that will update your old email address to this one.", action_name, action_target + request.getNewmailid(), bottom, request.getNewmail(), true);
+        prepareAndSend(title, user.getUsername(), top + " This will allow us to change this mail address in our records to the newly requested one " + request.getNewmail(), actionName, actionTarget + request.getOldmailid(), bottom, user.getEmail());
+        prepareAndSend(title, user.getUsername(), top + " Performing that will update your old email address to this one.", actionName, actionTarget + request.getNewmailid(), bottom, request.getNewmail());
     }
 
-    public void prepareAndSend(String subject, String name, String top, String action_name, String action_target, String bottom, String recipient, boolean hasAction) {
+    public void prepareAndSend(String subject, String name, String top, String actionName, String actionTarget, String bottom, String recipient) {
         MimeMessagePreparator message = mimeMessage -> {
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
             messageHelper.setFrom(senderAddress);
@@ -118,14 +118,14 @@ public class EmailService implements AbstractService {
             messageHelper.setTo(recipient);
             messageHelper.setSubject(subject);
 
-            String content = mailContentBuilder.build(subject, name, top, action_target, action_name, bottom, hasAction);
+            String content = mailContentBuilder.build(subject, name, top, actionTarget, actionName, bottom);
             messageHelper.setText(content, true);
         };
 
         try {
             emailSender.send(message);
         } catch (MailException e) {
-            System.out.println(e.getMessage());
+            log.error(e.getMessage());
         }
 
     }

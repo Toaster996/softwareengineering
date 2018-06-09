@@ -15,15 +15,14 @@ public class MailContentBuilder {
         this.templateEngine = templateEngine;
     }
 
-    public String build(String title, String name, String top, String action_target, String action_name, String bottom, boolean action) {
+    public String build(String title, String name, String top, String actionTarget, String actionName, String bottom) {
         Context context = new Context();
-        context.setVariable("has_action", action);
         context.setVariable("title", title);
         context.setVariable("name", name);
-        context.setVariable("message_top", top);
-        context.setVariable("action_target", action_target);
-        context.setVariable("action_name", action_name);
-        context.setVariable("message_bottom", bottom);
+        context.setVariable("messageTop", top);
+        context.setVariable("actionTarget", actionTarget);
+        context.setVariable("actionName", actionName);
+        context.setVariable("messageBottom", bottom);
         return templateEngine.process("mailtemplate", context);
     }
 

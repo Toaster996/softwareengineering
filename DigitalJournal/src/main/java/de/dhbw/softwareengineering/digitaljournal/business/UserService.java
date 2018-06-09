@@ -4,6 +4,7 @@ import de.dhbw.softwareengineering.digitaljournal.domain.DeleteAccountRequest;
 import de.dhbw.softwareengineering.digitaljournal.domain.User;
 import de.dhbw.softwareengineering.digitaljournal.domain.form.RegistrationUser;
 import de.dhbw.softwareengineering.digitaljournal.persistence.UserRepository;
+import de.dhbw.softwareengineering.digitaljournal.util.exceptions.UserNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -42,7 +43,7 @@ public class UserService implements AbstractService {
         if (userOptional.isPresent()) {
             return userOptional.get();
         } else {
-            throw new RuntimeException("No user found with name: " + username);
+            throw new UserNotFoundException(username);
         }
     }
 
@@ -56,7 +57,7 @@ public class UserService implements AbstractService {
         if (userOptional.isPresent()) {
             return userOptional.get();
         } else {
-            throw new RuntimeException("No user found with email: " + email);
+            throw new UserNotFoundException(email);
         }
     }
 
@@ -64,7 +65,6 @@ public class UserService implements AbstractService {
         User user = new User();
         user.setUsername(registrationUser.getName());
         user.setEmail(registrationUser.getEmail());
-        String encodeTest = bCryptPasswordEncoder.encode("asdf");
         user.setPassword(bCryptPasswordEncoder.encode(registrationUser.getPassword()));
         user.setRegistrationDate(System.currentTimeMillis());
         user.setVerified(false);

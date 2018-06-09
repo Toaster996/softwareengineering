@@ -11,6 +11,7 @@ import de.dhbw.softwareengineering.digitaljournal.domain.ContactRequest;
 import de.dhbw.softwareengineering.digitaljournal.domain.DeleteAccountRequest;
 import de.dhbw.softwareengineering.digitaljournal.domain.User;
 import de.dhbw.softwareengineering.digitaljournal.util.Constants;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,7 +33,9 @@ import static de.dhbw.softwareengineering.digitaljournal.util.Constants.STATUSCO
 import static de.dhbw.softwareengineering.digitaljournal.util.Constants.STATUSCODE_PWTOOSHORT;
 import static de.dhbw.softwareengineering.digitaljournal.util.Constants.STATUSCODE_SUCCESS;
 import static de.dhbw.softwareengineering.digitaljournal.util.Constants.STATUS_ATTRIBUTE_NAME;
+import static de.dhbw.softwareengineering.digitaljournal.util.Constants.TEMPLATE_PROFILE;
 
+@Slf4j
 @Controller
 public class ProfileController {
 
@@ -60,16 +63,16 @@ public class ProfileController {
 
         setModelAttribs(model, user);
 
-        return "profile";
+        return TEMPLATE_PROFILE;
     }
 
     @PostMapping("/profile/changepassword")
-    public String changePassword(Model model, @RequestParam("old_password") String old_password, @RequestParam("password") String password, @RequestParam("password_confirm") String password_confirm, Principal principal) {
+    public String changePassword(Model model, @RequestParam("old_password") String oldPassword, @RequestParam("password") String password, @RequestParam("password_confirm") String passwordConfirm, Principal principal) {
         User user = userService.findByName(principal.getName());
 
         if (user != null) {
-            if (passwordEncoder.matches(old_password, user.getPassword())) {
-                if (password.equals(password_confirm)) {
+            if (passwordEncoder.matches(oldPassword, user.getPassword())) {
+                if (password.equals(passwordConfirm)) {
                     if (password.length() < 6) {
                         model.addAttribute(STATUS_ATTRIBUTE_NAME, STATUSCODE_PWTOOSHORT);
                     } else if (password.length() > 42) {
@@ -89,7 +92,7 @@ public class ProfileController {
 
         setModelAttribs(model, user);
 
-        return "profile";
+        return TEMPLATE_PROFILE;
     }
 
     @PostMapping("/profile/deleteaccount")
@@ -103,20 +106,20 @@ public class ProfileController {
         model.addAttribute(STATUS_ATTRIBUTE_NAME, Constants.STATUSCODE_SUCCESS);
         setModelAttribs(model, user);
 
-        return "profile";
+        return TEMPLATE_PROFILE;
     }
 
     @PostMapping("/profile/mail/change")
-    public String changeMail(Model model, @RequestParam("new_mail") String new_mail, Principal principal) {
+    public String changeMail(Model model, @RequestParam("new_mail") String newMail, Principal principal) {
         User user = userService.findByName(principal.getName());
 
-        if (new_mail == null) {
+        if (newMail == null) {
             model.addAttribute(STATUS_ATTRIBUTE_NAME, Constants.STATUSCODE_EMAILINVALID);
-        } else if (new_mail.length() > 100) {
+        } else if (newMail.length() > 100) {
             model.addAttribute(STATUS_ATTRIBUTE_NAME, STATUSCODE_EMAILTOOLONG);
-        } else if (Constants.emailPattern.matcher(new_mail).matches()) {
-            if (!userService.existByEmail(new_mail)) {
-                ChangeMailRequest request = changeMailRequestService.create(user, new_mail);
+        } else if (Constants.emailPattern.matcher(newMail).matches()) {
+            if (!userService.existByEmail(newMail)) {
+                ChangeMailRequest request = changeMailRequestService.create(user, newMail);
 
                 if (request != null) {
                     emailService.sendMailChangeMail(user, request);
@@ -131,7 +134,7 @@ public class ProfileController {
 
         setModelAttribs(model, user);
 
-        return "profile";
+        return TEMPLATE_PROFILE;
     }
 
     @GetMapping("/profile/mail/confirm/{id}")
@@ -173,7 +176,7 @@ public class ProfileController {
         try {
             servletRequest.logout();
         } catch (ServletException e) {
-            e.printStackTrace();
+           log.error(e.getMessage());
         }
 
         return Constants.REDIRECT;

@@ -29,6 +29,7 @@ import static de.dhbw.softwareengineering.digitaljournal.util.Constants.STATUSCO
 import static de.dhbw.softwareengineering.digitaljournal.util.Constants.STATUSCODE_PWTOOLONG;
 import static de.dhbw.softwareengineering.digitaljournal.util.Constants.STATUSCODE_PWTOOSHORT;
 import static de.dhbw.softwareengineering.digitaljournal.util.Constants.STATUS_ATTRIBUTE_NAME;
+import static de.dhbw.softwareengineering.digitaljournal.util.Constants.TEMPLATE_RECOVER;
 import static de.dhbw.softwareengineering.digitaljournal.util.Constants.emailPattern;
 
 @Controller
@@ -55,7 +56,7 @@ public class RecoverPasswordController {
         model.addAttribute(Constants.SESSION_LOGINUSER, new LoginUser());
 
         if (!emailPattern.matcher(email).matches()) {
-            model.addAttribute("recover", "invalidEmail");
+            model.addAttribute(TEMPLATE_RECOVER, "invalidEmail");
             return "home";
         }
 
@@ -65,14 +66,14 @@ public class RecoverPasswordController {
             // Delete all old requests from user
             passwordRecoveryRequestService.deleteAllByUsername(user.getUsername());
 
-            model.addAttribute("recover", "true");
+            model.addAttribute(TEMPLATE_RECOVER, "true");
             model.addAttribute("email", email);
 
             PasswordRecoveryRequest request = passwordRecoveryRequestService.create(user);
 
             emailService.sendPasswordRecoveryMail(user, request);
         } else {
-            model.addAttribute("recover", "false");
+            model.addAttribute(TEMPLATE_RECOVER, "false");
         }
 
         return "home";
@@ -88,24 +89,27 @@ public class RecoverPasswordController {
             model.addAttribute("status", "notFound");
             return "error";
         } else {
+
             User user = userService.findByName(passwordRecoveryRequest.getUsername());
 
-            session.setAttribute("uuid", uuid);
-            session.setAttribute("changePasswordUser", user);
-            model.addAttribute("username", user.getUsername());
-            model.addAttribute("email", user.getEmail());
+            if(user != null){
+                session.setAttribute("uuid", uuid);
+                session.setAttribute(SESSION_CHANGEPWUSER, user.getUsername());
+                model.addAttribute("username", user.getUsername());
+                model.addAttribute("email", user.getEmail());
+            }
         }
         return "changepassword";
     }
 
     @PostMapping("/change")
-    public String changePassword(@RequestParam("password") String password, @RequestParam("password_confirm") String password_confirm, ModelMap model, HttpSession session, RedirectAttributes redir) {
+    public String changePassword(@RequestParam("password") String password, @RequestParam("password_confirm") String passwordConfirm, ModelMap model, HttpSession session, RedirectAttributes redir) {
         model.addAttribute("contactRequest", new ContactRequest());
 
         // security checks
-        if (password.isEmpty() || password_confirm.isEmpty()) {
+        if (password.isEmpty() || passwordConfirm.isEmpty()) {
             redir.addFlashAttribute(STATUS_ATTRIBUTE_NAME, STATUSCODE_EMPTYFORM);
-        } else if (!password.matches(password_confirm)) {
+        } else if (!password.matches(passwordConfirm)) {
             redir.addFlashAttribute(STATUS_ATTRIBUTE_NAME, STATUSCODE_PWMISSMATCH);
         } else if (password.length() < 6) {
             redir.addFlashAttribute(STATUS_ATTRIBUTE_NAME, STATUSCODE_PWTOOSHORT);
@@ -118,15 +122,18 @@ public class RecoverPasswordController {
         }
 
         // get user
-        User user = (User) session.getAttribute(SESSION_CHANGEPWUSER);
+        String username = (String) session.getAttribute(SESSION_CHANGEPWUSER);
 
         // change password of user and write to database
-        if (user != null) {
-            user.setPassword(bCryptPasswordEncoder.encode(password));
-            redir.addFlashAttribute("recover", STATUSCODE_PWCHANGESUCCESS);
-            session.removeAttribute(SESSION_CHANGEPWUSER);
-            userService.update(user);
-            passwordRecoveryRequestService.deleteAllByUsername(user.getUsername());
+        if (username != null) {
+            User user = userService.findByName(username);
+            if(user != null){
+                user.setPassword(bCryptPasswordEncoder.encode(password));
+                redir.addFlashAttribute(TEMPLATE_RECOVER, STATUSCODE_PWCHANGESUCCESS);
+                session.removeAttribute(SESSION_CHANGEPWUSER);
+                userService.update(user);
+                passwordRecoveryRequestService.deleteAllByUsername(user.getUsername());
+            }
         } else {
             return "error";
         }

@@ -2,6 +2,7 @@ package de.dhbw.softwareengineering.digitaljournal.controller;
 
 import de.dhbw.softwareengineering.digitaljournal.business.ImageService;
 import de.dhbw.softwareengineering.digitaljournal.util.Constants;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +17,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Controller
 @RequestMapping("/file")
 public class FileController {
@@ -42,13 +44,14 @@ public class FileController {
             try {
                 images.add(file.getBytes());
             } catch (IOException e) {
+                log.error(e.getMessage());
                 System.out.println(e.getMessage());
             }
         } else {
-            System.out.println("Image expected, actual: [" + type + "]");
+            log.error("Image expected, actual: [\" + type + \"]");
         }
 
-        if (images.size() > 0) {
+        if (!images.isEmpty()) {
             session.setAttribute(Constants.SESSION_IMAGES, images);
         }
 

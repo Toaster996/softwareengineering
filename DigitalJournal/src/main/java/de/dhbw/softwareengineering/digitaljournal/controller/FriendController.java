@@ -38,7 +38,7 @@ public class FriendController {
     public String openModalNewGoal(RedirectAttributes redir) {
         redir.addFlashAttribute(STATUS_ATTRIBUTE_NAME, "addFriends");
         redir.addFlashAttribute("newFriend", new CreateFriend());
-        return Constants.REDIRECT_JOURNAl;
+        return Constants.REDIRECT_JOURNAL;
     }
 
     @ResponseBody
@@ -57,13 +57,13 @@ public class FriendController {
         if (!friendService.save(createFriend, principal, userService)) {
             redir.addFlashAttribute(STATUS_ATTRIBUTE_NAME, "userNotFound");
         }
-        return Constants.REDIRECT_JOURNAl;
+        return Constants.REDIRECT_JOURNAL;
     }
 
     @PostMapping(value = "/remove/{friend}")
     public String submit(@PathVariable String friend, Principal principal) {
         friendService.remove(friend, principal.getName());
 
-        return Constants.REDIRECT_JOURNAl;
+        return Constants.REDIRECT_JOURNAL;
     }
 }

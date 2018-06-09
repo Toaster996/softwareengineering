@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static de.dhbw.softwareengineering.digitaljournal.util.Constants.JOURNAL_CONTENT_SIZE;
+import static de.dhbw.softwareengineering.digitaljournal.util.Constants.SESSION_SHARE_JOURNAL;
 import static de.dhbw.softwareengineering.digitaljournal.util.Constants.STATUSCODE_EMPTYFORM;
 import static de.dhbw.softwareengineering.digitaljournal.util.Constants.STATUSCODE_MODAL_BODY;
 import static de.dhbw.softwareengineering.digitaljournal.util.Constants.STATUSCODE_MODAL_HEADER;
@@ -129,7 +130,7 @@ public class JournalController {
             // Save images
             Object sessionAttribute = session.getAttribute(Constants.SESSION_IMAGES);
 
-            if (sessionAttribute != null && sessionAttribute instanceof List) {
+            if (sessionAttribute instanceof List) {
                 List<byte[]> images = (List<byte[]>) sessionAttribute;
                 for (byte[] image : images) {
                     imageService.saveImage(image, journalId);
@@ -137,7 +138,7 @@ public class JournalController {
             }
         }
 
-        return Constants.REDIRECT_JOURNAl;
+        return Constants.REDIRECT_JOURNAL;
     }
 
 
@@ -153,7 +154,7 @@ public class JournalController {
             return "editjournal";
         }
 
-        return Constants.REDIRECT_JOURNAl;
+        return Constants.REDIRECT_JOURNAL;
     }
 
     @PostMapping("/edit")
@@ -188,7 +189,7 @@ public class JournalController {
             }
         }
 
-        return Constants.REDIRECT_JOURNAl;
+        return Constants.REDIRECT_JOURNAL;
     }
 
     @GetMapping("/delete")
@@ -209,19 +210,19 @@ public class JournalController {
         journalService.deleteById(oldJournal.getJournalid());
         session.removeAttribute(Constants.SESSION_CURRENTJOURNAL);
 
-        return Constants.REDIRECT_JOURNAl;
+        return Constants.REDIRECT_JOURNAL;
     }
 
     @GetMapping("/share/{journalId}")
     public String showShareModal(@PathVariable String journalId, HttpSession session, RedirectAttributes redir, Principal principal) {
         Journal journal = journalService.findById(journalId);
         if (journal == null)
-            return Constants.REDIRECT_JOURNAl;
+            return Constants.REDIRECT_JOURNAL;
 
         final List<String> coAuthors = allreadySharedUsers(journalId);
         redir.addFlashAttribute("coAuthors", coAuthors);
         boolean isSharedBefore = false;
-        if (coAuthors.size() > 0)
+        if (!coAuthors.isEmpty())
             isSharedBefore = true;
         redir.addFlashAttribute("isSharedBefore", isSharedBefore);
 
@@ -232,18 +233,18 @@ public class JournalController {
                 .collect(Collectors.toList());
 
         redir.addFlashAttribute("shareableFriends", shareFriendsName);
-        session.setAttribute("shareJournalID", journalId);
+        session.setAttribute(SESSION_SHARE_JOURNAL, journalId);
         redir.addFlashAttribute(STATUS_ATTRIBUTE_NAME, "shareJournal");
-        return Constants.REDIRECT_JOURNAl;
+        return Constants.REDIRECT_JOURNAL;
     }
 
     @GetMapping("/share/add/{CoAuthor}")
     public String addCoAuthor(@PathVariable("CoAuthor") String coAuthor, HttpSession session) {
-        String journalID = (String) session.getAttribute("shareJournalID");
+        String journalID = (String) session.getAttribute(SESSION_SHARE_JOURNAL);
         SharedJournal sharedJournal = new SharedJournal(journalID, coAuthor);
         sharedJournalService.save(sharedJournal);
-        session.removeAttribute("shareJournalID");
-        return Constants.REDIRECT_JOURNAl;
+        session.removeAttribute(SESSION_SHARE_JOURNAL);
+        return Constants.REDIRECT_JOURNAL;
     }
 
     private List<String> allreadySharedUsers(String journalId) {

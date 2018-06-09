@@ -3,6 +3,7 @@ package de.dhbw.softwareengineering.digitaljournal.business;
 import de.dhbw.softwareengineering.digitaljournal.domain.Journal;
 import de.dhbw.softwareengineering.digitaljournal.persistence.JournalRepository;
 import de.dhbw.softwareengineering.digitaljournal.util.UUIDGenerator;
+import de.dhbw.softwareengineering.digitaljournal.util.exceptions.JournalNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -49,7 +50,7 @@ public class JournalService implements AbstractService {
         if (journalOptional.isPresent()) {
             return journalOptional.get();
         } else {
-            throw new RuntimeException("No journal found with Id: " + journalId);
+            throw new JournalNotFoundException("No journal found with Id: " + journalId);
         }
     }
 

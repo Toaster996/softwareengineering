@@ -43,7 +43,7 @@ public class GoalController {
     @GetMapping(value = "/create")
     public String openModalNewGoal(RedirectAttributes redir) {
         redir.addFlashAttribute(STATUS_ATTRIBUTE_NAME, "createGoal");
-        return Constants.REDIRECT_JOURNAl;
+        return Constants.REDIRECT_JOURNAL;
     }
 
     @PostMapping(value = "/create")
@@ -60,7 +60,7 @@ public class GoalController {
             goalService.save(goal, principal);
         }
 
-        return Constants.REDIRECT_JOURNAl;
+        return Constants.REDIRECT_JOURNAL;
     }
 
     @PostMapping("/delete/{goalId}")
@@ -71,7 +71,7 @@ public class GoalController {
             goalService.deleteById(goalId);
         }
 
-        return Constants.REDIRECT_JOURNAl;
+        return Constants.REDIRECT_JOURNAL;
     }
 
     @GetMapping("/edit/{goalId}")
@@ -83,14 +83,14 @@ public class GoalController {
             redir.addFlashAttribute("editGoal", goal);
             session.setAttribute("currentGoal", goal);
         }
-        return Constants.REDIRECT_JOURNAl;
+        return Constants.REDIRECT_JOURNAL;
     }
 
     @PostMapping("/edit")
     public String editGoal(@Valid @ModelAttribute("goal") final CreateGoal goal, HttpSession session) {
         Goal oldGoal = (Goal) session.getAttribute("currentGoal");
         goalService.update(oldGoal, goal);
-        return Constants.REDIRECT_JOURNAl;
+        return Constants.REDIRECT_JOURNAL;
     }
 
     @GetMapping("/{goalId}")
@@ -104,7 +104,7 @@ public class GoalController {
             redir.addFlashAttribute("showGoal", goal);
         }
 
-        return Constants.REDIRECT_JOURNAl;
+        return Constants.REDIRECT_JOURNAL;
     }
 
     @GetMapping("/check/{goalId}")
@@ -114,7 +114,7 @@ public class GoalController {
         if (goal.getUsername().equals(principal.getName())) {
             goalService.checkByID(goalId);
         }
-        return Constants.REDIRECT_JOURNAl;
+        return Constants.REDIRECT_JOURNAL;
     }
 
     @GetMapping("/allgoals")
@@ -124,7 +124,7 @@ public class GoalController {
         redir.addFlashAttribute("goals", goals);
         if (goals.size() <= loadedGoals)
             redir.addFlashAttribute(Constants.SHOW_FURTHER_GOALS_BTN, false);
-        return Constants.REDIRECT_JOURNAl;
+        return Constants.REDIRECT_JOURNAL;
     }
 
     private List<Goal> removeNotShownGoals(List<Goal> goals) {

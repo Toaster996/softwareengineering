@@ -3,6 +3,7 @@ package de.dhbw.softwareengineering.digitaljournal.business;
 import de.dhbw.softwareengineering.digitaljournal.domain.PasswordRecoveryRequest;
 import de.dhbw.softwareengineering.digitaljournal.domain.User;
 import de.dhbw.softwareengineering.digitaljournal.persistence.PasswordRecoveryRequestRepository;
+import de.dhbw.softwareengineering.digitaljournal.util.exceptions.RecoveryRequestNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,7 +41,7 @@ public class PasswordRecoveryRequestService implements AbstractService {
         if (request.isPresent()) {
             return request.get();
         } else {
-            throw new RuntimeException("No recovery request found with ID: " + uuid);
+            throw new RecoveryRequestNotFoundException(uuid);
         }
     }
 

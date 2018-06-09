@@ -14,7 +14,7 @@ public class Constants {
     public static final int JOURNAL_CONTENT_SIZE = 2048;
 
     public static final String REDIRECT         = "redirect:/";
-    public static final String REDIRECT_JOURNAl = "redirect:/journal";
+    public static final String REDIRECT_JOURNAL = "redirect:/journal";
 
     public static final String SESSION_CHANGEPWUSER            = "changePasswordUser";
     public static final String SESSION_CURRENTJOURNAL          = "currentJournal";
@@ -35,7 +35,7 @@ public class Constants {
     public static final String STATUS_RESPONSE_ATTRIBUTE_NAME  = "response";
     public static final String STATUS_REQUEST_ATTRIBUTE_NAME   = "contactStatus" ;
 
-    public final static String STATUSCODE_ALPHANUMERIC         = "alphanumeric";
+    public static final String STATUSCODE_ALPHANUMERIC         = "alphanumeric";
     public static final String STATUSCODE_PWMISSMATCH          = "pwmissmatch";
     public static final String STATUSCODE_USERNAMETOOLONG      = "nametoolong";
     public static final String STATUSCODE_EMAILTOOLONG         = "emailtoolong";
@@ -60,6 +60,10 @@ public class Constants {
 
     public static final String SUPPORT_RECIPIENT = "straub.flo@web.de";
     public static final String SESSION_IMAGES = "images";
+    public static final String URL_UNAUTHORIZED = "/unauthorized";
+    public static final String SESSION_SHARE_JOURNAL = "shareJournalID";
+    public static final String TEMPLATE_PROFILE = "profile";
+    public static final String TEMPLATE_RECOVER = "recover";
 
     public static int calculateDaysLeft(long current, long date){
         long remaining = date - current;

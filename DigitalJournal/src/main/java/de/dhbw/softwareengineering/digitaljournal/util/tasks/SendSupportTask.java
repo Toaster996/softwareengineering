@@ -15,14 +15,13 @@ public class SendSupportTask extends de.dhbw.softwareengineering.digitaljournal.
 
     @Override
     public void execute() {
-        if (services.length == 2)
-            if (services[0] instanceof ContactRequestService && services[1] instanceof EmailService) {
-                ContactRequestService contactRequestService = (ContactRequestService) services[0];
-                EmailService emailService = (EmailService) services[1];
-                List<ContactRequest> unsolvedRequests = contactRequestService.findAllUnsolvedRequests();
-                for (ContactRequest contactRequest : unsolvedRequests) {
-                    emailService.sendSupportMail(contactRequest);
-                }
+        if (services.length == 2 && services[0] instanceof ContactRequestService && services[1] instanceof EmailService) {
+            ContactRequestService contactRequestService = (ContactRequestService) services[0];
+            EmailService emailService = (EmailService) services[1];
+            List<ContactRequest> unsolvedRequests = contactRequestService.findAllUnsolvedRequests();
+            for (ContactRequest contactRequest : unsolvedRequests) {
+                emailService.sendSupportMail(contactRequest);
             }
+        }
     }
 }
