@@ -5,12 +5,16 @@ import de.dhbw.softwareengineering.digitaljournal.business.GoalService;
 import de.dhbw.softwareengineering.digitaljournal.business.ImageService;
 import de.dhbw.softwareengineering.digitaljournal.business.JournalService;
 import de.dhbw.softwareengineering.digitaljournal.business.SharedJournalService;
+import de.dhbw.softwareengineering.digitaljournal.business.UserService;
 import de.dhbw.softwareengineering.digitaljournal.domain.ContactRequest;
 import de.dhbw.softwareengineering.digitaljournal.domain.Friend;
 import de.dhbw.softwareengineering.digitaljournal.domain.Goal;
 import de.dhbw.softwareengineering.digitaljournal.domain.Journal;
 import de.dhbw.softwareengineering.digitaljournal.domain.SharedJournal;
 import de.dhbw.softwareengineering.digitaljournal.util.Constants;
+import de.dhbw.softwareengineering.digitaljournal.util.exceptions.JournalNotFoundException;
+import de.dhbw.softwareengineering.digitaljournal.util.exceptions.UserNotFoundException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -21,6 +25,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.security.Principal;
@@ -38,22 +44,25 @@ import static de.dhbw.softwareengineering.digitaljournal.util.Constants.STATUSCO
 import static de.dhbw.softwareengineering.digitaljournal.util.Constants.STATUSCODE_MODAL_TEMP;
 import static de.dhbw.softwareengineering.digitaljournal.util.Constants.STATUS_ATTRIBUTE_NAME;
 
+@Slf4j
 @Controller
 @RequestMapping("/journal")
 public class JournalController {
 
     private final JournalService journalService;
+    private final UserService userService;
     private final GoalService goalService;
     private final FriendService friendService;
     private final ImageService imageService;
     private final SharedJournalService sharedJournalService;
 
     public JournalController(JournalService journalService,
-                             GoalService goalService,
+                             UserService userService, GoalService goalService,
                              FriendService friendService,
                              ImageService imageService,
                              SharedJournalService sharedJournalService) {
         this.journalService = journalService;
+        this.userService = userService;
         this.goalService = goalService;
         this.friendService = friendService;
         this.imageService = imageService;
@@ -61,7 +70,19 @@ public class JournalController {
     }
 
     @GetMapping
-    public String showFeed(Model model, HttpSession session, Principal principal) {
+    public String showFeed(Model model, HttpSession session, Principal principal, HttpServletRequest servletRequest) {
+
+        try {
+            userService.findByName(principal.getName());
+        } catch (UserNotFoundException e) {
+            try {
+                log.error(e.getMessage());
+                servletRequest.logout();
+            } catch (ServletException e1) {
+                log.error(e1.getMessage());
+            }
+        }
+
         List<Journal> journals = journalService.findAll(principal.getName());
         List<Goal> goals = goalService.findLatestsGoals(principal.getName());
         List<Friend> friends = friendService.findAll(principal.getName());
@@ -99,9 +120,13 @@ public class JournalController {
     private void addSharedJournals(Principal principal, List<Journal> journals) {
         List<SharedJournal> sharedJournals = sharedJournalService.findAllSharedJournalsByName(principal.getName());
         for (SharedJournal sharedJournal : sharedJournals) {
-            Journal journal = journalService.findById(sharedJournal.getJournalName());
-            journal.setShared(true);
-            journals.add(journal);
+            try {
+                Journal journal = journalService.findById(sharedJournal.getJournalName());
+                        journal.setShared(true);
+                        journals.add(journal);
+            } catch (JournalNotFoundException e) {
+                log.error(e.getMessage());
+            }
         }
     }
 
@@ -146,12 +171,16 @@ public class JournalController {
     public String showEditJournal(@PathVariable String journalId, Model model, Principal principal, HttpSession session) {
         model.addAttribute(Constants.SESSION_CONTACTREQUEST, new ContactRequest());
 
-        Journal journal = journalService.findById(journalId);
+        try {
+            Journal journal = journalService.findById(journalId);
 
-        if (journal.getUsername().equals(principal.getName())) {
-            model.addAttribute(Constants.SESSION_JOURNAL, journal);
-            session.setAttribute(Constants.SESSION_CURRENTJOURNAL, journal);
-            return "editjournal";
+            if (journal.getUsername().equals(principal.getName())) {
+                model.addAttribute(Constants.SESSION_JOURNAL, journal);
+                session.setAttribute(Constants.SESSION_CURRENTJOURNAL, journal);
+                return "editjournal";
+            }
+        } catch (JournalNotFoundException e) {
+            e.printStackTrace();
         }
 
         return Constants.REDIRECT_JOURNAL;
@@ -215,9 +244,12 @@ public class JournalController {
 
     @GetMapping("/share/{journalId}")
     public String showShareModal(@PathVariable String journalId, HttpSession session, RedirectAttributes redir, Principal principal) {
-        Journal journal = journalService.findById(journalId);
-        if (journal == null)
+        try {
+            Journal journal = journalService.findById(journalId);
+        } catch (JournalNotFoundException e) {
+            log.error(e.getMessage());
             return Constants.REDIRECT_JOURNAL;
+        }
 
         final List<String> coAuthors = allreadySharedUsers(journalId);
         redir.addFlashAttribute("coAuthors", coAuthors);
@@ -235,6 +267,7 @@ public class JournalController {
         redir.addFlashAttribute("shareableFriends", shareFriendsName);
         session.setAttribute(SESSION_SHARE_JOURNAL, journalId);
         redir.addFlashAttribute(STATUS_ATTRIBUTE_NAME, "shareJournal");
+
         return Constants.REDIRECT_JOURNAL;
     }
 

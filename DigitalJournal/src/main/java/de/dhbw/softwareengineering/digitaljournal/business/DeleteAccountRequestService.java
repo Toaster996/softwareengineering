@@ -29,7 +29,7 @@ public class DeleteAccountRequestService implements AbstractService {
         return repository.save(request);
     }
 
-    public DeleteAccountRequest findByUUID(String uuid) {
+    public DeleteAccountRequest findByUUID(String uuid) throws DeleteAccountRequestException {
         Optional<DeleteAccountRequest> request = repository.findById(uuid);
 
         if (request.isPresent()) {

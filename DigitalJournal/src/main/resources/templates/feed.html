@@ -527,6 +527,33 @@
 <div th:replace="forms/modals :: modals"/>
 <!-- MAIN FOOTER -->
 <div th:replace="footer :: footer"/>
+
+<div th:if="${emailchange == 'invalid_request'}">
+    <!-- Modal -->
+    <div class="modal fade" id="emailchangeinvalid" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content text-black">
+                <div class="modal-header">
+                    <h5 class="modal-title">Invalid Email Change Request!</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    The email change request is not or no longer valid. Please request a new one if you want to change your mail address.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $('#emailchangeinvalid').modal('show');
+    </script>
+</div>
+
 </body>
 
 </html>

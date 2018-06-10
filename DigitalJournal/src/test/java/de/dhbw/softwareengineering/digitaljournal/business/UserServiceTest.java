@@ -5,6 +5,7 @@ import de.dhbw.softwareengineering.digitaljournal.domain.Goal;
 import de.dhbw.softwareengineering.digitaljournal.domain.User;
 import de.dhbw.softwareengineering.digitaljournal.domain.form.RegistrationUser;
 import de.dhbw.softwareengineering.digitaljournal.persistence.UserRepository;
+import de.dhbw.softwareengineering.digitaljournal.util.exceptions.UserNotFoundException;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -55,28 +56,28 @@ public class UserServiceTest {
     }
 
     @Test
-    public void findByUsernameSuccess() {
+    public void findByUsernameSuccess() throws UserNotFoundException {
         User user = TestingData.createUser(true);
         when(userRepository.findById(user.getUsername())).thenReturn(Optional.of(user));
 
         assertEquals(userService.findByName(user.getUsername()), user);
     }
 
-    @Test(expected = RuntimeException.class)
-    public void findByUsernameFail() {
+    @Test(expected = UserNotFoundException.class)
+    public void findByUsernameFail() throws UserNotFoundException {
         userService.findByName("no_actual_user_will_be_found_by_id");
     }
 
     @Test
-    public void findByEmailSuccess() {
+    public void findByEmailSuccess() throws UserNotFoundException {
         User user = TestingData.createUser(true);
         when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
 
         assertEquals(userService.findByEmail(user.getEmail()), user);
     }
 
-    @Test(expected = RuntimeException.class)
-    public void findByEmailFail() {
+    @Test(expected = UserNotFoundException.class)
+    public void findByEmailFail() throws UserNotFoundException {
         userService.findByEmail("no_actual_user_will_be_found_by_mail");
     }
 

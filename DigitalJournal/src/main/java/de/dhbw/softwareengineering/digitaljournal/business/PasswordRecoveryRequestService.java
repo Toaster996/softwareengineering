@@ -35,7 +35,7 @@ public class PasswordRecoveryRequestService implements AbstractService {
         return repository.save(recoveryRequest);
     }
 
-    public PasswordRecoveryRequest findByUUID(String uuid) {
+    public PasswordRecoveryRequest findByUUID(String uuid) throws RecoveryRequestNotFoundException {
         Optional<PasswordRecoveryRequest> request = repository.findById(uuid);
 
         if (request.isPresent()) {

@@ -9,6 +9,9 @@ import de.dhbw.softwareengineering.digitaljournal.domain.User;
 import de.dhbw.softwareengineering.digitaljournal.domain.form.LoginUser;
 import de.dhbw.softwareengineering.digitaljournal.domain.form.RegistrationUser;
 import de.dhbw.softwareengineering.digitaljournal.util.Constants;
+import de.dhbw.softwareengineering.digitaljournal.util.exceptions.RecoveryRequestNotFoundException;
+import de.dhbw.softwareengineering.digitaljournal.util.exceptions.UserNotFoundException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,6 +35,7 @@ import static de.dhbw.softwareengineering.digitaljournal.util.Constants.STATUS_A
 import static de.dhbw.softwareengineering.digitaljournal.util.Constants.TEMPLATE_RECOVER;
 import static de.dhbw.softwareengineering.digitaljournal.util.Constants.emailPattern;
 
+@Slf4j
 @Controller
 @RequestMapping("/recover")
 public class RecoverPasswordController {
@@ -60,10 +64,9 @@ public class RecoverPasswordController {
             return "home";
         }
 
-        User user = userService.findByEmail(email);
+        try {
+            User user = userService.findByEmail(email);
 
-        if (user != null) {
-            // Delete all old requests from user
             passwordRecoveryRequestService.deleteAllByUsername(user.getUsername());
 
             model.addAttribute(TEMPLATE_RECOVER, "true");
@@ -72,8 +75,9 @@ public class RecoverPasswordController {
             PasswordRecoveryRequest request = passwordRecoveryRequestService.create(user);
 
             emailService.sendPasswordRecoveryMail(user, request);
-        } else {
+        } catch (UserNotFoundException e) {
             model.addAttribute(TEMPLATE_RECOVER, "false");
+            log.error(e.getMessage());
         }
 
         return "home";
@@ -83,22 +87,24 @@ public class RecoverPasswordController {
     public String index(@PathVariable String uuid, Model model, HttpSession session) {
         model.addAttribute("contactRequest", new ContactRequest());
 
-        PasswordRecoveryRequest passwordRecoveryRequest = passwordRecoveryRequestService.findByUUID(uuid);
+        try {
+            PasswordRecoveryRequest passwordRecoveryRequest = passwordRecoveryRequestService.findByUUID(uuid);
+            try {
+                User user = userService.findByName(passwordRecoveryRequest.getUsername());
 
-        if (passwordRecoveryRequest == null) {
-            model.addAttribute("status", "notFound");
-            return "error";
-        } else {
-
-            User user = userService.findByName(passwordRecoveryRequest.getUsername());
-
-            if(user != null){
                 session.setAttribute("uuid", uuid);
                 session.setAttribute(SESSION_CHANGEPWUSER, user.getUsername());
                 model.addAttribute("username", user.getUsername());
                 model.addAttribute("email", user.getEmail());
+            } catch (UserNotFoundException e) {
+                log.error(e.getMessage());
             }
+        } catch (RecoveryRequestNotFoundException e) {
+            log.error(e.getMessage());
+            model.addAttribute("status", "notFound");
+            return "error";
         }
+
         return "changepassword";
     }
 
@@ -121,18 +127,19 @@ public class RecoverPasswordController {
             return "redirect:/recover/" + uuid;
         }
 
-        // get user
         String username = (String) session.getAttribute(SESSION_CHANGEPWUSER);
 
-        // change password of user and write to database
         if (username != null) {
-            User user = userService.findByName(username);
-            if(user != null){
-                user.setPassword(bCryptPasswordEncoder.encode(password));
+            try {
+                User user = userService.findByName(username);
+                     user.setPassword(bCryptPasswordEncoder.encode(password));
+
                 redir.addFlashAttribute(TEMPLATE_RECOVER, STATUSCODE_PWCHANGESUCCESS);
                 session.removeAttribute(SESSION_CHANGEPWUSER);
                 userService.update(user);
                 passwordRecoveryRequestService.deleteAllByUsername(user.getUsername());
+            } catch (UserNotFoundException e) {
+                log.error(e.getMessage());
             }
         } else {
             return "error";

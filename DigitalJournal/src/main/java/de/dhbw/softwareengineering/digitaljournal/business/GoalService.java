@@ -76,7 +76,7 @@ public class GoalService implements AbstractService {
         repository.save(oldGoal);
     }
 
-    public Goal getById(String goalID) {
+    public Goal getById(String goalID) throws GoalNotFoundException {
         Optional<Goal> goalOptional = repository.findById(goalID);
 
         if (goalOptional.isPresent()) {
@@ -123,9 +123,13 @@ public class GoalService implements AbstractService {
     }
 
     public void checkByID(String goalID) {
-        Goal goal = this.getById(goalID);
-        goal.setChecked(true);
-        repository.save(goal);
+        try {
+            Goal goal = this.getById(goalID);
+            goal.setChecked(true);
+            repository.save(goal);
+        } catch (GoalNotFoundException e) {
+            log.error(e.getMessage());
+        }
     }
 
     public int getActiveGoals(String name) {

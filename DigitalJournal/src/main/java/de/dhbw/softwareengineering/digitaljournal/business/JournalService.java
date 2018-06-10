@@ -44,7 +44,7 @@ public class JournalService implements AbstractService {
         return repository.save(journal);
     }
 
-    public Journal findById(String journalId) {
+    public Journal findById(String journalId) throws JournalNotFoundException {
         Optional<Journal> journalOptional = repository.findById(journalId);
 
         if (journalOptional.isPresent()) {

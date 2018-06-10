@@ -38,7 +38,7 @@ public class UserService implements AbstractService {
     }
 
 
-    public User findByName(String username) {
+    public User findByName(String username) throws UserNotFoundException {
         Optional<User> userOptional = repository.findById(username);
         if (userOptional.isPresent()) {
             return userOptional.get();
@@ -52,7 +52,7 @@ public class UserService implements AbstractService {
         return userOptional.isPresent();
     }
 
-    public User findByEmail(String email) {
+    public User findByEmail(String email) throws UserNotFoundException {
         Optional<User> userOptional = repository.findByEmail(email);
         if (userOptional.isPresent()) {
             return userOptional.get();

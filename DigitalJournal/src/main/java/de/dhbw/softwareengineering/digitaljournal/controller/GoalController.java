@@ -5,6 +5,7 @@ import de.dhbw.softwareengineering.digitaljournal.domain.ContactRequest;
 import de.dhbw.softwareengineering.digitaljournal.domain.Goal;
 import de.dhbw.softwareengineering.digitaljournal.domain.form.CreateGoal;
 import de.dhbw.softwareengineering.digitaljournal.util.Constants;
+import de.dhbw.softwareengineering.digitaljournal.util.exceptions.GoalNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -64,25 +65,33 @@ public class GoalController {
     }
 
     @PostMapping("/delete/{goalId}")
-    public String delete(@PathVariable String goalId, Model model, Principal principal) {
-        Goal goal = goalService.getById(goalId);
-
-        if (goal.getUsername().equals(principal.getName())) {
-            goalService.deleteById(goalId);
+    public String delete(@PathVariable String goalId, Principal principal) {
+        try {
+            Goal goal = goalService.getById(goalId);
+            if (goal.getUsername().equals(principal.getName())) {
+                goalService.deleteById(goalId);
+            }
+        } catch (GoalNotFoundException e) {
+            log.error(e.getMessage());
         }
 
         return Constants.REDIRECT_JOURNAL;
     }
 
     @GetMapping("/edit/{goalId}")
-    public String editGoal(@PathVariable String goalId, Model model, RedirectAttributes redir, Principal principal, HttpSession session) {
-        Goal goal = goalService.getById(goalId);
+    public String editGoal(@PathVariable String goalId, RedirectAttributes redir, Principal principal, HttpSession session) {
+        try {
+            Goal goal = goalService.getById(goalId);
 
-        if (goal.getUsername().equals(principal.getName())) {
-            redir.addFlashAttribute(STATUS_ATTRIBUTE_NAME, "editGoal");
-            redir.addFlashAttribute("editGoal", goal);
-            session.setAttribute("currentGoal", goal);
+            if (goal.getUsername().equals(principal.getName())) {
+                redir.addFlashAttribute(STATUS_ATTRIBUTE_NAME, "editGoal");
+                redir.addFlashAttribute("editGoal", goal);
+                session.setAttribute("currentGoal", goal);
+            }
+        } catch (GoalNotFoundException e) {
+            log.error(e.getMessage());
         }
+
         return Constants.REDIRECT_JOURNAL;
     }
 
@@ -97,11 +106,15 @@ public class GoalController {
     public String showGoal(@PathVariable String goalId, Model model, RedirectAttributes redir, Principal principal) {
         model.addAttribute("contactRequest", new ContactRequest());
 
-        Goal goal = goalService.getById(goalId);
+        try {
+            Goal goal = goalService.getById(goalId);
 
-        if (goal.getUsername().equals(principal.getName())) {
-            redir.addFlashAttribute(STATUS_ATTRIBUTE_NAME, "showGoal");
-            redir.addFlashAttribute("showGoal", goal);
+            if (goal.getUsername().equals(principal.getName())) {
+                redir.addFlashAttribute(STATUS_ATTRIBUTE_NAME, "showGoal");
+                redir.addFlashAttribute("showGoal", goal);
+            }
+        } catch (GoalNotFoundException e) {
+            log.error(e.getMessage());
         }
 
         return Constants.REDIRECT_JOURNAL;
@@ -109,11 +122,16 @@ public class GoalController {
 
     @GetMapping("/check/{goalId}")
     public String checkGoal(@PathVariable String goalId, Principal principal) {
-        Goal goal = goalService.getById(goalId);
+        try {
+            Goal goal = goalService.getById(goalId);
 
-        if (goal.getUsername().equals(principal.getName())) {
-            goalService.checkByID(goalId);
+            if (goal.getUsername().equals(principal.getName())) {
+                goalService.checkByID(goalId);
+            }
+        } catch (GoalNotFoundException e) {
+            log.error(e.getMessage());
         }
+
         return Constants.REDIRECT_JOURNAL;
     }
 
