@@ -95,7 +95,7 @@
                         <div class="card-block p-3">
                             <h4 class="card-title" th:utext="${journal.journalName}"/>
                             <p class="card-text text-muted" th:utext="${journal.content}"/>
-                            <div class="entry_btn">
+                            <div th:if="${journal.isShared() == false}" class="entry_btn">
                                 <div class="dropdown">
                                     <button class="btn btn-outline-secondary dropdown-toggle" type="button"
                                             data-toggle="dropdown">More
@@ -161,9 +161,6 @@
                         <h4 class="card-title">Your Friends</h4>
                         <p class="card-text">Quick access to your best friends.</div>
                     <ul class="list-group list-group-flush text-muted">
-                        <li class="list-group-item">Kurt Cobain</li>
-                        <li class="list-group-item">Dave Grohl</li>
-                        <li class="list-group-item">Krist Novoselic</li>
                         <th:block th:each="friend : ${friends}">
                             <li class="list-group-item">
                                 <form method="post" th:action="@{'/journal/friends/remove/' + ${friend.friendName}}">

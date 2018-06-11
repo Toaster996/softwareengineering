@@ -272,10 +272,18 @@ public class JournalController {
     }
 
     @GetMapping("/share/add/{CoAuthor}")
-    public String addCoAuthor(@PathVariable("CoAuthor") String coAuthor, HttpSession session) {
-        String journalID = (String) session.getAttribute(SESSION_SHARE_JOURNAL);
-        SharedJournal sharedJournal = new SharedJournal(journalID, coAuthor);
-        sharedJournalService.save(sharedJournal);
+    public String addCoAuthor(@PathVariable("CoAuthor") String coAuthor, HttpSession session, Principal principal) {
+        List<Friend> approvedFriends = friendService.getAllApproved(principal.getName());
+        for(Friend approvedFriend : approvedFriends){
+            if(approvedFriend.getFriendName().equals(coAuthor)){
+                String journalID = (String) session.getAttribute(SESSION_SHARE_JOURNAL);
+                SharedJournal sharedJournal = new SharedJournal(journalID, coAuthor);
+                sharedJournalService.save(sharedJournal);
+                session.removeAttribute(SESSION_SHARE_JOURNAL);
+                return Constants.REDIRECT_JOURNAL;
+            }
+        }
+        //TODO error message
         session.removeAttribute(SESSION_SHARE_JOURNAL);
         return Constants.REDIRECT_JOURNAL;
     }
