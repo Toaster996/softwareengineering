@@ -4,7 +4,7 @@
 
 ### 1.1 Install MySQl
 
-Installing MySQL:
+Installing [MySQL](https://dev.mysql.com/downloads/installer/):
 -	Choose developer default
 -	Click Next
 -	Click Next again (ignore warning as we don’t need these requirements)
