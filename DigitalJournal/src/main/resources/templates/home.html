@@ -70,8 +70,7 @@
                                     <p  th:text="'We sent you an email to your address ' + *{email} + '!'"/>
                                     <br/>
                                     <p>Please click on the link you can find there within 24 hours.</p>
-                                    <input type="submit" value="Create your Journal!" href="/journal"
-                                           class="btn btn-outline-light mr-3 ml-3">
+                                    <a href="/" class="btn btn-outline-light mr-3 ml-3"> Create your Journal!</a>
                                 </div>
                                 <div th:if="${status != 'sucreg'}">
                                     <div id="login">

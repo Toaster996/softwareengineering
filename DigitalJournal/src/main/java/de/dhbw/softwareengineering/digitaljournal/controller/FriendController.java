@@ -54,7 +54,8 @@ public class FriendController {
         if (result.hasErrors())
             return "error";
 
-        if (!friendService.save(createFriend, principal, userService)) {
+        if (!friendService.save(createFriend, principal, userService)
+                && !friendService.hasFriend(principal.getName(), createFriend.getUsername())) {
             redir.addFlashAttribute(STATUS_ATTRIBUTE_NAME, "userNotFound");
         }
         return Constants.REDIRECT_JOURNAL;
