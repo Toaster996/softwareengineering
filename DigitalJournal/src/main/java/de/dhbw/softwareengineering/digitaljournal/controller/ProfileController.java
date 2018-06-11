@@ -14,13 +14,16 @@ import de.dhbw.softwareengineering.digitaljournal.util.Constants;
 import de.dhbw.softwareengineering.digitaljournal.util.exceptions.DeleteAccountRequestException;
 import de.dhbw.softwareengineering.digitaljournal.util.exceptions.UserNotFoundException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.ServletException;
@@ -40,6 +43,7 @@ import static de.dhbw.softwareengineering.digitaljournal.util.Constants.TEMPLATE
 
 @Slf4j
 @Controller
+@RequestMapping("/profile")
 public class ProfileController {
 
     private final UserService userService;
@@ -60,7 +64,7 @@ public class ProfileController {
         this.passwordEncoder = passwordEncoder;
     }
 
-    @GetMapping("/profile")
+    @GetMapping("/")
     public String showProfile(Model model, Principal principal) {
         try {
             User user = userService.findByName(principal.getName());
@@ -72,7 +76,7 @@ public class ProfileController {
         return TEMPLATE_PROFILE;
     }
 
-    @PostMapping("/profile/changepassword")
+    @PostMapping("/changepassword")
     public String changePassword(Model model, @RequestParam("old_password") String oldPassword, @RequestParam("password") String password, @RequestParam("password_confirm") String passwordConfirm, Principal principal) {
         try {
             User user = userService.findByName(principal.getName());
@@ -103,36 +107,35 @@ public class ProfileController {
         return TEMPLATE_PROFILE;
     }
 
-    @PostMapping("/profile/deleteaccount")
+    @PostMapping("/deleteaccount")
     public String deleteAccount(Model model, Principal principal) {
         try {
             User user = userService.findByName(principal.getName());
 
-            DeleteAccountRequest request = deleteAccountRequestService.create(user);
+            DeleteAccountRequest request = deleteAccountRequestService.create(user.getUsername());
 
             emailService.sendDeleteAccountMail(user, request);
 
             model.addAttribute(STATUS_ATTRIBUTE_NAME, Constants.STATUSCODE_SUCCESS);
             setModelAttribs(model, user);
         } catch (UserNotFoundException e) {
-            e.printStackTrace();
+            model.addAttribute(STATUS_ATTRIBUTE_NAME, Constants.STATUSCODE_REQUEST_FAILED);
+            log.error(e.getMessage());
         }
 
         return TEMPLATE_PROFILE;
     }
 
-    @PostMapping("/profile/mail/change")
+    @PostMapping("/mail/change")
     public String changeMail(Model model, @RequestParam("new_mail") String newMail, Principal principal) {
-                if (newMail == null) {
-            model.addAttribute(STATUS_ATTRIBUTE_NAME, Constants.STATUSCODE_EMAILINVALID);
-        } else if (newMail.length() > 100) {
+        if (newMail.length() > 100) {
             model.addAttribute(STATUS_ATTRIBUTE_NAME, STATUSCODE_EMAILTOOLONG);
         } else if (Constants.emailPattern.matcher(newMail).matches()) {
             if (!userService.existByEmail(newMail)) {
                 try {
                     User user = userService.findByName(principal.getName());
 
-                    ChangeMailRequest request = changeMailRequestService.create(user, newMail);
+                    ChangeMailRequest request = changeMailRequestService.create(user.getUsername(), newMail);
 
                     if (request != null) {
                         emailService.sendMailChangeMail(user, request);
@@ -141,6 +144,7 @@ public class ProfileController {
 
                     setModelAttribs(model, user);
                 } catch (UserNotFoundException e) {
+                    model.addAttribute(STATUS_ATTRIBUTE_NAME, Constants.STATUSCODE_REQUEST_FAILED);
                     log.error(e.getMessage());
                 }
             } else {
@@ -153,7 +157,7 @@ public class ProfileController {
         return TEMPLATE_PROFILE;
     }
 
-    @GetMapping("/profile/mail/confirm/{id}")
+    @GetMapping("/mail/confirm/{id}")
     public String changeMail(Model model, @PathVariable String id, RedirectAttributes redir) {
         String username = changeMailRequestService.confirm(id);
 
@@ -188,7 +192,7 @@ public class ProfileController {
         return "mailchangeprogress";
     }
 
-    @GetMapping("/profile/delete/{requestUUID}")
+    @GetMapping("/delete/{requestUUID}")
     public String deleteAccount(@PathVariable String requestUUID, HttpServletRequest servletRequest, RedirectAttributes redir) {
         try {
             DeleteAccountRequest request = deleteAccountRequestService.findByUUID(requestUUID);
@@ -213,8 +217,8 @@ public class ProfileController {
 
     private void setModelAttribs(Model model, User user) {
         model.addAttribute(Constants.SESSION_CONTACTREQUEST, new ContactRequest());
-        model.addAttribute("emailchangerequest", changeMailRequestService.hasRequest(user));
-        model.addAttribute("deleterequest", deleteAccountRequestService.hasDeletionRequest(user));
+        model.addAttribute("emailchangerequest", changeMailRequestService.hasRequest(user.getUsername()));
+        model.addAttribute("deleterequest", deleteAccountRequestService.hasDeletionRequest(user.getUsername()));
         model.addAttribute("user", user);
         model.addAttribute("journalCount", journalService.countByUsername(user.getUsername()));
         model.addAttribute("activeGoals", goalService.getActiveGoals(user.getUsername()));

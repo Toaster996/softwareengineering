@@ -19,12 +19,12 @@ public class ChangeMailRequestService implements AbstractService {
         this.repository = repository;
     }
 
-    public ChangeMailRequest create(User user, String newmail) {
-        if (repository.existsById(user.getUsername()))
+    public ChangeMailRequest create(String username, String newmail) {
+        if (repository.existsById(username))
             return null;
 
         ChangeMailRequest request = new ChangeMailRequest();
-        request.setUsername(user.getUsername());
+        request.setUsername(username);
         request.setDate(System.currentTimeMillis());
         request.setNewmail(newmail);
         request.setNewmailid(UUID.randomUUID().toString());
@@ -94,7 +94,7 @@ public class ChangeMailRequestService implements AbstractService {
         repository.deleteById(username);
     }
 
-    public boolean hasRequest(User user) {
-        return repository.existsById(user.getUsername());
+    public boolean hasRequest(String username) {
+        return repository.existsById(username);
     }
 }

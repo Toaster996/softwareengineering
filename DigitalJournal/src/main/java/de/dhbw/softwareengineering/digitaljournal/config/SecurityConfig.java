@@ -56,7 +56,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.exceptionHandling().authenticationEntryPoint(delegatingEntryPoint());
 
         http.authorizeRequests()
-                .antMatchers("/", "/register", "/confirmemail/**", "/recoverpassword/**", URL_UNAUTHORIZED, "/error", "/recover/**", "/profile/delete/**", "/profile/mail/confirm/**").permitAll()
+                .antMatchers("/", "/contact", "/register", "/confirmemail/**", "/recoverpassword/**", URL_UNAUTHORIZED, "/error", "/recover/**", "/profile/delete/**", "/profile/mail/confirm/**").permitAll()
                 .antMatchers("/scss/**", "/css/**", "/img/**", "/js/**", "/fonts/**", "/res/**").permitAll()
                 .anyRequest().authenticated()
                 .and()

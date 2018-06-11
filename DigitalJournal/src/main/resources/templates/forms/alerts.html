@@ -65,6 +65,14 @@
             </div>
         </div>
 
+        <div th:case="'requestfailed'">
+            <hr>
+            <div class="alert alert-danger alert-dismissable" id="requestfailed">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>Request failed!</strong> The execution of the request failed! Please contact us if this happens again.
+            </div>
+        </div>
+
         <div th:case="'success'">
             <hr>
             <div class="alert alert-success alert-dismissable" id="success">

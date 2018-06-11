@@ -30,7 +30,7 @@ public class ImageService implements AbstractService {
         List<Image> images = repository.findAllByJournalid(journalId);
 
         if (images.size() <= image) {
-            return new byte[0];
+            return new byte[1];
         }
 
         return images.get(image).getImage();

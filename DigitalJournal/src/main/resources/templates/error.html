@@ -28,11 +28,38 @@
 
 <main role="main">
     <div class="container journal_conatainer">
-        <h2 class="page-header">Oops, that should'nt have happened!</h2>
+
+        <h2 class="page-header">Oops, an error occurred!</h2>
+        <p>An unexpected error occurred. If this happens again please contact us with the button at the bottom of this page.</p>
         <br>
-        <hr>
-        <h6 class="page-information">Something unanticipated and unexpected has occurred.</h6>
-        <hr>
+
+        <table class="table">
+            <tr>
+                <td>Date</td>
+                <td th:text="${timestamp}"/>
+            </tr>
+            <tr>
+                <td>Path</td>
+                <td th:text="${path}"/>
+            </tr>
+            <tr>
+                <td>Error</td>
+                <td th:text="${error}"/>
+            </tr>
+            <tr>
+                <td>Status</td>
+                <td th:text="${status}"/>
+            </tr>
+            <tr>
+                <td>Message</td>
+                <td th:text="${message}"/>
+            </tr>
+            <tr>
+                <td>Exception</td>
+                <td th:text="${exception}"/>
+            </tr>
+        </table>
+
         <br>
         <br>
         <a href="/" class="btn btn-primary mb-5">Go back.</a>

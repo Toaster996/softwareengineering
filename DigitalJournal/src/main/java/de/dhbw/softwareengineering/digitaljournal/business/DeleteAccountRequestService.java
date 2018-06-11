@@ -20,10 +20,10 @@ public class DeleteAccountRequestService implements AbstractService {
         this.repository = repository;
     }
 
-    public DeleteAccountRequest create(User user) {
+    public DeleteAccountRequest create(String username) {
         DeleteAccountRequest request = new DeleteAccountRequest();
         request.setDate(System.currentTimeMillis());
-        request.setUsername(user.getUsername());
+        request.setUsername(username);
         request.setRequestid(UUIDGenerator.generateUniqueUUID(repository));
 
         return repository.save(request);
@@ -47,7 +47,7 @@ public class DeleteAccountRequestService implements AbstractService {
         repository.delete(request);
     }
 
-    public boolean hasDeletionRequest(User user) {
-        return repository.existsByUsername(user.getUsername());
+    public boolean hasDeletionRequest(String username) {
+        return repository.existsByUsername(username);
     }
 }
