@@ -122,8 +122,8 @@ public class JournalController {
         for (SharedJournal sharedJournal : sharedJournals) {
             try {
                 Journal journal = journalService.findById(sharedJournal.getJournalName());
-                        journal.setShared(true);
-                        journals.add(journal);
+                journal.setShared(true);
+                journals.add(journal);
             } catch (JournalNotFoundException e) {
                 log.error(e.getMessage());
             }
@@ -244,13 +244,6 @@ public class JournalController {
 
     @GetMapping("/share/{journalId}")
     public String showShareModal(@PathVariable String journalId, HttpSession session, RedirectAttributes redir, Principal principal) {
-        try {
-            Journal journal = journalService.findById(journalId);
-        } catch (JournalNotFoundException e) {
-            log.error(e.getMessage());
-            return Constants.REDIRECT_JOURNAL;
-        }
-
         final List<String> coAuthors = allreadySharedUsers(journalId);
         redir.addFlashAttribute("coAuthors", coAuthors);
         boolean isSharedBefore = false;
@@ -272,18 +265,16 @@ public class JournalController {
     }
 
     @GetMapping("/share/add/{CoAuthor}")
-    public String addCoAuthor(@PathVariable("CoAuthor") String coAuthor, HttpSession session, Principal principal) {
+    public String addCoAuthor(@PathVariable("CoAuthor") String coAuthor, HttpSession session, Principal principal, RedirectAttributes redir) {
         List<Friend> approvedFriends = friendService.getAllApproved(principal.getName());
-        for(Friend approvedFriend : approvedFriends){
-            if(approvedFriend.getFriendName().equals(coAuthor)){
-                String journalID = (String) session.getAttribute(SESSION_SHARE_JOURNAL);
-                SharedJournal sharedJournal = new SharedJournal(journalID, coAuthor);
-                sharedJournalService.save(sharedJournal);
-                session.removeAttribute(SESSION_SHARE_JOURNAL);
-                return Constants.REDIRECT_JOURNAL;
-            }
+        List<String> appprovedFriendName = approvedFriends.stream().map(Friend::getFriendName).collect(Collectors.toList());
+        if (appprovedFriendName.contains(coAuthor)){
+            String journalID = (String) session.getAttribute(SESSION_SHARE_JOURNAL);
+            SharedJournal sharedJournal = new SharedJournal(journalID, coAuthor);
+            sharedJournalService.save(sharedJournal);
+        }else{
+            redir.addFlashAttribute("friendNotApproved", true);
         }
-        //TODO error message
         session.removeAttribute(SESSION_SHARE_JOURNAL);
         return Constants.REDIRECT_JOURNAL;
     }
