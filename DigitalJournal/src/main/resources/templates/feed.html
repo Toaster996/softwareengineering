@@ -95,7 +95,7 @@
                         <div class="card-block p-3">
                             <h4 class="card-title" th:utext="${journal.journalName}"/>
                             <p class="card-text text-muted" th:utext="${journal.content}"/>
-                            <div class="entry_btn">
+                            <div th:if="${journal.isShared() == false}" class="entry_btn">
                                 <div class="dropdown">
                                     <button class="btn btn-outline-secondary dropdown-toggle" type="button"
                                             data-toggle="dropdown">More
@@ -161,9 +161,6 @@
                         <h4 class="card-title">Your Friends</h4>
                         <p class="card-text">Quick access to your best friends.</div>
                     <ul class="list-group list-group-flush text-muted">
-                        <li class="list-group-item">Kurt Cobain</li>
-                        <li class="list-group-item">Dave Grohl</li>
-                        <li class="list-group-item">Krist Novoselic</li>
                         <th:block th:each="friend : ${friends}">
                             <li class="list-group-item">
                                 <form method="post" th:action="@{'/journal/friends/remove/' + ${friend.friendName}}">
@@ -372,6 +369,30 @@
         </div>
         <script>
             $('#mdl_goal_exceeded').modal('show');
+        </script>
+    </div>
+
+    <!-- Modal share Friend not aproved -->
+    <div th:if="${nofifyGoalExceeded == true}">
+        <div class="modal fade" id="mdl_share_not" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content text-black">
+                    <div class="modal-header">
+                        <h5 class="modal-title">This Friendship is not mutal!</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p class="lead">Some of your Goal dates have been exceeded while your absence. Keep up looking
+                            after them.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            $('#mdl_share_not').modal('show');
         </script>
     </div>
 
