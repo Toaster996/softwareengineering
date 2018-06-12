@@ -172,6 +172,7 @@ public class ProfileControllerTest {
 
     @Test
     public void changeMailToLong() throws Exception {
+        when(userService.findByName(any())).thenReturn(TestingData.createUser(true));
         mockMvc.perform(post("/profile/mail/change/")
                 .principal(mock(Principal.class))
                 .param("new_mail","abcdefghijklmnopqrstuvxyzabcdefghijklmnopqrstuvxyzabcdefghijklmnopqrstuvxyzabcdefghijklmnopqrstuvxyz@abcdefghijklmnopqrstuvxyz.de")
@@ -180,6 +181,7 @@ public class ProfileControllerTest {
 
     @Test
     public void changeMailInvalidMail() throws Exception {
+        when(userService.findByName(any())).thenReturn(TestingData.createUser(true));
         mockMvc.perform(post("/profile/mail/change/")
                 .principal(mock(Principal.class))
                 .param("new_mail","bortzlamd.")
@@ -189,6 +191,7 @@ public class ProfileControllerTest {
     @Test
     public void changeMailAddressAlreadyInUse() throws Exception {
         when(userService.existByEmail(any())).thenReturn(true);
+        when(userService.findByName(any())).thenReturn(TestingData.createUser(true));
         mockMvc.perform(post("/profile/mail/change/")
                 .principal(mock(Principal.class))
                 .param("new_mail",newMail)
@@ -202,7 +205,7 @@ public class ProfileControllerTest {
         mockMvc.perform(post("/profile/mail/change/")
                 .principal(mock(Principal.class))
                 .param("new_mail",newMail)
-        ).andDo(result -> checkStatusAndModel(result, HttpStatus.OK, STATUS_ATTRIBUTE_NAME, STATUSCODE_REQUEST_FAILED));
+        ).andDo(result -> checkStatusAndModel(result, HttpStatus.FOUND, STATUS_ATTRIBUTE_NAME, STATUSCODE_REQUEST_FAILED));
     }
 
     @Test
