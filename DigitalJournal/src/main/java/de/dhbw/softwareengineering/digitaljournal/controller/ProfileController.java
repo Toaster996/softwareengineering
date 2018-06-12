@@ -30,16 +30,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 
-import static de.dhbw.softwareengineering.digitaljournal.util.Constants.REDIRECT;
-import static de.dhbw.softwareengineering.digitaljournal.util.Constants.STATUSCODE_EMAILALREADYINUSE;
-import static de.dhbw.softwareengineering.digitaljournal.util.Constants.STATUSCODE_EMAILTOOLONG;
-import static de.dhbw.softwareengineering.digitaljournal.util.Constants.STATUSCODE_INVALID_CREDENTIALS;
-import static de.dhbw.softwareengineering.digitaljournal.util.Constants.STATUSCODE_PWMISSMATCH;
-import static de.dhbw.softwareengineering.digitaljournal.util.Constants.STATUSCODE_PWTOOLONG;
-import static de.dhbw.softwareengineering.digitaljournal.util.Constants.STATUSCODE_PWTOOSHORT;
-import static de.dhbw.softwareengineering.digitaljournal.util.Constants.STATUSCODE_SUCCESS;
-import static de.dhbw.softwareengineering.digitaljournal.util.Constants.STATUS_ATTRIBUTE_NAME;
-import static de.dhbw.softwareengineering.digitaljournal.util.Constants.TEMPLATE_PROFILE;
+import static de.dhbw.softwareengineering.digitaljournal.util.Constants.*;
 
 @Slf4j
 @Controller
@@ -128,24 +119,28 @@ public class ProfileController {
 
     @PostMapping("/mail/change")
     public String changeMail(Model model, @RequestParam("new_mail") String newMail, Principal principal) {
+        User user;
+
+        try {
+            user = userService.findByName(principal.getName());
+        } catch (UserNotFoundException e) {
+            model.addAttribute(STATUS_ATTRIBUTE_NAME, Constants.STATUSCODE_REQUEST_FAILED);
+            log.error(e.getMessage());
+
+            return REDIRECT_JOURNAL;
+        }
+
+        setModelAttribs(model, user);
+
         if (newMail.length() > 100) {
             model.addAttribute(STATUS_ATTRIBUTE_NAME, STATUSCODE_EMAILTOOLONG);
         } else if (Constants.emailPattern.matcher(newMail).matches()) {
             if (!userService.existByEmail(newMail)) {
-                try {
-                    User user = userService.findByName(principal.getName());
+                ChangeMailRequest request = changeMailRequestService.create(user.getUsername(), newMail);
 
-                    ChangeMailRequest request = changeMailRequestService.create(user.getUsername(), newMail);
-
-                    if (request != null) {
-                        emailService.sendMailChangeMail(user, request);
-                        model.addAttribute(STATUS_ATTRIBUTE_NAME, STATUSCODE_SUCCESS);
-                    }
-
-                    setModelAttribs(model, user);
-                } catch (UserNotFoundException e) {
-                    model.addAttribute(STATUS_ATTRIBUTE_NAME, Constants.STATUSCODE_REQUEST_FAILED);
-                    log.error(e.getMessage());
+                if (request != null) {
+                    emailService.sendMailChangeMail(user, request);
+                    model.addAttribute(STATUS_ATTRIBUTE_NAME, STATUSCODE_SUCCESS);
                 }
             } else {
                 model.addAttribute(STATUS_ATTRIBUTE_NAME, STATUSCODE_EMAILALREADYINUSE);
