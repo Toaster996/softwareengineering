@@ -16,10 +16,12 @@ public class JournalService implements AbstractService {
 
     private final JournalRepository repository;
     private final ImageService imageService;
+    private SharedJournalService sharedJournalService;
 
-    public JournalService(JournalRepository repository, ImageService imageService) {
+    public JournalService(JournalRepository repository, ImageService imageService, SharedJournalService sharedJournalService) {
         this.repository = repository;
         this.imageService = imageService;
+        this.sharedJournalService = sharedJournalService;
     }
 
     public List<Journal> findAll(String username) {
@@ -57,6 +59,7 @@ public class JournalService implements AbstractService {
     public void deleteById(String journalId) {
         imageService.deleteAllByJournalId(journalId);
         repository.deleteById(journalId);
+        sharedJournalService.deleteByJournalName(journalId);
     }
 
     public int countByUsername(String username) {

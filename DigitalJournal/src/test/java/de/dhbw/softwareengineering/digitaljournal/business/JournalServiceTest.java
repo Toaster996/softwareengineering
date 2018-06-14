@@ -1,27 +1,29 @@
 package de.dhbw.softwareengineering.digitaljournal.business;
 
 import de.dhbw.softwareengineering.digitaljournal.TestingData;
-import de.dhbw.softwareengineering.digitaljournal.domain.Image;
 import de.dhbw.softwareengineering.digitaljournal.domain.Journal;
 import de.dhbw.softwareengineering.digitaljournal.persistence.JournalRepository;
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 
 public class JournalServiceTest {
     private JournalService journalService;
     private ImageService imageService;
     private JournalRepository journalRepository;
+    private SharedJournalService sharedJournalService;
     private Journal journal;
 
     @Before
     public void setup(){
         journalRepository = mock(JournalRepository.class);
         imageService      = mock(ImageService.class);
-        journalService = new JournalService(journalRepository, imageService);
+        sharedJournalService = mock(SharedJournalService.class);
+        journalService = new JournalService(journalRepository, imageService, sharedJournalService);
     }
 
     @Test

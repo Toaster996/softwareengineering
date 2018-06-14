@@ -221,14 +221,21 @@ public class JournalController {
         return Constants.REDIRECT_JOURNAL;
     }
 
-    @GetMapping("/delete")
-    public String delete(Model model, HttpSession session) {
-        Journal journal = (Journal) session.getAttribute(Constants.SESSION_CURRENTJOURNAL);
-        model.addAttribute("delete", "true");
-        model.addAttribute(Constants.SESSION_JOURNAL, journal);
-        model.addAttribute(Constants.SESSION_CONTACTREQUEST, new ContactRequest());
+    @GetMapping("/delete/{journalId}")
+    public String delete(@PathVariable String journalId, RedirectAttributes redir, Principal principal) {
+        redir.addFlashAttribute("delete", "true");
+        redir.addFlashAttribute(Constants.SESSION_JOURNAL, journalId);
 
-        return "editjournal";
+        Journal journal = null;
+        try {
+            journal = journalService.findById(journalId);
+        } catch (JournalNotFoundException e) {
+            e.printStackTrace();
+        }
+        if(principal.getName().equals(journal.getUsername())){
+            journalService.deleteById(journalId);
+        }
+        return Constants.REDIRECT_JOURNAL;
     }
 
     @PostMapping("/delete")

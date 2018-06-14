@@ -28,4 +28,7 @@ public class SharedJournalService implements AbstractService {
         return sharedJournalRepository.findAllByJournalName(journalID);
     }
 
+    public void deleteByJournalName(String journalId) {
+        sharedJournalRepository.removeAllByJournalName(journalId);
+    }
 }
