@@ -9,19 +9,33 @@ The DigitalJournal Project consist of two main parts. The Frontend development, 
 
 ### 1.3 Definitions, Acronyms and Abbreviations
 * **MVC** Model-View-Controller
-* **Twitter-Bootstrap** Web-UI Framework using HTML, CSS and Javascript
 * **UC** Use Case
 * **UCD** Use Case Diagram
 * **SRS** Software Requirements Specification
 * **MTTR** Mean Time To Repair
+* **SAD** Software Architecture Document
 
 ### 1.4 References
-| Title        | Date           |
-| ------------- | ------------- |
-| [Blog](https://theexcitingcompany.wordpress.com/) | 04.10.2017 | 
-| [GitHub](https://github.com/Toaster996/softwareengineering/) | 04.10.2017 | 
-| [UC_SignUp](https://github.com/Toaster996/softwareengineering/blob/master/documentation/UCs/SignUp/uc_sign_up.md) | 03.11.2017 |
-| [UC_CreateJournal](https://github.com/Toaster996/softwareengineering/blob/master/documentation/UCs/CRUD%20Journal/uc_crud_journal.md) | 03.11.2017 |
+| Reference        | 
+| ------------- |
+| [Blog](https://theexcitingcompany.wordpress.com/) | 
+| [GitHub](https://github.com/Toaster996/softwareengineering/) |
+| [SAD](https://github.com/Toaster996/softwareengineering/blob/master/documentation/SoftwareArchitectureDoc.md) | 
+| [Test Plan](https://github.com/Toaster996/softwareengineering/blob/master/documentation/Test_Plan.md) |
+| [Function Points](https://github.com/Toaster996/softwareengineering/blob/master/documentation/function_points.xlsx) |
+| [UC Add Media](https://github.com/Toaster996/softwareengineering/blob/master/documentation/UCs/AddMedia/uc_add_media.md) |
+| [UC Crud Friend](https://github.com/Toaster996/softwareengineering/blob/master/documentation/UCs/CRUD%20Friend/crud_friend.md) |
+| [UC Crud Goal](https://github.com/Toaster996/softwareengineering/blob/master/documentation/UCs/CRUD%20Goal/uc_crud_goal.md) |
+| [UC Crud Journal](https://github.com/Toaster996/softwareengineering/blob/master/documentation/UCs/CRUD%20Journal/uc_crud_journal.md) |
+| [UC Change Email](https://github.com/Toaster996/softwareengineering/blob/master/documentation/UCs/ChangeAccountEmail/uc_change_account_email.md) |
+| [UC Change Password](https://github.com/Toaster996/softwareengineering/blob/master/documentation/UCs/ChangeAccountPassword/uc_change_account_password.md) |
+| [UC Contact Us](https://github.com/Toaster996/softwareengineering/blob/master/documentation/UCs/ContactUs/uc_contact_us.md) |
+| [UC Delete Account](https://github.com/Toaster996/softwareengineering/blob/master/documentation/UCs/Delete%20Account/uc_delete_account.md) |
+| [UC Goal Checking](https://github.com/Toaster996/softwareengineering/blob/master/documentation/UCs/Goal%20Checking/goal_checking.md) |
+| [UC Recover Password](https://github.com/Toaster996/softwareengineering/blob/master/documentation/UCs/RecoverPassword/uc_recover_password.md) |
+| [UC Share Journal](https://github.com/Toaster996/softwareengineering/blob/master/documentation/UCs/Share%20Journal/share_journal.md) |
+| [UC SignUp](https://github.com/Toaster996/softwareengineering/blob/master/documentation/UCs/SignUp/uc_sign_up.md) |
+
 
 ### 1.5 Vision
 Our project is called Digital Journal. The goal of this project is to create a multimedial web based journal that can be accessed from everywhere with internet access. You don’t have to worry about losing your journal ever again.
@@ -123,7 +137,19 @@ n/a
 
 ### 3.9 Interfaces
 #### 3.9.1 User Interfaces
-tbd
+
+The user interface will consist of a html website created with spring boot and thymeleaf. The project features a landing page where you can log in, as well as a page for you journals, friends and goals. There you can create and edit journals, set yourself goals or add friends with which you can share your journal entries. Additionally there will be a page for the user profile, where the user can change his credentials or delete his account.
+
+
+### 3.9.2 Hardware Interfaces
+**n / a**
+### 3.9.3 Software Interfaces
+
+**n / a**
+
+### 3.9.4 Communications Interfaces
+
+**n / a**
 
 ### 3.10 Licensing Requirements
 The whole project is licenced under MIT.

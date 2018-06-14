@@ -20,7 +20,9 @@ In general a user will add multiple friends while using our service. These can b
 
 In order to add a friend the user has to click on the plus and then add friend ![hamburger_button](Add_friend_hamburger_button.PNG)
 He then can add a user by his name. If the user is valid it will appear in the friendlist. If not an error is displayed.
+
 ![add_friend](Add_friend.PNG)
+
 ![add_firend_invalid_user](add_friend_invalid_user.PNG)
 
 ### 2.3 Friendlist
