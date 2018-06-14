@@ -14,28 +14,35 @@ The use case describes the procedure when someone wants to alter his email addre
 
 ### 2.1 Basic flow
 
-The basic flow of this usecase is that the user visits his profile page to change his email address. He needs to provide his password in order to change his email. After the password was checked and profound as correct an email will be send to both the old and new mail addresses. The user now has to confirm via the links in both mails. After that the old email will be updated to the new one.   
+The basic flow of this usecase is that the user visits his profile page to change his email address. He will enter a valid new email address and click on the links in the email he receives. His email will then be changed.
 
-![send_emails](send_emails.png)
-![success](email_changed.JPG)
+![change_button](Change_email.PNG)
 
-### 2.2 Password is wrong
+![email_modal](Email_change_modal.PNG)
 
-The user gets prompted to enter the correct password if the entered one was incorrect.
+![send_emails](mail_change_instruction.PNG)
 
-![password_wrong](password_incorrect.png)
+![progress](mail_change_progress.PNG)
 
-### 2.3 Field is empty
+![success](mail_changed.png)
 
-If a field was left empty the user is required to fill the empty field as well.
+### 2.2 The email the user provided is wrong.
 
-![empty_field](field_empty.png)
-
-### 2.4 New email is invalid
-
-The entered email is not a valid email, so the user gets prompted to enter a valid one.
+The email the user entered into the field could be wrong. He will then be notified that this was not a valid email.
 
 ![email_invalid](email_invalid.PNG)
+
+### 2.3 The email the user provided is too long
+
+As we are storing emails in the database they are limited to a certain size. If this size is exceeded the user will be informed.
+
+![email_too_long](email_too_long.PNG)
+
+### 2.4 The email the user provided could already be in use
+
+Every email address can only be used once. If the user enters a email that is already assigned to an account he will be given a message.
+
+![email_alreade_in_use](email_already_in_use.PNG)
 
 ## 3. Special Requirements
 
