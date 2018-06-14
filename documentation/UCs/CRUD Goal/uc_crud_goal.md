@@ -19,22 +19,29 @@ In general a user will create a goal. Maybe he will edit it later and maybe if i
 
 The creation of the goal will need a goal name, a description and a due date.
 
-![crud_create](crud_create.png)
+![crud_create](goal_creation.PNG)
 
 ### 2.3 Edit
 
 During the edit the user will be able to change the due date, as well as the name and description. If he decides to change the date he will be asked with a popup if he really wants to do that as goals are designed to be finished by a date that does not change often.
-![crud_edit](crud_edit.png)
+![crud_edit](edit_goal.png)
 
 ### 2.3 List
 
 The user wants to be able to view all of his goals to keep track of what he wanted to achieve
-![crud_list](crud_list.png)
+![crud_list](goal_list.png)
 
 ### 2.4 Delete
 
-Even though a goal is something you should not delete that easily we still provide the possibility. The user will be asked if he really wants to delete that goal. 
-![crud_delete](crud_delete.png)
+Even though a goal is something you should not delete that easily we still provide the possibility. The goal will be deleted by clicking the delete button.
+![crud_delete](view_goal.png)
+
+### 2.5 View
+
+By clicking on the goal in the list you will be able to see you goal in detail.
+![crud_view](view_goal.png)
+
+
 ## 3. Special Requirements
 
 ### 3.1 Owning An Account
@@ -59,7 +66,11 @@ After the user saved his edits, the updated data will be displayed in the list o
 
 ### 5.3 Delete
 
-After confirming the deletion modal, the goal will be permanently removed and no longer displayed in the overview.
+After clicking on the delete button, the goal will be permanently removed and no longer displayed in the overview.
+
+### 5.4 View
+
+**n / a**
 
 ## 6. Extension Points
 
