@@ -1,6 +1,7 @@
 package de.dhbw.softwareengineering.digitaljournal.controller;
 
 import de.dhbw.softwareengineering.digitaljournal.business.ImageService;
+import de.dhbw.softwareengineering.digitaljournal.business.JournalService;
 import de.dhbw.softwareengineering.digitaljournal.util.Constants;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -23,9 +24,11 @@ import java.util.List;
 public class FileController {
 
     private final ImageService imageService;
+    private final JournalService journalService;
 
-    public FileController(ImageService imageService) {
+    public FileController(ImageService imageService, JournalService journalService) {
         this.imageService = imageService;
+        this.journalService = journalService;
     }
 
     @PostMapping("/image")
@@ -45,7 +48,6 @@ public class FileController {
                 images.add(file.getBytes());
             } catch (IOException e) {
                 log.error(e.getMessage());
-                System.out.println(e.getMessage());
             }
         } else {
             log.error("Image expected, actual: [\" + type + \"]");
@@ -60,8 +62,15 @@ public class FileController {
 
     @GetMapping("/image/{journalId}/{image}")
     @ResponseBody
-    public byte[] helloWorld(@PathVariable String journalId, @PathVariable int image) {
-        return imageService.getImageByJournalId(journalId, image);
+    public byte[] getImage(@PathVariable String journalId, @PathVariable int image) {
+        return imageService.getImageByJournalId((journalId), image);
+    }
+
+    @PostMapping("/image/delete/{journalId}/{image}")
+    public String deleteImage(@PathVariable String journalId, @PathVariable int image) {
+        imageService.deleteImageById((journalId), image);
+
+        return Constants.REDIRECT_JOURNAL + "/edit/" + journalId;
     }
 
 }

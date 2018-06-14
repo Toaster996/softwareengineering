@@ -3,6 +3,7 @@ package de.dhbw.softwareengineering.digitaljournal.business;
 import de.dhbw.softwareengineering.digitaljournal.TestingData;
 import de.dhbw.softwareengineering.digitaljournal.domain.Image;
 import de.dhbw.softwareengineering.digitaljournal.persistence.UploadImageRepository;
+import de.dhbw.softwareengineering.digitaljournal.util.exceptions.JournalNotFoundException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -20,17 +21,20 @@ public class ImageServiceTest {
 
     private ImageService service;
     private UploadImageRepository repository;
+    private JournalService journalService;
 
     @Before
     public void setUp() {
-        repository = mock(UploadImageRepository.class);
-        service    = new ImageService(repository);
+        repository      = mock(UploadImageRepository.class);
+        journalService  = mock(JournalService.class);
+        service    = new ImageService(repository, journalService);
     }
 
     @Test
-    public void saveImage() {
+    public void saveImage() throws JournalNotFoundException {
         Image img = TestingData.createImage();
         when(repository.save(any(Image.class))).thenReturn(img);
+        when(journalService.findById(any(String.class))).thenReturn(TestingData.createJournal());
         assertEquals(img, service.saveImage(new byte[2], "1234"));
     }
 

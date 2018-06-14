@@ -150,26 +150,22 @@ public class JournalController {
         } else {
             journal.setUsername(principal.getName());
             journal.setDate(System.currentTimeMillis());
-            String journalId = journalService.save(journal).getJournalid();
+            Journal newJournal = journalService.save(journal);
 
-            // Save images
-            Object sessionAttribute = session.getAttribute(Constants.SESSION_IMAGES);
-
-            if (sessionAttribute instanceof List) {
-                List<byte[]> images = (List<byte[]>) sessionAttribute;
-                for (byte[] image : images) {
-                    imageService.saveImage(image, journalId);
-                }
-            }
+            saveImages(newJournal,session);
         }
 
         return Constants.REDIRECT_JOURNAL;
     }
 
-
     @GetMapping("/edit/{journalId}")
     public String showEditJournal(@PathVariable String journalId, Model model, Principal principal, HttpSession session) {
         model.addAttribute(Constants.SESSION_CONTACTREQUEST, new ContactRequest());
+
+        // Always clear images
+        if (session.getAttribute(Constants.SESSION_IMAGES) != null) {
+            session.removeAttribute(Constants.SESSION_IMAGES);
+        }
 
         try {
             Journal journal = journalService.findById(journalId);
@@ -213,8 +209,11 @@ public class JournalController {
             if (oldJournal.getUsername().equals(principal.getName())) {
                 editedJournal.setJournalid(oldJournal.getJournalid());
                 editedJournal.setUsername(oldJournal.getUsername());
+                editedJournal.setImages(oldJournal.getImages());
                 editedJournal.setDate(System.currentTimeMillis());
-                journalService.update(editedJournal);
+                Journal journal = journalService.update(editedJournal);
+
+                saveImages(journal,session);
             }
         }
 
@@ -232,6 +231,7 @@ public class JournalController {
         } catch (JournalNotFoundException e) {
             e.printStackTrace();
         }
+
         if(principal.getName().equals(journal.getUsername())){
             journalService.deleteById(journalId);
         }
@@ -293,6 +293,32 @@ public class JournalController {
             alreadySharedUsers.add(sharedJournal.getCoAuthor());
         }
         return alreadySharedUsers;
+    }
+
+
+    private void saveImages(Journal journal, HttpSession session) {
+        int currentAmount = imageService.findAllByJournalId(journal.getJournalid()).size();
+        if(currentAmount >= 2) {
+            session.removeAttribute(Constants.SESSION_IMAGES);
+            return;
+        }
+
+        Object sessionAttribute = session.getAttribute(Constants.SESSION_IMAGES);
+
+        if (sessionAttribute instanceof List) {
+            List<byte[]> images = (List<byte[]>) sessionAttribute;
+
+            for (byte[] image : images) {
+                if(currentAmount < 2){
+                    imageService.saveImage(image, journal.getJournalid());
+                    currentAmount++;
+                } else {
+                    break;
+                }
+            }
+
+            session.removeAttribute(Constants.SESSION_IMAGES);
+        }
     }
 
 }

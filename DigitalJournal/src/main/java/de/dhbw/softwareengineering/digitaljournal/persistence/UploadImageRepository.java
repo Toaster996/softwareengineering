@@ -8,8 +8,8 @@ import java.util.List;
 
 public interface UploadImageRepository extends JpaRepository<Image, String> {
 
-    List<Image> findAllByJournalid(String journalId);
+    List<Image> findAllByJournalid(String journal);
 
     @Transactional
-    void deleteAllByJournalid(String journalId);
+    void deleteAllByJournalid(String journal);
 }

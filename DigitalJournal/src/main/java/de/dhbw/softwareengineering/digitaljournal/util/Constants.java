@@ -53,6 +53,7 @@ public class Constants {
     public static final String STATUSCODE_REQUESTSENT          = "requestSent";
     public static final String STATUSCODE_INVALID_CREDENTIALS  = "invalidCredentials";
     public static final String STATUSCODE_SUCCESS              = "success";
+    public static final String STATUSCODE_MAIL_CHANGE_SUCCESS  = "mail_change_success";
     public static final String STATUSCODE_REQUEST_FAILED       = "requestfailed";
 
     public static final String SHOW_FURTHER_GOALS_BTN = "showNextGoals";

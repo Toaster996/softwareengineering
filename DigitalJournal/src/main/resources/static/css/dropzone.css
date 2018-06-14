@@ -174,7 +174,6 @@
   box-sizing: border-box; }
 
 .dropzone {
-  min-height: 150px;
   background: white; }
   .dropzone.dz-clickable {
     cursor: pointer; }
@@ -266,8 +265,8 @@
     .dropzone .dz-preview .dz-image {
       border-radius: 20px;
       overflow: hidden;
-      width: 120px;
-      height: 120px;
+      width: 100px;
+      height: 100px;
       position: relative;
       display: block;
       z-index: 10; }

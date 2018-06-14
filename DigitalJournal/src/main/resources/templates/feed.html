@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-
 <head>
     <link rel="shortcut icon" type="image/x-icon" href="/img/favicon.ico"/>
 
@@ -119,18 +118,15 @@
                                 </div>
                             </div>
                             <div class="container">
-                                <div class="centered text-center">
+                                <div th:if="${journal.images > 0}" class="centered text-center">
                                     <script type="text/javascript" th:inline="javascript">
                                         $(document).ready(function () {
                                             initImage([[${journal.journalid}]]);
                                         })
                                     </script>
 
-                                    <th:block th:each="image,iterStat  : ${journal.images}">
-                                        <img th:id="'img'+${iterStat.index}+'_' + ${journal.journalid}"
-                                             th:src="'/file/image/' + ${journal.journalid}+'/'+${iterStat.index}"
-                                             class="img-thumbnail img-view" style="margin: 5px" width="300"
-                                             height="200">
+                                    <th:block th:each="i : ${#numbers.sequence( 0, journal.images - 1)}">
+                                        <img th:id="'img'+${i}+'_' + ${journal.journalid}" th:src="'/file/image/' + ${journal.journalid}+'/'+${i}" class="img-thumbnail img-view" style="margin: 5px" width="300" height="200">
                                     </th:block>
 
                                     <div th:id="'modal_' + ${journal.journalid}" class="modal-img">

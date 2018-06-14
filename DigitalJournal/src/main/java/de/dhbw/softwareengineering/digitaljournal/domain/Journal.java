@@ -5,10 +5,7 @@ import lombok.Data;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import java.io.Serializable;
-import java.util.List;
 
 import static de.dhbw.softwareengineering.digitaljournal.util.Constants.JOURNAL_CONTENT_SIZE;
 
@@ -23,9 +20,7 @@ public class Journal implements Serializable {
     private String username;
     private long date;
     private boolean isShared;
-    @OneToMany
-    @JoinColumn(name = "journalid")
-    private List<Image> images;
+    private int images;
 
     public Journal(){}
 

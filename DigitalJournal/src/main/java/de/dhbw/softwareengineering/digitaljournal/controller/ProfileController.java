@@ -14,7 +14,6 @@ import de.dhbw.softwareengineering.digitaljournal.util.Constants;
 import de.dhbw.softwareengineering.digitaljournal.util.exceptions.DeleteAccountRequestException;
 import de.dhbw.softwareengineering.digitaljournal.util.exceptions.UserNotFoundException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,14 +22,23 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 
-import static de.dhbw.softwareengineering.digitaljournal.util.Constants.*;
+import static de.dhbw.softwareengineering.digitaljournal.util.Constants.REDIRECT;
+import static de.dhbw.softwareengineering.digitaljournal.util.Constants.STATUSCODE_EMAILALREADYINUSE;
+import static de.dhbw.softwareengineering.digitaljournal.util.Constants.STATUSCODE_EMAILTOOLONG;
+import static de.dhbw.softwareengineering.digitaljournal.util.Constants.STATUSCODE_INVALID_CREDENTIALS;
+import static de.dhbw.softwareengineering.digitaljournal.util.Constants.STATUSCODE_MAIL_CHANGE_SUCCESS;
+import static de.dhbw.softwareengineering.digitaljournal.util.Constants.STATUSCODE_PWMISSMATCH;
+import static de.dhbw.softwareengineering.digitaljournal.util.Constants.STATUSCODE_PWTOOLONG;
+import static de.dhbw.softwareengineering.digitaljournal.util.Constants.STATUSCODE_PWTOOSHORT;
+import static de.dhbw.softwareengineering.digitaljournal.util.Constants.STATUSCODE_SUCCESS;
+import static de.dhbw.softwareengineering.digitaljournal.util.Constants.STATUS_ATTRIBUTE_NAME;
+import static de.dhbw.softwareengineering.digitaljournal.util.Constants.TEMPLATE_PROFILE;
 
 @Slf4j
 @Controller
@@ -62,6 +70,7 @@ public class ProfileController {
             setModelAttribs(model, user);
         } catch (UserNotFoundException e) {
             log.error(e.getMessage());
+            return REDIRECT;
         }
 
         return TEMPLATE_PROFILE;
@@ -93,6 +102,7 @@ public class ProfileController {
             setModelAttribs(model, user);
         } catch (UserNotFoundException e) {
             log.error(e.getMessage());
+            return REDIRECT;
         }
 
         return TEMPLATE_PROFILE;
@@ -112,6 +122,7 @@ public class ProfileController {
         } catch (UserNotFoundException e) {
             model.addAttribute(STATUS_ATTRIBUTE_NAME, Constants.STATUSCODE_REQUEST_FAILED);
             log.error(e.getMessage());
+            return REDIRECT;
         }
 
         return TEMPLATE_PROFILE;
@@ -127,7 +138,7 @@ public class ProfileController {
             model.addAttribute(STATUS_ATTRIBUTE_NAME, Constants.STATUSCODE_REQUEST_FAILED);
             log.error(e.getMessage());
 
-            return REDIRECT_JOURNAL;
+            return REDIRECT;
         }
 
         setModelAttribs(model, user);
@@ -140,7 +151,7 @@ public class ProfileController {
 
                 if (request != null) {
                     emailService.sendMailChangeMail(user, request);
-                    model.addAttribute(STATUS_ATTRIBUTE_NAME, STATUSCODE_SUCCESS);
+                    model.addAttribute(STATUS_ATTRIBUTE_NAME, STATUSCODE_MAIL_CHANGE_SUCCESS);
                 }
             } else {
                 model.addAttribute(STATUS_ATTRIBUTE_NAME, STATUSCODE_EMAILALREADYINUSE);
@@ -180,7 +191,7 @@ public class ProfileController {
 
             model.addAttribute("newmailid", confirmation[1]);
         } else {
-            redir.addFlashAttribute("emailchange","invalid_request");
+            redir.addFlashAttribute("emailchange", "invalid_request");
             return REDIRECT;
         }
 
@@ -201,9 +212,9 @@ public class ProfileController {
                 log.error(e.getMessage());
             }
 
-            redir.addFlashAttribute("profile","delete");
+            redir.addFlashAttribute("profile", "delete");
         } catch (DeleteAccountRequestException e) {
-            redir.addFlashAttribute("profile","delete_invalid_request");
+            redir.addFlashAttribute("profile", "delete_invalid_request");
             log.error(e.getMessage());
         }
 

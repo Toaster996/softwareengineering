@@ -7,6 +7,7 @@ import de.dhbw.softwareengineering.digitaljournal.business.EmailService;
 import de.dhbw.softwareengineering.digitaljournal.business.GoalService;
 import de.dhbw.softwareengineering.digitaljournal.business.JournalService;
 import de.dhbw.softwareengineering.digitaljournal.business.UserService;
+import de.dhbw.softwareengineering.digitaljournal.util.Constants;
 import de.dhbw.softwareengineering.digitaljournal.util.exceptions.DeleteAccountRequestException;
 import de.dhbw.softwareengineering.digitaljournal.util.exceptions.UserNotFoundException;
 import org.junit.Assert;
@@ -80,7 +81,7 @@ public class ProfileControllerTest {
     @Test
     public void showProfileFail() throws Exception {
         when(userService.findByName(any())).thenThrow(UserNotFoundException.class);
-        mockMvc.perform(get("/profile/").principal(mock(Principal.class))).andExpect(status().isOk());
+        mockMvc.perform(get("/profile/").principal(mock(Principal.class))).andExpect(status().isMovedTemporarily());
     }
 
     @Test
@@ -91,7 +92,7 @@ public class ProfileControllerTest {
                 .param("old_password","1234")
                 .param("password","123456")
                 .param("password_confirm","123456")
-        ).andExpect(status().isOk());
+        ).andExpect(status().isMovedTemporarily());
     }
 
     @Test
@@ -159,7 +160,7 @@ public class ProfileControllerTest {
         when(userService.findByName(any())).thenThrow(UserNotFoundException.class);
         mockMvc.perform(post("/profile/deleteaccount/")
                 .principal(mock(Principal.class))
-        ).andDo(result -> checkStatusAndModel(result, HttpStatus.OK, STATUS_ATTRIBUTE_NAME, STATUSCODE_REQUEST_FAILED));
+        ).andDo(result -> checkStatusAndModel(result, HttpStatus.MOVED_TEMPORARILY, STATUS_ATTRIBUTE_NAME, STATUSCODE_REQUEST_FAILED));
     }
 
     @Test
@@ -216,7 +217,7 @@ public class ProfileControllerTest {
         mockMvc.perform(post("/profile/mail/change/")
                 .principal(mock(Principal.class))
                 .param("new_mail",newMail)
-        ).andDo(result -> checkStatusAndModel(result, HttpStatus.OK, STATUS_ATTRIBUTE_NAME, STATUSCODE_SUCCESS));
+        ).andDo(result -> checkStatusAndModel(result, HttpStatus.OK, STATUS_ATTRIBUTE_NAME, Constants.STATUSCODE_MAIL_CHANGE_SUCCESS));
     }
 
     @Test

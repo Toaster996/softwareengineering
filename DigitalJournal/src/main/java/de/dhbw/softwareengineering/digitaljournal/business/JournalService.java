@@ -4,6 +4,7 @@ import de.dhbw.softwareengineering.digitaljournal.domain.Journal;
 import de.dhbw.softwareengineering.digitaljournal.persistence.JournalRepository;
 import de.dhbw.softwareengineering.digitaljournal.util.UUIDGenerator;
 import de.dhbw.softwareengineering.digitaljournal.util.exceptions.JournalNotFoundException;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,7 +19,7 @@ public class JournalService implements AbstractService {
     private final ImageService imageService;
     private SharedJournalService sharedJournalService;
 
-    public JournalService(JournalRepository repository, ImageService imageService, SharedJournalService sharedJournalService) {
+    public JournalService(JournalRepository repository,@Lazy ImageService imageService, SharedJournalService sharedJournalService) {
         this.repository = repository;
         this.imageService = imageService;
         this.sharedJournalService = sharedJournalService;
@@ -50,7 +51,8 @@ public class JournalService implements AbstractService {
         Optional<Journal> journalOptional = repository.findById(journalId);
 
         if (journalOptional.isPresent()) {
-            return journalOptional.get();
+            Journal journal = journalOptional.get();
+            return journal;
         } else {
             throw new JournalNotFoundException("No journal found with Id: " + journalId);
         }
