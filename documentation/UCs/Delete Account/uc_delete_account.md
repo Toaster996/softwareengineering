@@ -13,7 +13,11 @@ Of course we want the user to be able to delete his account if he no longer plan
 
 ### 2.1 Basic flow
 
-In general the user wants to delete his account. He will enter confirm the dialog and click on the link in the email within 1h. The account will then be completely deleted.
+In general the user wants to delete his account. He will confirm the dialog and click on the link in the email within 1h. The account will then be completely deleted.
+
+![delete_account](delete_account.PNG)
+
+![deletion_information](deletion_information.PNG)
 
 ![account_deleted](account_deleted.png)
 
@@ -21,7 +25,7 @@ In general the user wants to delete his account. He will enter confirm the dialo
 
 If the user does not confirm the dialog the process will abort and no email will be sent. The account will not be deleted either.
 
-![confirmation_dialog](confirm_deletion.png)
+![confirmation_dialog](deletion_modal.png)
 
 ### 2.3 The user confirms the dialog but does not click on the link
 
