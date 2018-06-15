@@ -132,9 +132,7 @@
                     Do you really want to delete this journal?
                 </div>
                 <div class="modal-footer">
-                    <form method="POST" th:action="@{/journal/delete}">
-                        <a href="javascript:;" class="btn btn-danger" onclick="parentNode.submit();">Delete</a>
-                    </form>
+                    <a th:href="@{'/journal/delete/' + ${journal.journalid}}" class="btn btn-danger">Delete</a>
                 </div>
             </div>
         </div>

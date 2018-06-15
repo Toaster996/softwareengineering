@@ -5,11 +5,13 @@ import de.dhbw.softwareengineering.digitaljournal.domain.Journal;
 import de.dhbw.softwareengineering.digitaljournal.persistence.UploadImageRepository;
 import de.dhbw.softwareengineering.digitaljournal.util.UUIDGenerator;
 import de.dhbw.softwareengineering.digitaljournal.util.exceptions.JournalNotFoundException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Slf4j
 @Service
 public class ImageService implements AbstractService {
 
@@ -30,7 +32,7 @@ public class ImageService implements AbstractService {
             j.setImages(j.getImages()+1);
             journalService.update(j);
         } catch (JournalNotFoundException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         }
         image.setJournalid(journal);
         image.setImage(file);
@@ -58,7 +60,7 @@ public class ImageService implements AbstractService {
             }
             journalService.update(j);
         } catch (JournalNotFoundException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         }
 
         repository.deleteAllByJournalid(journalId);
@@ -76,7 +78,7 @@ public class ImageService implements AbstractService {
             j.setImages(j.getImages()-1);
             journalService.update(j);
         } catch (JournalNotFoundException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         }
 
         repository.delete(images.get(image));

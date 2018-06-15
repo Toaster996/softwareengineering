@@ -176,7 +176,7 @@ public class JournalController {
                 return "editjournal";
             }
         } catch (JournalNotFoundException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         }
 
         return Constants.REDIRECT_JOURNAL;
@@ -220,6 +220,16 @@ public class JournalController {
         return Constants.REDIRECT_JOURNAL;
     }
 
+    @GetMapping("/delete")
+    public String delete(Model model, HttpSession session) {
+        Journal journal = (Journal) session.getAttribute(Constants.SESSION_CURRENTJOURNAL);
+        model.addAttribute("delete", "true");
+        model.addAttribute(Constants.SESSION_JOURNAL, journal);
+        model.addAttribute(Constants.SESSION_CONTACTREQUEST, new ContactRequest());
+
+        return "editjournal";
+    }
+
     @GetMapping("/delete/{journalId}")
     public String delete(@PathVariable String journalId, RedirectAttributes redir, Principal principal) {
         redir.addFlashAttribute("delete", "true");
@@ -228,13 +238,13 @@ public class JournalController {
         Journal journal = null;
         try {
             journal = journalService.findById(journalId);
+            if(principal.getName().equals(journal.getUsername())){
+                journalService.deleteById(journalId);
+            }
         } catch (JournalNotFoundException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         }
 
-        if(principal.getName().equals(journal.getUsername())){
-            journalService.deleteById(journalId);
-        }
         return Constants.REDIRECT_JOURNAL;
     }
 
