@@ -43,6 +43,6 @@ Installing [MySQL](https://dev.mysql.com/downloads/installer/):
 ## 2. Install the Digital Journal
 
 -   Install a [Java Runtime](https://www.java.com/de/) if you haven't already.
--   Simply run the jar provided by us.
+-   Simply run the jar provided by us [here](https://github.com/Toaster996/softwareengineering/releases).
 -   go to [localhost:8080](http://localhost:8080/) and you should see the digital journal homepage
 

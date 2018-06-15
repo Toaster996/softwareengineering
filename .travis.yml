@@ -22,7 +22,7 @@ deploy:
   provider: releases
   api_key:
     secure: "m7XjGd+zuLX6juIzXJus6RoCebmxOB7KoGEe1/YKoWqwI6p0/Wlx+EsFPf+fonacaa7QIuCcwx5Bw9IA8sk9dn4XQBTk0iLD2XGrFKn4HoiKaY8b+bbZRgZRqNXw8A7p9dH4OX2jZs+h89BDtNC6r3RMJq72AnDKF4Na9i4kAiePRYDlz/wSIkn8L9wdmtj6ExbJUUUvNDzEmRVHg8a3m9KRpnyjYj1yFtI0flQnqGCVZ6z9k/vgbuREICQo9FLwtav38gFns4dO6bBfh9JccuRFg3c2ORNJdZ8mYIBhGRW9nzXWLl3r4hvLy3TOYa+/KW1au8QB67V+xZMW4zruTs0BIaOKs8GAWT2ZEVfOVsjC0P4wLbwye9sdbabVheFnKtXg5/4IP3VqqFBoIS5aWDdIo/EJYQg10Wn/BiZct6TvqbE4Y3u/L/2OLvAkh3kMSFB2/yuHlOBS3IhgxXsicXNv3FuWGBWMqwdjyEm1X/oIgH6fl18UuF6IhnW3RmKKHB245fxvPJMLaCaZew2ijMBr9tLwcQ5NDdLA9igyt6tUL8yTkagbzP0sXOk/a0EOg0W4ofBc6K57sD8Xgfd9Jug+t0azzdWgYjSG6dDyAW76OQjOHgWfUxSN1W+xMS/XgKps+ClhtA0VAE6pKXAUGcntYJ2lxtsaaQ9VXO9gyxo="
-  file: "digitaljournal-0.0.1-SNAPSHOT.jar"
+  file: "target/digitaljournal-0.0.1-SNAPSHOT.jar"
   skip_cleanup: true
   on:
     tags: true
