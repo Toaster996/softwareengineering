@@ -19,9 +19,11 @@ To have all benefits of the MVC pattern, we decided to use Spring MVC 4.0 as MVC
 See the [SRS](documentation.md) for further detail
 
 ## 5. Logical View
-We took a look at our Class Diagram and highlighted Model and Controller Classes, aswell as the View JSP Files.
+We took a look at our Class Diagram and highlighted Model and Controller Classes, aswell as the View Files.
 ![Class Diagram](images/class_diagramm_full.png)
-As you can see on the left handside, the view is represented by JavaServer Pages (.jsp). JSP-Files are basically standard HTML5 plus several scripting Tags. The most important one is `<% Content goes here %>`. You can also define other libraries and user further functionality like if and loops. Another nice feature is the easy partitioning of JSP-Files which we are using e.g. for our footer. 
+The View files are represented by HTML5 Files using ![Thymeleaf](https://www.thymeleaf.org/). Note, that previous version of the DigitalJournal used JSP (Java Server Pages), which did not fullfill our satisfaction.
+
+
 ## 7. Deployment View
 ![DeploymentView](images/DeploymentView.png)
 As you can see deployment is pretty easy. For a complete tutorial please take a look at the [installation](https://github.com/Toaster996/softwareengineering/blob/master/documentation/Installation.md)
