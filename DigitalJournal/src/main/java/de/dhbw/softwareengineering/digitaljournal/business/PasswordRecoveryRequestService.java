@@ -3,6 +3,7 @@ package de.dhbw.softwareengineering.digitaljournal.business;
 import de.dhbw.softwareengineering.digitaljournal.domain.PasswordRecoveryRequest;
 import de.dhbw.softwareengineering.digitaljournal.domain.User;
 import de.dhbw.softwareengineering.digitaljournal.persistence.PasswordRecoveryRequestRepository;
+import de.dhbw.softwareengineering.digitaljournal.util.exceptions.RecoveryRequestNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,7 +13,7 @@ import java.util.UUID;
 import static de.dhbw.softwareengineering.digitaljournal.util.Constants.HOUR;
 
 @Service
-public class PasswordRecoveryRequestService extends AbstractService{
+public class PasswordRecoveryRequestService implements AbstractService {
 
     private final PasswordRecoveryRequestRepository repository;
 
@@ -27,20 +28,20 @@ public class PasswordRecoveryRequestService extends AbstractService{
 
     public PasswordRecoveryRequest create(User user) {
         PasswordRecoveryRequest recoveryRequest = new PasswordRecoveryRequest();
-                                recoveryRequest.setUsername(user.getUsername());
-                                recoveryRequest.setRecoveryUUID(UUID.randomUUID().toString());
-                                recoveryRequest.setCreationDate(System.currentTimeMillis());
+        recoveryRequest.setUsername(user.getUsername());
+        recoveryRequest.setRecoveryUUID(UUID.randomUUID().toString());
+        recoveryRequest.setCreationDate(System.currentTimeMillis());
 
         return repository.save(recoveryRequest);
     }
 
-    public PasswordRecoveryRequest findByUUID(String uuid) {
+    public PasswordRecoveryRequest findByUUID(String uuid) throws RecoveryRequestNotFoundException {
         Optional<PasswordRecoveryRequest> request = repository.findById(uuid);
 
-        if(request.isPresent()){
+        if (request.isPresent()) {
             return request.get();
-        }else {
-            throw new RuntimeException("No recovery request found with ID: " + uuid);
+        } else {
+            throw new RecoveryRequestNotFoundException(uuid);
         }
     }
 

@@ -3,6 +3,8 @@ package de.dhbw.softwareengineering.digitaljournal.business;
 import de.dhbw.softwareengineering.digitaljournal.domain.Journal;
 import de.dhbw.softwareengineering.digitaljournal.persistence.JournalRepository;
 import de.dhbw.softwareengineering.digitaljournal.util.UUIDGenerator;
+import de.dhbw.softwareengineering.digitaljournal.util.exceptions.JournalNotFoundException;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,12 +13,16 @@ import java.util.Optional;
 import static org.unbescape.html.HtmlEscape.escapeHtml5;
 
 @Service
-public class JournalService extends AbstractService{
+public class JournalService implements AbstractService {
 
     private final JournalRepository repository;
+    private final ImageService imageService;
+    private SharedJournalService sharedJournalService;
 
-    public JournalService(JournalRepository repository) {
+    public JournalService(JournalRepository repository,@Lazy ImageService imageService, SharedJournalService sharedJournalService) {
         this.repository = repository;
+        this.imageService = imageService;
+        this.sharedJournalService = sharedJournalService;
     }
 
     public List<Journal> findAll(String username) {
@@ -41,21 +47,30 @@ public class JournalService extends AbstractService{
         return repository.save(journal);
     }
 
-    public Journal findById(String journalId) {
+    public Journal findById(String journalId) throws JournalNotFoundException {
         Optional<Journal> journalOptional = repository.findById(journalId);
 
-        if(journalOptional.isPresent()){
+        if (journalOptional.isPresent()) {
             return journalOptional.get();
-        }else {
-            throw new RuntimeException("No journal found with Id: " + journalId);
+        } else {
+            throw new JournalNotFoundException("No journal found with Id: " + journalId);
         }
     }
 
     public void deleteById(String journalId) {
+        imageService.deleteAllByJournalId(journalId);
         repository.deleteById(journalId);
+        sharedJournalService.deleteByJournalName(journalId);
     }
 
     public int countByUsername(String username) {
         return repository.countByUsername(username);
+    }
+
+    public void deleteAllFromUser(String username) {
+        List<Journal> journals = repository.findAllByUsernameOrderByDateDesc(username);
+        for (Journal j : journals) {
+            deleteById(j.getJournalid());
+        }
     }
 }

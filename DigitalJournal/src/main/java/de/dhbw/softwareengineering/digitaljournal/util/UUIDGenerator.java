@@ -6,6 +6,8 @@ import java.util.UUID;
 
 public class UUIDGenerator {
 
+    private UUIDGenerator(){}
+
     public static String generateUniqueUUID(JpaRepository repository) {
         UUID uuid = UUID.randomUUID();
         while (repository.existsById(uuid.toString())) {

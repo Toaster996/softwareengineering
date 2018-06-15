@@ -7,6 +7,7 @@ import de.dhbw.softwareengineering.digitaljournal.domain.ContactRequest;
 import de.dhbw.softwareengineering.digitaljournal.domain.RegistrationRequest;
 import de.dhbw.softwareengineering.digitaljournal.domain.User;
 import de.dhbw.softwareengineering.digitaljournal.domain.form.RegistrationUser;
+import de.dhbw.softwareengineering.digitaljournal.util.Constants;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import static de.dhbw.softwareengineering.digitaljournal.util.Constants.STATUSCODE_ALPHANUMERIC;
@@ -49,7 +49,7 @@ public class RegistrationController {
 
     @PostMapping("/register")
     public String registerUser(@Valid @ModelAttribute("registrationUser") RegistrationUser registrationUser, BindingResult result, Model model) {
-        model.addAttribute("contactRequest",new ContactRequest());
+        model.addAttribute(Constants.SESSION_CONTACTREQUEST, new ContactRequest());
 
         if (result.hasErrors()) {
             return "error";
@@ -72,13 +72,16 @@ public class RegistrationController {
         } else if (!emailPattern.matcher(registrationUser.getEmail()).matches()) {
             model.addAttribute(STATUS_ATTRIBUTE_NAME, STATUSCODE_EMAILINVALID);
         } else {
-
             // Check entered information against database
             if (userService.existByUsername(registrationUser.getName())) {
+                model.addAttribute("username", registrationUser.getName());
                 model.addAttribute(STATUS_ATTRIBUTE_NAME, STATUSCODE_USERNAMEALREADYINUSE);
+                return "home";
             }
             if (userService.existByEmail(registrationUser.getEmail())) {
+                model.addAttribute("email", registrationUser.getEmail());
                 model.addAttribute(STATUS_ATTRIBUTE_NAME, STATUSCODE_EMAILALREADYINUSE);
+                return "home";
             }
         }
 
@@ -93,13 +96,12 @@ public class RegistrationController {
             emailService.sendRegistrationMail(user, request);
         }
 
-
         return "home";
     }
 
     @GetMapping("/confirmemail/{uuid}")
     public String confirmEmail(@PathVariable String uuid, Model model) {
-        model.addAttribute("contactRequest",new ContactRequest());
+        model.addAttribute(Constants.SESSION_CONTACTREQUEST, new ContactRequest());
 
         if (registrationRequestService.confirmRequest(uuid, userService)) {
             model.addAttribute(STATUS_RESPONSE_ATTRIBUTE_NAME, String.valueOf(true));

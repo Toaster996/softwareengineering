@@ -8,6 +8,10 @@ import de.dhbw.softwareengineering.digitaljournal.domain.PasswordRecoveryRequest
 import de.dhbw.softwareengineering.digitaljournal.domain.User;
 import de.dhbw.softwareengineering.digitaljournal.domain.form.LoginUser;
 import de.dhbw.softwareengineering.digitaljournal.domain.form.RegistrationUser;
+import de.dhbw.softwareengineering.digitaljournal.util.Constants;
+import de.dhbw.softwareengineering.digitaljournal.util.exceptions.RecoveryRequestNotFoundException;
+import de.dhbw.softwareengineering.digitaljournal.util.exceptions.UserNotFoundException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,8 +32,10 @@ import static de.dhbw.softwareengineering.digitaljournal.util.Constants.STATUSCO
 import static de.dhbw.softwareengineering.digitaljournal.util.Constants.STATUSCODE_PWTOOLONG;
 import static de.dhbw.softwareengineering.digitaljournal.util.Constants.STATUSCODE_PWTOOSHORT;
 import static de.dhbw.softwareengineering.digitaljournal.util.Constants.STATUS_ATTRIBUTE_NAME;
+import static de.dhbw.softwareengineering.digitaljournal.util.Constants.TEMPLATE_RECOVER;
 import static de.dhbw.softwareengineering.digitaljournal.util.Constants.emailPattern;
 
+@Slf4j
 @Controller
 @RequestMapping("/recover")
 public class RecoverPasswordController {
@@ -50,28 +56,28 @@ public class RecoverPasswordController {
     public String index(@RequestParam("email") String email, Model model) {
         model.addAttribute(STATUS_ATTRIBUTE_NAME, "new");
         model.addAttribute("registrationUser", new RegistrationUser());
-        model.addAttribute("contactRequest",new ContactRequest());
-        model.addAttribute("loginUser", new LoginUser());
+        model.addAttribute(Constants.SESSION_CONTACTREQUEST, new ContactRequest());
+        model.addAttribute(Constants.SESSION_LOGINUSER, new LoginUser());
 
-        if(!emailPattern.matcher(email).matches()){
-            model.addAttribute("recover", "invalidEmail");
+        if (!emailPattern.matcher(email).matches()) {
+            model.addAttribute(TEMPLATE_RECOVER, "invalidEmail");
             return "home";
         }
 
-        User user = userService.findByEmail(email);
+        try {
+            User user = userService.findByEmail(email);
 
-        if (user != null) {
-            // Delete all old requests from user
             passwordRecoveryRequestService.deleteAllByUsername(user.getUsername());
 
-            model.addAttribute("recover", "true");
+            model.addAttribute(TEMPLATE_RECOVER, "true");
             model.addAttribute("email", email);
 
             PasswordRecoveryRequest request = passwordRecoveryRequestService.create(user);
 
             emailService.sendPasswordRecoveryMail(user, request);
-        } else {
-            model.addAttribute("recover", "false");
+        } catch (UserNotFoundException e) {
+            model.addAttribute(TEMPLATE_RECOVER, "false");
+            log.error(e.getMessage());
         }
 
         return "home";
@@ -79,59 +85,66 @@ public class RecoverPasswordController {
 
     @GetMapping(value = "/{uuid}")
     public String index(@PathVariable String uuid, Model model, HttpSession session) {
-        model.addAttribute("contactRequest",new ContactRequest());
+        model.addAttribute("contactRequest", new ContactRequest());
 
-        PasswordRecoveryRequest passwordRecoveryRequest = passwordRecoveryRequestService.findByUUID(uuid);
+        try {
+            PasswordRecoveryRequest passwordRecoveryRequest = passwordRecoveryRequestService.findByUUID(uuid);
+            try {
+                User user = userService.findByName(passwordRecoveryRequest.getUsername());
 
-        if (passwordRecoveryRequest == null) {
+                session.setAttribute("uuid", uuid);
+                session.setAttribute(SESSION_CHANGEPWUSER, user.getUsername());
+                model.addAttribute("username", user.getUsername());
+                model.addAttribute("email", user.getEmail());
+            } catch (UserNotFoundException e) {
+                log.error(e.getMessage());
+            }
+        } catch (RecoveryRequestNotFoundException e) {
+            log.error(e.getMessage());
             model.addAttribute("status", "notFound");
             return "error";
-        } else {
-            User user = userService.findByName(passwordRecoveryRequest.getUsername());
-
-            if(!model.containsAttribute("status"))
-                model.addAttribute("status", "success");
-            session.setAttribute("uuid", uuid);
-            session.setAttribute("changePasswordUser", user);
-            model.addAttribute("username", user.getUsername());
-            model.addAttribute("email", user.getEmail());
         }
+
         return "changepassword";
     }
 
     @PostMapping("/change")
-    public String changePassword(@RequestParam("password") String password, @RequestParam("password_confirm") String password_confirm, ModelMap model, HttpSession session, RedirectAttributes redir) {
-        model.addAttribute("contactRequest",new ContactRequest());
+    public String changePassword(@RequestParam("password") String password, @RequestParam("password_confirm") String passwordConfirm, ModelMap model, HttpSession session, RedirectAttributes redir) {
+        model.addAttribute("contactRequest", new ContactRequest());
 
         // security checks
-        if (password.isEmpty() || password_confirm.isEmpty()) {
+        if (password.isEmpty() || passwordConfirm.isEmpty()) {
             redir.addFlashAttribute(STATUS_ATTRIBUTE_NAME, STATUSCODE_EMPTYFORM);
-        } else if (!password.matches(password_confirm)) {
+        } else if (!password.matches(passwordConfirm)) {
             redir.addFlashAttribute(STATUS_ATTRIBUTE_NAME, STATUSCODE_PWMISSMATCH);
         } else if (password.length() < 6) {
             redir.addFlashAttribute(STATUS_ATTRIBUTE_NAME, STATUSCODE_PWTOOSHORT);
         } else if (password.length() > 42) {
             redir.addFlashAttribute(STATUS_ATTRIBUTE_NAME, STATUSCODE_PWTOOLONG);
         }
-        if(redir.containsAttribute(STATUS_ATTRIBUTE_NAME)){
+        if (redir.containsAttribute(STATUS_ATTRIBUTE_NAME)) {
             String uuid = (String) session.getAttribute("uuid");
-            return "redirect:/recover/"+ uuid;
+            return "redirect:/recover/" + uuid;
         }
 
-        // get user
-        User user = (User) session.getAttribute(SESSION_CHANGEPWUSER);
+        String username = (String) session.getAttribute(SESSION_CHANGEPWUSER);
 
-        // change password of user and write to database
-        if (user != null) {
-            user.setPassword(bCryptPasswordEncoder.encode(password));
-            redir.addFlashAttribute("recover", STATUSCODE_PWCHANGESUCCESS);
-            session.removeAttribute(SESSION_CHANGEPWUSER);
-            userService.update(user);
-            passwordRecoveryRequestService.deleteAllByUsername(user.getUsername());
+        if (username != null) {
+            try {
+                User user = userService.findByName(username);
+                     user.setPassword(bCryptPasswordEncoder.encode(password));
+
+                redir.addFlashAttribute(TEMPLATE_RECOVER, STATUSCODE_PWCHANGESUCCESS);
+                session.removeAttribute(SESSION_CHANGEPWUSER);
+                userService.update(user);
+                passwordRecoveryRequestService.deleteAllByUsername(user.getUsername());
+            } catch (UserNotFoundException e) {
+                log.error(e.getMessage());
+            }
         } else {
             return "error";
         }
 
-        return "redirect:/";
+        return Constants.REDIRECT;
     }
 }

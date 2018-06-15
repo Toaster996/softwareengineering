@@ -1,21 +1,31 @@
 package de.dhbw.softwareengineering.digitaljournal.business;
 
+import de.dhbw.softwareengineering.digitaljournal.domain.DeleteAccountRequest;
 import de.dhbw.softwareengineering.digitaljournal.domain.User;
 import de.dhbw.softwareengineering.digitaljournal.domain.form.RegistrationUser;
 import de.dhbw.softwareengineering.digitaljournal.persistence.UserRepository;
+import de.dhbw.softwareengineering.digitaljournal.util.exceptions.UserNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserService extends AbstractService{
+public class UserService implements AbstractService {
 
     private final UserRepository repository;
+    private final JournalService journalService;
+    private final FriendService friendService;
+    private final GoalService goalService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public UserService(UserRepository repository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public UserService(UserRepository repository, JournalService journalService, FriendService friendService, GoalService goalService, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.repository = repository;
+        this.journalService = journalService;
+        this.friendService = friendService;
+        this.goalService = goalService;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
@@ -28,21 +38,26 @@ public class UserService extends AbstractService{
     }
 
 
-    public User findByName(String username) {
+    public User findByName(String username) throws UserNotFoundException {
         Optional<User> userOptional = repository.findById(username);
         if (userOptional.isPresent()) {
             return userOptional.get();
         } else {
-            throw new RuntimeException("No user found with name: " + username);
+            throw new UserNotFoundException(username);
         }
     }
 
-    public User findByEmail(String email) {
+    public boolean exists(String username) {
+        Optional<User> userOptional = repository.findById(username);
+        return userOptional.isPresent();
+    }
+
+    public User findByEmail(String email) throws UserNotFoundException {
         Optional<User> userOptional = repository.findByEmail(email);
         if (userOptional.isPresent()) {
             return userOptional.get();
         } else {
-            throw new RuntimeException("No user found with email: " + email);
+            throw new UserNotFoundException(email);
         }
     }
 
@@ -69,5 +84,22 @@ public class UserService extends AbstractService{
 
     public User update(User user) {
         return repository.save(user);
+    }
+
+    public List<String> findSuggestionsByName(String username) {
+        List<String> names = new ArrayList<>();
+        List<User> suggestions = repository.findAllByUsernameLike(username + "%");
+        for (User user : suggestions) {
+            names.add(user.getUsername());
+        }
+        return names;
+    }
+
+    public void deleteAccount(DeleteAccountRequest request) {
+        String username = request.getUsername();
+        goalService.deleteAllFromUser(username);
+        journalService.deleteAllFromUser(username);
+        friendService.deleteAllFromUser(username);
+        repository.deleteById(username);
     }
 }

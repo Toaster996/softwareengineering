@@ -70,8 +70,7 @@
                                     <p  th:text="'We sent you an email to your address ' + *{email} + '!'"/>
                                     <br/>
                                     <p>Please click on the link you can find there within 24 hours.</p>
-                                    <input type="submit" value="Create your Journal!" href="/journal"
-                                           class="btn btn-outline-light mr-3 ml-3">
+                                    <a href="/" class="btn btn-outline-light mr-3 ml-3"> Create your Journal!</a>
                                 </div>
                                 <div th:if="${status != 'sucreg'}">
                                     <div id="login">
@@ -137,8 +136,8 @@
 </header>
 
 
-<div th:replace="Forms/modals :: modals"/>
-<div th:replace="Forms/modalContact :: modalContact"/>
+<div th:replace="forms/modals :: modals"/>
+<div th:replace="forms/modalContact :: modalContact"/>
 
 <!-- EXPLORE HEAD -->
 <section id="explore-head-section">
@@ -329,12 +328,13 @@
     </form>
 </div>
 
-<div th:if="${recover == 'true' || recover == 'false'}">
+<div th:if="${recover == 'true' || recover == 'false'}" th:switch="${recover}">
     <!-- Modal -->
     <div class="modal fade" id="recover" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
          aria-hidden="true">
         <div class="modal-dialog" role="document">
-            <div class="modal-content text-black">
+
+            <div th:case="'true'" class="modal-content text-black">
                 <div class="modal-header">
                     <h5 class="modal-title">We've send you an email!</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -348,12 +348,30 @@
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
             </div>
+
+            <div th:case="'false'" class="modal-content text-black">
+                <div class="modal-header">
+                    <h5 class="modal-title">We've send you an email!</h5>
+                    <h5 class="modal-title">Unknown Email Address!</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>This email address is nowhere to be found in our records. Please check it again!</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
         </div>
     </div>
     <script>
         $('#recover').modal('show');
     </script>
 </div>
+
 <div th:if="${recover == 'invalidEmail'}">
     <!-- Modal -->
     <div class="modal fade" id="recovermail" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -379,6 +397,7 @@
         $('#recovermail').modal('show');
     </script>
 </div>
+
 <div th:if="${recover == 'pwchangesuccess'}">
     <!-- Modal -->
     <div class="modal fade" id="recoverdone" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -402,6 +421,84 @@
     </div>
     <script>
         $('#recoverdone').modal('show');
+    </script>
+</div>
+
+<div th:if="${emailchange == 'invalid_request'}">
+    <!-- Modal -->
+    <div class="modal fade" id="emailchangeinvalid" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content text-black">
+                <div class="modal-header">
+                    <h5 class="modal-title">Invalid Email Change Request!</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    The email change request is not or no longer valid. Please request a new one if you want to change your mail address.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $('#emailchangeinvalid').modal('show');
+    </script>
+</div>
+
+<div th:if="${profile == 'delete_invalid_request'}">
+    <!-- Modal -->
+    <div class="modal fade" id="profiledeleteinvalid" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content text-black">
+                <div class="modal-header">
+                    <h5 class="modal-title">Invalid Delete Request!</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    The deletion request is not or no longer valid. Please request a new one if you want to delete your account.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $('#profiledeleteinvalid').modal('show');
+    </script>
+</div>
+
+<div th:if="${profile == 'delete'}">
+    <!-- Modal -->
+    <div class="modal fade" id="profiledelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content text-black">
+                <div class="modal-header">
+                    <h5 class="modal-title">Account deleted!</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Your account and all other information associated with it has been deleted!
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $('#profiledelete').modal('show');
     </script>
 </div>
 

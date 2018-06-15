@@ -36,6 +36,5 @@ public class User {
     @OneToMany
     @JoinColumn(name = "username")
     private List<Journal> journals;
-
 }
 

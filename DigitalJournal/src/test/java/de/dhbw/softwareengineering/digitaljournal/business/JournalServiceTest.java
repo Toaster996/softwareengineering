@@ -7,19 +7,23 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 
 public class JournalServiceTest {
     private JournalService journalService;
+    private ImageService imageService;
     private JournalRepository journalRepository;
+    private SharedJournalService sharedJournalService;
     private Journal journal;
 
     @Before
     public void setup(){
         journalRepository = mock(JournalRepository.class);
-        journalService = new JournalService(journalRepository);
-
+        imageService      = mock(ImageService.class);
+        sharedJournalService = mock(SharedJournalService.class);
+        journalService = new JournalService(journalRepository, imageService, sharedJournalService);
     }
 
     @Test

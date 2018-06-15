@@ -1,15 +1,18 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-
 <head>
     <link rel="shortcut icon" type="image/x-icon" href="/img/favicon.ico"/>
 
+    <meta name="_csrf" th:content="${_csrf.token}"/> <!--Enables AJAX-->
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta content="width=device-width, initial-scale=1.0"/>
 
     <link href="/css/bootstrap.css" rel="stylesheet"/>
     <link href="/css/bootstrap.min.css" rel="stylesheet"/>
     <link href="/css/style.css" rel="stylesheet"/>
+    <link href="/css/dropzone.css" rel="stylesheet"/>
+    <link href="/css/imageviewer.css" rel="stylesheet"/>
     <link href="/res/css/journal.css" rel="stylesheet"/>
     <link href="/res/css/actionbutton.css" rel="stylesheet"/>
     <link href="/css/font-awesome.min.css" rel="stylesheet"/>
@@ -19,13 +22,46 @@
     <script src="/js/jquery.min.js"></script>
     <script src="/js/popper.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/suggestor.js"></script>
+    <script src="/js/dropzone.js"></script>
     <script src="/res/js/main.js"></script>
     <script src="/res/js/actionbutton.js"></script>
 
     <title>FEED | DigitalJournal</title>
 </head>
-
 <body id="home" class="">
+
+<script>
+    function initImage(id) {
+        // Get the modal
+        var modal = document.getElementById('modal_' + id);
+
+        // Get the image and insert it inside the modal - use its "alt" text as a caption
+        var img0 = document.getElementById('img0_' + id);
+        var img1 = document.getElementById('img1_' + id);
+        var modalImg = document.getElementById("model_content_" + id);
+        var captionText = document.getElementById("caption_" + id);
+
+        img0.onclick = function () {
+            modal.style.display = "block";
+            modalImg.src = this.src;
+            captionText.innerHTML = this.alt;
+        }
+
+        if (img1) {
+            img1.onclick = function () {
+                modal.style.display = "block";
+                modalImg.src = this.src;
+                captionText.innerHTML = this.alt;
+            }
+        }
+
+        // When the user clicks on <span> (x), close the modal
+        modal.onclick = function () {
+            modal.style.display = "none";
+        }
+    }
+</script>
 
 <div th:replace="static_elements/navbarLoggedIn :: navbarLoggedIn"/>
 
@@ -39,6 +75,10 @@
          data-target=".bd-example-modal-lg">
         <i class="material-icons">mode_edit</i>
         <span class="btn-floating fab-tip">Create new Journal</span>
+    </div>
+    <div class="fab blue child btn-floating" data-tooltip="I am C" data-subitem="3">
+        <i class="material-icons">perm_identity</i>
+        <a href="/journal/friends/add" class="btn-floating fab-tip">Add a Friend</a>
     </div>
     <div class="fab" id="masterfab">
         <i class="material-icons">add</i>
@@ -54,7 +94,7 @@
                         <div class="card-block p-3">
                             <h4 class="card-title" th:utext="${journal.journalName}"/>
                             <p class="card-text text-muted" th:utext="${journal.content}"/>
-                            <div class="entry_btn">
+                            <div th:if="${journal.isShared() == false}" class="entry_btn">
                                 <div class="dropdown">
                                     <button class="btn btn-outline-secondary dropdown-toggle" type="button"
                                             data-toggle="dropdown">More
@@ -67,17 +107,46 @@
                                                class="dropdown-item">Edit</a>
                                         </li>
                                         <li>
-                                            <a href="/" class="dropdown-item">Share</a>
+                                            <a th:href="@{'/journal/share/' + ${journal.journalid}}"
+                                               th:name="${journal.journalid}"
+                                               class="dropdown-item">Share</a>
                                         </li>
                                         <li>
-                                            <a class="dropdown-item" href="#">Delete</a>
+                                            <a class="dropdown-item" th:href="@{'/journal/delete/' + ${journal.journalid}}">Delete</a>
                                         </li>
                                     </ul>
                                 </div>
                             </div>
+                            <div class="container">
+                                <div th:if="${journal.images > 0}" class="centered text-center">
+                                    <script type="text/javascript" th:inline="javascript">
+                                        $(document).ready(function () {
+                                            initImage([[${journal.journalid}]]);
+                                        })
+                                    </script>
+
+                                    <th:block th:each="i : ${#numbers.sequence( 0, journal.images - 1)}">
+                                        <img th:id="'img'+${i}+'_' + ${journal.journalid}" th:src="'/file/image/' + ${journal.journalid}+'/'+${i}" class="img-thumbnail img-view" style="margin: 5px" width="300" height="200">
+                                    </th:block>
+
+                                    <div th:id="'modal_' + ${journal.journalid}" class="modal-img">
+                                        <img class="modal-content-img" th:id="'model_content_' + ${journal.journalid}">
+                                        <div th:id="'caption_' + ${journal.journalid}"></div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+
                         <div class="card-footer text-muted">
-                            <p th:text="${#calendars.format(journal.date, 'dd.MM.yyyy HH:mm:ss')}"/>
+                            <div th:text="${#calendars.format(journal.date, 'dd.MM.yyyy HH:mm:ss')}"
+                                 class="float-left"/>
+                            <div th:if="${journal.isShared() == true}" class="float-right">
+                                <div class="float-left" th:utext="'Owner: ' + ${journal.username} + ''"></div>
+                                <i class="float-right material-icons">
+                                    group
+                                </i>
+                            </div>
+                            <div class="clearfix"></div>
                         </div>
                     </div>
 
@@ -90,31 +159,63 @@
 
             <!-- ASIDE -->
             <div class="col-md-3">
-
                 <div class="card" style="width: 20rem;">
                     <div class="card-block p-3">
                         <h4 class="card-title">Your Friends</h4>
                         <p class="card-text">Quick access to your best friends.</div>
                     <ul class="list-group list-group-flush text-muted">
-                        <li class="list-group-item">Kurt Cobain</li>
-                        <li class="list-group-item">Dave Grohl</li>
-                        <li class="list-group-item">Krist Novoselic</li>
+                        <th:block th:each="friend : ${friends}">
+                            <li class="list-group-item">
+                                <form method="post" th:action="@{'/journal/friends/remove/' + ${friend.friendName}}">
+                                    <a class="text-muted float-left" th:utext=" ${friend.friendName}"></a>
+                                    <button class='btn btn-outline-danger float-right' type='submit'><i
+                                            class="material-icons">delete_outline</i></button>
+                                    <th:block th:if="${friend.isApproved()}">
+                                        <i class="material-icons">
+                                            check_circle_outline
+                                        </i>
+                                    </th:block>
+                                    <div class="clearfix"></div>
+                                </form>
+                            </li>
+                        </th:block>
                     </ul>
                 </div>
                 <hr>
-                <div class="card" style="width: 20rem;">
+                <div class="card" id="card_goals" style="width: 20rem;">
                     <div class="card-block p-3">
                         <h4 class="card-title">Your Goals</h4>
                         <p class="card-text">Overview of your latest Goals.</div>
                     <ul class="list-group list-group-flush text-muted">
                         <th:block th:each="goal : ${goals}">
                             <li class="list-group-item">
-                                <strong><span
-                                        th:text="${#calendars.format(goal.date, 'dd.MM.yyyy')} + ' '"></span></strong><a
-                                    th:href="@{'/journal/goal/' + ${goal.id}}" th:utext=" ${goal.name}"></a>
-                                <button class="text-right btn btn-success">check</button>
+                                <div th:switch="${goal.checked}">
+                                    <strong><span
+                                            th:text="${#calendars.format(goal.date, 'dd.MM.yyyy')} + ' '"></span>
+                                    </strong>
+                                    <a class="text-muted" th:href="@{'/journal/goal/' + ${goal.id}}"
+                                       th:utext=" ${goal.name}"></a>
+
+                                    <a th:case="false" th:href="@{'/journal/goal/check/' + ${goal.id}}"
+                                       class="btn btn-outline-success text-right float-right">
+                                        <!-- check, if Goal is in the past -->
+                                        <div class="float-right" th:if="${goal.getDaysLeft() < 0}">
+                                            <i class="material-icons">error</i>
+                                        </div>
+                                        <div class="float-right" th:unless="${goal.getDaysLeft() < 0}">
+                                            <i class="material-icons">done</i>
+                                        </div>
+                                    </a>
+                                    <div class="clearfix"></div>
+                                </div>
                             </li>
                         </th:block>
+
+                        <div th:if="${showNextGoals == true}">
+                            <li class="list-group-item">
+                                <a class="text-muted" href="journal/goal/allgoals">Show all goals!</a>
+                            </li>
+                        </div>
                     </ul>
                 </div>
             </div>
@@ -133,33 +234,88 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form method="POST" th:action="@{/journal/create}" th:object="${journal}">
-                    <div class="modal-body">
+                <div class="modal-body">
+                    <form method="POST" class="dropzone needsclick dz-clickable" th:action="@{/journal/create}"
+                          th:object="${journal}" autocomplete="off" id="create-journal-form"
+                          enctype="multipart/form-data">
                         <div class="form-group">
                             <label id="txt_journalname" class="control-label">Name</label>
                             <input class="form-control form-control-lg" type="text" placeholder="Name"
                                    th:field="*{journalName}"/>
+                            <br>
                             <label id="txt_journalcontent" class="control-label">Content</label>
                             <textarea class="form-control form-control-lg" type="text" rows="10"
                                       placeholder="What is this Journal about?" th:field="*{content}"/>
+
+                            <div class="dz-message needsclick form-control form-control-lg">
+                                Drop images here or click to upload them.<br>
+                            </div>
                         </div>
                         <!--Alerts -->
                         <div th:replace="forms/alerts:: alerts"></div>
-                    </div>
+                    </form>
+                </div>
 
-                    <div class="modal-footer">
-                        <div class="form-group">
-                            <div class="text-right">
-                                <button type="submit" id="btn_submitjournal" class="btn btn-primary">Save
-                                </button>
-                            </div>
+                <div class="modal-footer">
+                    <div class="form-group">
+                        <div class="text-right">
+                            <button type="submit" id="btn_submitjournal" class="btn btn-primary"
+                                    form="create-journal-form">Save
+                            </button>
                         </div>
                     </div>
-                </form>
+                </div>
             </div>
         </div>
     </div>
 
+
+    <!-- Modal to share a Journal-->
+    <div th:if="${status == 'shareJournal'}">
+        <div class="modal fade" id="mdl_journal_share" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content text-black">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Share your Journals !</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Share your best memory's with the people you experienced them with.</p>
+                        <br>
+                        <div th:if="${isSharedBefore == true}">
+                            <p>You shared this journal with:</p>
+                            <ul class="list-group">
+                                <th:block th:each="author : ${coAuthors}">
+                                    <li class="list-group-item" th:utext="${author}"></li>
+                                </th:block>
+                            </ul>
+                            <br>
+                        </div>
+                        <div class="dropdown">
+                            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Choose
+                                a Friend
+                                <span class="caret"></span></button>
+                            <ul class="dropdown-menu">
+                                <th:block th:each="shareableFriend : ${shareableFriends}">
+                                    <li><a class="dropdown-item" th:href="@{'journal/share/add/' + ${shareableFriend}}"
+                                           th:utext="${shareableFriend}"></a></li>
+                                </th:block>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            $('#mdl_journal_share').modal('show');
+        </script>
+    </div>
+
+
+    <!-- Modal to create new Goal -->
     <div th:if="${status=='createGoal'}">
         <div class="modal fade" id="mdl_goal_create" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
              aria-hidden="true">
@@ -196,12 +352,60 @@
                 </div>
             </div>
         </div>
-
         <script>
             $('#mdl_goal_create').modal('show');
         </script>
     </div>
 
+    <!-- Modal to nofiy for Goals -->
+    <div th:if="${nofifyGoalExceeded == true}">
+        <div class="modal fade" id="mdl_goal_exceeded" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content text-black">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Your goal date has been exceeded!</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p class="lead">Some of your Goal dates have been exceeded while your absence. Keep up looking
+                            after them.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            $('#mdl_goal_exceeded').modal('show');
+        </script>
+    </div>
+
+    <!-- Modal share Friend not aproved -->
+    <div th:if="${friendNotApproved == true}">
+        <div class="modal fade" id="mdl_share_not" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content text-black">
+                    <div class="modal-header">
+                        <h5 class="modal-title">This Friendship is not mutal!</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p class="lead">You can't share your journals with this friend, because he hasn't added you
+                            yet.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            $('#mdl_share_not').modal('show');
+        </script>
+    </div>
+
+    <!-- Modal to show details of a Goal -->
     <div th:if="${status=='showGoal'}">
         <div class="modal fade" id="mdl_goal_show" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
              aria-hidden="true">
@@ -216,7 +420,12 @@
                     <div class="modal-body">
                         <p class="lead" th:utext="${showGoal.description}"></p>
                         <hr>
-                        <p th:text="'This goal has to be achieved in ' + *{showGoal.daysLeft} + ' days.'"></p>
+                        <div th:if="*{showGoal.daysLeft < 0}">
+                            <p th:text="'The goal date has been exceeded. You can pick a new one.'"/>
+                        </div>
+                        <div th:unless="*{showGoal.daysLeft < 0}">
+                            <p th:text="'This goal has to be achieved in ' + *{showGoal.daysLeft} + ' days.'"/>
+                        </div>
                     </div>
 
                     <div class="form-group">
@@ -288,10 +497,96 @@
         </script>
     </div>
 
+    <!-- Modal to create new Goal -->
+    <div th:if="${status=='addFriends'}">
+        <div class="modal fade" id="mdl_add_friend" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content text-black">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Add new Friend!</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form th:action="@{/journal/friends/add}" method="POST" th:object="${newFriend}">
+                            <div class="form-group">
+                                <input type="text" id="friend_name"
+                                       class="form-control form-control-lg"
+                                       placeholder="Name your friend!" th:field="*{username}"
+                                       onkeyup="fire_ajax_submit()" autocomplete="off"/>
+                            </div>
+                            <div id="feedback"></div>
+                            <input id="btn_add_friend" type="submit" value="Save" class="btn btn-primary btn-block">
+
+                            <!--Alerts -->
+                            <div th:replace="forms/alerts:: alerts"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            $('#mdl_add_friend').modal('show');
+        </script>
+    </div>
+
+    <div th:if="${status == 'userNotFound'}">
+        <div class="modal fade" id="mdl_user_not_found" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content text-black">
+                    <div class="modal-header">
+                        <h5 class="modal-title">The User you are searching for is not known!</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p class="lead">The user you are searching for is not known. You are welcome to invite this
+                            person to use our service.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            $('#mdl_user_not_found').modal('show');
+        </script>
+    </div>
+
 </main>
 <div th:replace="forms/modals :: modals"/>
 <!-- MAIN FOOTER -->
 <div th:replace="footer :: footer"/>
+
+<div th:if="${emailchange == 'invalid_request'}">
+    <!-- Modal -->
+    <div class="modal fade" id="emailchangeinvalid" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content text-black">
+                <div class="modal-header">
+                    <h5 class="modal-title">Invalid Email Change Request!</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    The email change request is not or no longer valid. Please request a new one if you want to change
+                    your mail address.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $('#emailchangeinvalid').modal('show');
+    </script>
+</div>
+
 </body>
 
 </html>

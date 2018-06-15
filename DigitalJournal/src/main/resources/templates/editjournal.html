@@ -1,13 +1,17 @@
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <link rel="shortcut icon" type="image/x-icon"  href="/img/favicon.ico"/>
 
+    <meta name="_csrf" th:content="${_csrf.token}"/> <!--Enables AJAX-->
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta content="width=device-width, initial-scale=1.0"/>
 
     <link href="/css/bootstrap.css" rel="stylesheet"/>
     <link href="/css/bootstrap.min.css" rel="stylesheet"/>
     <link href="/css/style.css" rel="stylesheet"/>
+    <link href="/css/dropzone.css" rel="stylesheet"/>
     <link href="/res/css/journal.css" rel="stylesheet"/>
     <link href="/res/css/actionbutton.css" rel="stylesheet"/>
     <link href="/css/font-awesome.min.css" rel="stylesheet"/>
@@ -17,6 +21,7 @@
     <script src="/js/jquery.min.js"></script>
     <script src="/js/popper.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/dropzone.js"></script>
     <script src="/res/js/main.js"></script>
     <script src="/res/js/actionbutton.js"></script>
 
@@ -26,6 +31,12 @@
 <body id="home" class="">
 
 <div th:replace="static_elements/navbarLoggedIn :: navbarLoggedIn"/>
+
+<script>
+    $(function () {
+        $("form#edit-journal-form")[0].dropzone.options.maxFiles = [[${2 - journal.images}]];
+    })
+</script>
 
 <main role="main">
     <div class="container journal_conatainer">
@@ -72,12 +83,26 @@
                 <div class="card" style="width: 20rem;">
                     <!-- <img class="card-img-top" src="res/img/generic_friends.jpg" alt="Card image cap"> -->
                     <div class="card-block p-3">
-                        <h4 class="card-title">Your Friends</h4>
-                        <p class="card-text">Quick access to your best friends.</div>
+                        <h4 class="card-title">Images</h4>
+                        <p class="card-text">Manage the images of this journal</div>
                     <ul class="list-group list-group-flush text-muted">
-                        <li class="list-group-item">Kurt Cobain</li>
-                        <li class="list-group-item">Dave Grohl</li>
-                        <li class="list-group-item">Krist Novoselic</li>
+                        <th:block th:if="${journal.images > 0}" th:each="i : ${#numbers.sequence( 0, journal.images - 1)}">
+                            <li class="list-group-item">
+                                <img th:id="'img'+${i}+'_' + ${journal.journalid}" th:src="'/file/image/' + ${journal.journalid}+'/'+${i}" class="img-thumbnail img-view" style="margin: 5px; max-height: 150px">
+                                <form method="POST" th:action="@{'/file/image/delete/' + ${journal.journalid}+'/'+${i}}">
+                                    <button class='btn btn-block btn-danger float-right' type='submit'> <i class="material-icons">delete_outline</i></button>
+                                </form>
+                            </li>
+                        </th:block>
+                        <li th:if="${journal.images < 2}" class="list-group-item">
+                            <form method="POST" class="dropzone needsclick dz-clickable" th:action="@{/file/image}" autocomplete="off" id="edit-journal-form"  enctype="multipart/form-data">
+                            </form>
+                        </li>
+                        <li th:if="${journal.images >= 2}" class="list-group-item">
+                            <div class="alert alert-info">
+                                <strong>Image maximum reached!</strong> Delete at least one of your images if you want to upload a new one.
+                            </div>
+                        </li>
                     </ul>
                     <!-- <div class="card-block">
                     <a href="#" class="card-link">Card link</a>
@@ -107,9 +132,7 @@
                     Do you really want to delete this journal?
                 </div>
                 <div class="modal-footer">
-                    <form method="POST" th:action="@{/journal/delete}">
-                        <a href="javascript:;" class="btn btn-danger" onclick="parentNode.submit();">Delete</a>
-                    </form>
+                    <a th:href="@{'/journal/delete/' + ${journal.journalid}}" class="btn btn-danger">Delete</a>
                 </div>
             </div>
         </div>
@@ -121,10 +144,6 @@
 
 <!-- MAIN FOOTER -->
 <div th:replace="footer :: footer"/>
-
-<script src="js/jquery.min.js"></script>
-<script src="js/popper.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
 </body>
 
 </html>

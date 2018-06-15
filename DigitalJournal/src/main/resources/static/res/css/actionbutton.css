@@ -7,7 +7,7 @@
     border-radius    : 2px;
     color            : #FFF;
     width            : auto;
-    z-index          : 2147483638;
+    z-index          : 2147483630;
 }
 
 .fab {
@@ -28,6 +28,10 @@
 
 }
 
+.btn-floating:hover {
+    text-decoration: none;
+    color : white;
+}
 .fab span {
     vertical-align : middle;
 }

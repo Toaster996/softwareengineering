@@ -1,7 +1,12 @@
 package de.dhbw.softwareengineering.digitaljournal;
 
+import de.dhbw.softwareengineering.digitaljournal.domain.ChangeMailRequest;
+import de.dhbw.softwareengineering.digitaljournal.domain.ContactRequest;
+import de.dhbw.softwareengineering.digitaljournal.domain.DeleteAccountRequest;
 import de.dhbw.softwareengineering.digitaljournal.domain.Goal;
+import de.dhbw.softwareengineering.digitaljournal.domain.Image;
 import de.dhbw.softwareengineering.digitaljournal.domain.Journal;
+import de.dhbw.softwareengineering.digitaljournal.domain.PasswordRecoveryRequest;
 import de.dhbw.softwareengineering.digitaljournal.domain.RegistrationRequest;
 import de.dhbw.softwareengineering.digitaljournal.domain.User;
 import de.dhbw.softwareengineering.digitaljournal.domain.form.RegistrationUser;
@@ -41,6 +46,51 @@ public class TestingData {
             default:
                 return get(url);
         }
+    }
+
+    /*     ImageTest      */
+    public static Image createImage(){
+        Image img = new Image();
+              img.setJournalid("1234");
+              img.setImage(new byte[2]);
+              img.setId("1234");
+        return img;
+    }
+
+    /*     DeleteAccountTest      */
+    public static DeleteAccountRequest createDeleteAccountRequest(String username){
+        DeleteAccountRequest request = new DeleteAccountRequest();
+
+        request.setUsername(username);
+        request.setDate(1000L);
+        request.setRequestid("12324");
+
+        return request;
+    }
+
+    /*     ContactRequestTest      */
+    public static ContactRequest createContactRequest(){
+        ContactRequest contactRequest = new ContactRequest();
+        contactRequest.setEmail("abc@def.gh");
+        contactRequest.setId("1234");
+        contactRequest.setMessage("Message");
+        contactRequest.setName("Name");
+        contactRequest.setSolved(false);
+
+        return contactRequest;
+    }
+
+    /*     ChangeMailTest      */
+
+    public static ChangeMailRequest createChangeMailRequest(String email){
+        ChangeMailRequest request = new ChangeMailRequest();
+        request.setUsername("user");
+        request.setDate(System.currentTimeMillis());
+        request.setNewmail(email);
+        request.setNewmailid(UUID.randomUUID().toString());
+        request.setOldmailid(UUID.randomUUID().toString());
+
+        return request;
     }
 
     /*     UserServiceTest     */
@@ -111,4 +161,11 @@ public class TestingData {
     }
 
 
+    public static PasswordRecoveryRequest createRecoveryRequest(String user) {
+        PasswordRecoveryRequest recoveryRequest = new PasswordRecoveryRequest();
+        recoveryRequest.setUsername(user);
+        recoveryRequest.setRecoveryUUID("1234");
+        recoveryRequest.setCreationDate(1000L);
+        return recoveryRequest;
+    }
 }

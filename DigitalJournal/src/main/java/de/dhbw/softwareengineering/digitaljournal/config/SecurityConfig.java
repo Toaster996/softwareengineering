@@ -18,6 +18,8 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
 import javax.sql.DataSource;
 import java.util.LinkedHashMap;
 
+import static de.dhbw.softwareengineering.digitaljournal.util.Constants.URL_UNAUTHORIZED;
+
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -41,10 +43,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public AuthenticationEntryPoint delegatingEntryPoint() {
         final LinkedHashMap<RequestMatcher, AuthenticationEntryPoint> map = new LinkedHashMap();
-        map.put(new AntPathRequestMatcher("/"), new LoginUrlAuthenticationEntryPoint("/unauthorized"));
+        map.put(new AntPathRequestMatcher("/"), new LoginUrlAuthenticationEntryPoint(URL_UNAUTHORIZED));
 
         final DelegatingAuthenticationEntryPoint entryPoint = new DelegatingAuthenticationEntryPoint(map);
-        entryPoint.setDefaultEntryPoint(new LoginUrlAuthenticationEntryPoint("/unauthorized"));
+        entryPoint.setDefaultEntryPoint(new LoginUrlAuthenticationEntryPoint(URL_UNAUTHORIZED));
 
         return entryPoint;
     }
@@ -54,7 +56,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.exceptionHandling().authenticationEntryPoint(delegatingEntryPoint());
 
         http.authorizeRequests()
-                .antMatchers("/", "/register", "/confirmemail/**", "/recoverpassword/**", "/unauthorized", "/error").permitAll()
+                .antMatchers("/", "/contact", "/register", "/confirmemail/**", "/recoverpassword/**", URL_UNAUTHORIZED, "/error", "/recover/**", "/profile/delete/**", "/profile/mail/confirm/**").permitAll()
                 .antMatchers("/scss/**", "/css/**", "/img/**", "/js/**", "/fonts/**", "/res/**").permitAll()
                 .anyRequest().authenticated()
                 .and()

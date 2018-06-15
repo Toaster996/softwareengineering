@@ -12,7 +12,15 @@
             <hr>
             <div class="alert alert-danger alert-dismissable" id="emailinvalid">
                 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                <strong>Email invalid!</strong> Please retry with an valid Email.
+                <strong>Email invalid!</strong> Please retry with a valid email.
+            </div>
+        </div>
+
+        <div th:case="'usedemail'">
+            <hr>
+            <div class="alert alert-danger alert-dismissable" id="usedemail">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>Email already in use!</strong> Please retry with an other email.
             </div>
         </div>
 
@@ -54,6 +62,30 @@
             <div class="alert alert-danger alert-dismissable" id="invalidCredentials">
                 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                 <strong>Invalid Credentials!</strong> Please make sure the entered credentials are correct.
+            </div>
+        </div>
+
+        <div th:case="'requestfailed'">
+            <hr>
+            <div class="alert alert-danger alert-dismissable" id="requestfailed">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>Request failed!</strong> The execution of the request failed! Please contact us if this happens again.
+            </div>
+        </div>
+
+        <div th:case="'success'">
+            <hr>
+            <div class="alert alert-success alert-dismissable" id="success">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>Request successful!</strong> Your request was successfully executed.
+            </div>
+        </div>
+
+        <div th:case="'mail_change_success'">
+            <hr>
+            <div class="alert alert-info alert-dismissable" id="mail_change_success">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>Mail Change Request successful! </strong> We've sent you an email to your old and new mail addresses. Check your inboxes to complete the change process.
             </div>
         </div>
 
