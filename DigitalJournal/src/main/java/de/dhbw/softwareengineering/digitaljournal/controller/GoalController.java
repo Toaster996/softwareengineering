@@ -138,7 +138,7 @@ public class GoalController {
     @GetMapping("/allgoals")
     public String showAllGoals(Principal principal, RedirectAttributes redir) {
         List<Goal> goals = goalService.findAll(principal.getName());
-        goals = removeNotShownGoals(goals);
+        removeNotShownGoals(goals);
         redir.addFlashAttribute("goals", goals);
         if (goals.size() <= loadedGoals)
             redir.addFlashAttribute(Constants.SHOW_FURTHER_GOALS_BTN, false);

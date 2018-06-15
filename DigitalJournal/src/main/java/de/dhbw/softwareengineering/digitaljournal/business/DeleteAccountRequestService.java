@@ -1,7 +1,6 @@
 package de.dhbw.softwareengineering.digitaljournal.business;
 
 import de.dhbw.softwareengineering.digitaljournal.domain.DeleteAccountRequest;
-import de.dhbw.softwareengineering.digitaljournal.domain.User;
 import de.dhbw.softwareengineering.digitaljournal.persistence.DeleteAccountRequestRepository;
 import de.dhbw.softwareengineering.digitaljournal.util.UUIDGenerator;
 import de.dhbw.softwareengineering.digitaljournal.util.exceptions.DeleteAccountRequestException;

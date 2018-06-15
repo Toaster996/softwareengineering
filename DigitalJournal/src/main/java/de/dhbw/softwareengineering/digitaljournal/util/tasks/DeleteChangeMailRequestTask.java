@@ -2,7 +2,6 @@ package de.dhbw.softwareengineering.digitaljournal.util.tasks;
 
 import de.dhbw.softwareengineering.digitaljournal.business.AbstractService;
 import de.dhbw.softwareengineering.digitaljournal.business.ChangeMailRequestService;
-import de.dhbw.softwareengineering.digitaljournal.business.DeleteAccountRequestService;
 
 public class DeleteChangeMailRequestTask extends Task {
 

@@ -6,7 +6,6 @@ import de.dhbw.softwareengineering.digitaljournal.persistence.UploadImageReposit
 import de.dhbw.softwareengineering.digitaljournal.util.UUIDGenerator;
 import de.dhbw.softwareengineering.digitaljournal.util.exceptions.JournalNotFoundException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

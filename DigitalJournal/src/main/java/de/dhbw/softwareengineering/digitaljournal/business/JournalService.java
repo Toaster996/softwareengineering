@@ -51,8 +51,7 @@ public class JournalService implements AbstractService {
         Optional<Journal> journalOptional = repository.findById(journalId);
 
         if (journalOptional.isPresent()) {
-            Journal journal = journalOptional.get();
-            return journal;
+            return journalOptional.get();
         } else {
             throw new JournalNotFoundException("No journal found with Id: " + journalId);
         }

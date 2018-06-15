@@ -1,7 +1,6 @@
 package de.dhbw.softwareengineering.digitaljournal.business;
 
 import de.dhbw.softwareengineering.digitaljournal.domain.ChangeMailRequest;
-import de.dhbw.softwareengineering.digitaljournal.domain.User;
 import de.dhbw.softwareengineering.digitaljournal.persistence.ChangeMailRequestRepository;
 import org.springframework.stereotype.Service;
 
