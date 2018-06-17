@@ -53,7 +53,7 @@ Items for Testing:
 
 ## 4.	Outline of Planned Tests
 ### 4.1	Outline of Test Inclusions
-Unit testing the Java backend, functional testing of the Web frontend or Database Integrity Testing
+Unit testing the Java backend, functional testing of the Web frontend and installation testing
 ### 4.2	Outline of Other Candidates for Potential Inclusion
 Stress testing the application, unit testing the frontend might be 
 potential test cases but these are not in scope of our testing process yet.
@@ -65,14 +65,8 @@ What we are not planning to do is attack simulation.
 **n/a**
 ### 5.2	Testing Techniques and Types
 #### 5.2.1	Database Integrity Testing
-|| |
-|---|---|
-|Technique Objective  	| Exercise database access and observe behaviour |
-|Technique 		|  Execute queries and observe desired results with other queries |
-|Oracles 		|  Queries will store and delete data and it will be represented in the database   |
-|Required Tools 	| JUnit	 |
-|Success Criteria	|    Green tests         |
-|Special Considerations	|     -          |
+
+**n / a**
 
 #### 5.2.2 Function Testing
 || |
@@ -119,7 +113,17 @@ What we are not planning to do is attack simulation.
 **n/a**
 
 #### 5.2.12	Installation Testing
-**n/a**
+
+|| |
+|---|---|
+|Technique Objective  	| Exercise the installation of the target-of-test onto each required hardware configuration under the following conditions to observe and log installation behavior and configuration state changes |
+|Technique 		|  Manual performed installation |
+|Oracles 		|  Going to localhost:8080 you will see the startpage and can interact with it |
+|Required Tools 	| MySQl and Java Runtime Environment	 |
+|Success Criteria	|    installation successful         |
+|Special Considerations	|     -          |
+Proof of installation tests:
+https://theexcitingcompany.wordpress.com/2018/06/11/semester-ii-week-9-installation/
 
 ## 6.	Entry and Exit Criteria
 ### 6.1	Test Plan
@@ -220,7 +224,7 @@ Human Resources
 | Have Unit Tests | 23.4.2018 | 23.4.2018 | 4.5.2018 | 3.5.2018 |
 | 30% coverage | 04.5.2018 | 21.05.2018 | 14.5.2018 | 30.05.2018 |
 | Tests integrated in CI | 14.05.2018 | 14.05.2018 | 21.05.2018 | 30.05.2018 |
-| Iteration ends |  | |  | |
+
 
 ## 12.	Risks, Dependencies, Assumptions, and Constraints
 | Risk | Mitigation Strategy	| Contingency (Risk is realized) |

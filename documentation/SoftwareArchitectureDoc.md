@@ -20,9 +20,24 @@ See the [SRS](documentation.md) for further detail
 
 ## 5. Logical View
 We took a look at our Class Diagram and highlighted Model and Controller Classes, aswell as the View Files.
-![Class Diagram](images/class_diagramm_full.png)
-The View files are represented by HTML5 Files using ![Thymeleaf](https://www.thymeleaf.org/). Note, that previous version of the DigitalJournal used JSP (Java Server Pages), which did not fullfill our satisfaction.
 
+![Class Diagram](images/class_diagram.png)
+
+Model = blue 
+Controller = red
+View = green
+
+The View files are represented by HTML5 Files using [Thymeleaf](https://www.thymeleaf.org/). Note, that previous version of the DigitalJournal used JSP (Java Server Pages), which did not fullfill our satisfaction.
+
+In our architecture we made use of patterns. One pattern we used was the Observer pattern. The Observer design pattern is suitable for situations where one or more objects need to be notified when the state of a particular object changes We implemented this design pattern in the task scheduler to keep everything organized and making it easy to add future tasks to the scheduler.
+
+![observer_pattern](images/Observer_pattern.png)
+
+Before:
+![pattern_before](images/pattern_before.png)
+
+After:
+![pattern_after](images/pattern_after.png)
 
 ## 7. Deployment View
 ![DeploymentView](images/DeploymentView.png)
@@ -35,7 +50,7 @@ As you can see deployment is pretty easy. For a complete tutorial please take a 
 ## 9. Data View
 We are using a MySQL database to store user related data.
  
-![DB-Model](images/DB_Diagram.PNG)
+![DB-Model](images/DB_Diagram.png)
 
 ## 10. Size and Performance 
 
