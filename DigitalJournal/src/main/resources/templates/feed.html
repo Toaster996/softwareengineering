@@ -429,20 +429,20 @@
                     </div>
 
                     <div class="form-group">
-                        <form method="POST" th:action="@{'/journal/goal/delete/' + ${showGoal.id}}">
-                            <div class="modal-footer">
+                        <div class="modal-footer">
+                            <form method="POST" th:action="@{'/journal/goal/delete/' + ${showGoal.id}}">
                                 <button id="btn_goal_delete" class="btn btn-danger">Delete</button>
-                                <div class="text-right">
-                                    <button class="btn btn-primary" id="btn_close_goal">
-                                        Close
-                                    </button>
-                                    <a type="button" class="btn btn-secondary"
-                                       th:href="@{'/journal/goal/edit/'+ ${showGoal.id}}" id="btn_edit_goal">
-                                        Edit
-                                    </a>
-                                </div>
+                            </form>
+                            <div class="text-right">
+                                <button class="btn btn-primary" id="btn_close_goal">
+                                    Close
+                                </button>
+                                <a class="btn btn-secondary"
+                                   th:href="@{'/journal/goal/edit/'+ ${showGoal.id}}" id="btn_edit_goal">
+                                    Edit
+                                </a>
                             </div>
-                        </form>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -453,6 +453,7 @@
                 parentNode.submit();
             })
             $('#mdl_goal_show').modal('show');
+
             $('#btn_close_goal').click(function () {
                 $('#mdl_goal_show').modal('hide');
             })

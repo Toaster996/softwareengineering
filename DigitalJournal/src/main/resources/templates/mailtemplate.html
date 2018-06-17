@@ -12,9 +12,9 @@
 <main role="main">
     <div class="container journal_conatainer">
         <h2 class="page-header">Digital Journal</h2>
-        <p th:text="'Dear ' + ${name} + ','"></p>
+        <p th:text="'Hey ' + ${name} + ','"></p>
         <p th:text="${messageTop}"></p>
-        <a  th:href="${actionTarget}" class="btn btn-primary mb-5" th:text="${actionName}"></a>
+        <a th:href="${actionTarget}" class="btn btn-primary mb-5" th:text="${actionName}"></a>
         <p th:text="${messageBottom}"></p>
         <p>Sincerely yours,<br/>The DigitalJournal Team</p>
         <br>
