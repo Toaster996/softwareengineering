@@ -49,7 +49,7 @@ Feature:
     Then I should see modal "mdl_email_sent"
 
   Scenario: Name Too Long
-    Given I navigate to "/"
+    Given I navigate to ""
     And I scroll to element having id "btn_contact"
     And I click on element having id "btn_contact"
     When I enter "JonasJonasJonasJonasJonasJonasJonasJonasJonasJonasJonas" into input field having id "lbl_contact_name"
@@ -59,7 +59,7 @@ Feature:
     Then I should see modal "mdl_name_too_long"
 
   Scenario: Message Too Long
-    Given I navigate to "/"
+    Given I navigate to ""
     And I click on element having id "btn_contact"
     When I enter "Jonas" into input field having id "lbl_contact_name"
     And I enter "jonas@example.com" into input field having id "lbl_contact_email"
@@ -68,7 +68,7 @@ Feature:
     Then I should see modal "mdl_message_too_long"
 
   Scenario: Email Too Long
-    Given I navigate to "/"
+    Given I navigate to ""
     And I scroll to element having id "btn_contact"
     And I click on element having id "btn_contact"
     When I enter "Jonas" into input field having id "lbl_contact_name"

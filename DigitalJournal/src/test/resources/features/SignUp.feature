@@ -3,6 +3,16 @@ Feature:
   I want to register
   so that i have an account
 
+  Scenario: Successful registration
+    Given I navigate to ""
+    And I click on element having id "btn_log-in"
+    When I enter "duplicate" into input field having id "lbl_reg_name"
+    And I enter "duplicate@example.com" into input field having id "lbl_reg_email"
+    And I enter "password" into input field having id "lbl_reg_password"
+    And I enter "password" into input field having id "lbl_reg_passwordconf"
+    And I click on element having id "btn_reg_submit"
+
+
   Scenario: Form is Empty
     Given I navigate to ""
     And I click on element having id "btn_log-in"
