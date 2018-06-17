@@ -22,14 +22,25 @@ This document is meant for internal use primarily.
 - **tbd**	to be determined
 
 ### 1.5	 References
-- [GitHub](https://github.com/Toaster996/softwareengineering)
-- [Blog](https://theexcitingcompany.wordpress.com/)
-- [Overall Use case diagram](https://github.com/Toaster996/softwareengineering/blob/master/documentation/images/UCD.png)
-- [Software Requirements Specification](https://github.com/Toaster996/softwareengineering/blob/master/documentation/documentation.md)
-- [Software Architecture Document](https://github.com/Toaster996/softwareengineering/blob/master/documentation/SoftwareArchitectureDoc.md)
-- [Function points](https://github.com/Toaster996/softwareengineering/blob/master/documentation/function_points.xlsx)
-- [Codecov](https://codecov.io/gh/Toaster996/softwareengineering)
-- [Sonarqube](https://sonarcloud.io/dashboard?id=de.dhbw.softwareengineering%3Adigitaljournal)
+| Reference        | 
+| ------------- |
+| [Blog](https://theexcitingcompany.wordpress.com/) | 
+| [GitHub](https://github.com/Toaster996/softwareengineering/) |
+| [SAD](https://github.com/Toaster996/softwareengineering/blob/master/documentation/SoftwareArchitectureDoc.md) | 
+| [Test Plan](https://github.com/Toaster996/softwareengineering/blob/master/documentation/Test_Plan.md) |
+| [Function Points](https://github.com/Toaster996/softwareengineering/blob/master/documentation/function_points.xlsx) |
+| [UC Add Media](https://github.com/Toaster996/softwareengineering/blob/master/documentation/UCs/AddMedia/uc_add_media.md) |
+| [UC Crud Friend](https://github.com/Toaster996/softwareengineering/blob/master/documentation/UCs/CRUD%20Friend/crud_friend.md) |
+| [UC Crud Goal](https://github.com/Toaster996/softwareengineering/blob/master/documentation/UCs/CRUD%20Goal/uc_crud_goal.md) |
+| [UC Crud Journal](https://github.com/Toaster996/softwareengineering/blob/master/documentation/UCs/CRUD%20Journal/uc_crud_journal.md) |
+| [UC Change Email](https://github.com/Toaster996/softwareengineering/blob/master/documentation/UCs/ChangeAccountEmail/uc_change_account_email.md) |
+| [UC Change Password](https://github.com/Toaster996/softwareengineering/blob/master/documentation/UCs/ChangeAccountPassword/uc_change_account_password.md) |
+| [UC Contact Us](https://github.com/Toaster996/softwareengineering/blob/master/documentation/UCs/ContactUs/uc_contact_us.md) |
+| [UC Delete Account](https://github.com/Toaster996/softwareengineering/blob/master/documentation/UCs/Delete%20Account/uc_delete_account.md) |
+| [UC Goal Checking](https://github.com/Toaster996/softwareengineering/blob/master/documentation/UCs/Goal%20Checking/goal_checking.md) |
+| [UC Recover Password](https://github.com/Toaster996/softwareengineering/blob/master/documentation/UCs/RecoverPassword/uc_recover_password.md) |
+| [UC Share Journal](https://github.com/Toaster996/softwareengineering/blob/master/documentation/UCs/Share%20Journal/share_journal.md) |
+| [UC SignUp](https://github.com/Toaster996/softwareengineering/blob/master/documentation/UCs/SignUp/uc_sign_up.md) |
 
 ## 2.	Evaluation Mission and Test Motivation
 ### 2.1	Background
