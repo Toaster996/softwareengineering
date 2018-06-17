@@ -19,19 +19,11 @@ The basic flow is that the user will share his journal with a mutual friend.
 
 By clicking on share in the journal the user will be given a modal for sharing this journal with friends. He will be given suggestions for who he can share them with.
 
-![share_friends](share_friends.PNG)
-
+![share_friends](Share_friends.PNG)
 
 ![journal_shared](journal_shared.PNG)
 
 ![journal_shared_for_other](journal_shared_for_other.PNG)
-
-
-### 2.3 Non mutual friendship
-
-If the friendship is non mutual the user will be informed that he cannot share a journal with this person.
-
-![journal_non_mutual](non_mutual_modal.png)
 
 ## 3. Special Requirements
 
@@ -54,10 +46,6 @@ In order to share journals the user has to have at least one friend.
 ### 5.1 Successful sharing
 
 The journal will be shared with the friend. He can then see it in his journal list without being able to modify it.
-
-### 5.2 Non mutual friendship
-
-The journal will not be shared with that person.
 
 ## 6. Extension Points
 
